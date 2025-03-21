@@ -11,7 +11,7 @@ export function PlaylistShort(obj: playlistProps): JSX.Element {
   return (
     <HStack w={"full"} my={3}>
       <HStack gap="4">
-        <Avatar.Root shape={"rounded"}>
+        <Avatar.Root shape={"rounded"} size={"xl"}>
           <Avatar.Fallback name={"Abdone"} />
           <Avatar.Image src={obj?.avatar} />
         </Avatar.Root>
