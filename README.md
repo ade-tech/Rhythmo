@@ -31,8 +31,6 @@ git clone https://github.com/ade-tech/Rhythmo.git
 cd Rhythmo
 ```
 
-````
-
 2️⃣ **Install dependencies:**
 
 ```sh
@@ -87,8 +85,3 @@ This project is licensed under the **MIT License**.
 ## 🔗 Repository
 
 GitHub: [Rythmo](https://github.com/ade-tech/Rhythmo.git)
-
-```
-
-```
-````
