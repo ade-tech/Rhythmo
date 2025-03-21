@@ -1,54 +1,94 @@
-# React + TypeScript + Vite
+# Rythmo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**A modern music streaming platform with personalized recommendations and listening stats.**
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✅ **Music Streaming** – Play your favorite tracks in high quality.  
+✅ **Listening History (Scrobbling)** – Tracks every song you listen to.  
+✅ **Personalized Recommendations** – Get song suggestions based on your taste.  
+✅ **User Stats & Trends** – See your most played songs, artists, and genres.  
+✅ **Offline Playback (Coming Soon)**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **Backend:** Firebase (Firestore, Authentication, Storage)
+- **API Calls & Data Fetching:** React Query, Axios (if needed)
+- **State Management:** Context API
+- **Audio Streaming:** React Howler.js
+
+---
+
+## 📦 Installation
+
+1️⃣ **Clone the repository:**
+
+```sh
+git clone https://github.com/ade-tech/Rhythmo.git
+cd Rhythmo
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+````
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2️⃣ **Install dependencies:**
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```sh
+npm install
 ```
+
+3️⃣ **Set up environment variables:**
+Create a `.env` file and add your Firebase API keys.
+
+4️⃣ **Run the app:**
+
+```sh
+npm run dev
+```
+
+---
+
+## 🎶 Usage
+
+- **Sign up / Log in** to start streaming.
+- Discover new music based on your **listening habits**.
+- Check your **listening stats & top tracks**.
+
+---
+
+## 📌 To-Do List
+
+- [ ] Add real-time song lyrics
+- [ ] Implement offline downloads
+- [ ] Introduce AI-powered music discovery
+
+---
+
+## 🤝 Contributing
+
+Want to improve Rythmo? Follow these steps:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Commit your changes (`git commit -m "Add new feature"`)
+4. Push to the branch (`git push origin feature-branch`)
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 🔗 Repository
+
+GitHub: [Rythmo](https://github.com/ade-tech/Rhythmo.git)
+
+```
+
+```
+````
