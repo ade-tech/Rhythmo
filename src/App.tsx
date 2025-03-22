@@ -6,6 +6,12 @@ function App() {
   return (
     <Routes>
       <Route index element={<Home />} />
+      <Route path="/track/:id" />
+      <Route path="/album/:id" />
+      <Route path="/playlist/:id" />
+      <Route path="/artist/:id" />
+      <Route path="/genre/:id" />
+      <Route path="/profile" />
     </Routes>
   );
 }

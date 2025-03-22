@@ -1,6 +1,7 @@
 import { Box, Grid, GridItem, Stack } from "@chakra-ui/react";
 import TopMenu from "./TopMenu";
 import LibraryContainer from "@/features/user/library/LibraryContainer";
+import MainContainer from "./MainContainer";
 
 const Home = () => {
   return (
@@ -11,8 +12,9 @@ const Home = () => {
           <GridItem colSpan={1}>
             <LibraryContainer />
           </GridItem>
-          <GridItem colSpan={2}>wqe</GridItem>
-          <GridItem colSpan={1}>wqe</GridItem>
+          <GridItem colSpan={3}>
+            <MainContainer />
+          </GridItem>
         </Grid>
       </Stack>
     </Box>

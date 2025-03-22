@@ -58,19 +58,25 @@ export function TopMenu() {
             <Input
               size={"lg"}
               placeholder="What do you wanna play"
-              className="bg-dark-overlay"
               borderRadius={"3xl"}
               variant={"subtle"}
               focusRing={"none"}
               border={"none"}
+              bg={"gray.900"}
+              color={"white"}
             />
           </InputGroup>
         </HStack>
         <HStack gap={4}>
-          <Button variant={"solid"} rounded={"full"}>
+          <Button
+            variant={"solid"}
+            color={"gray.900"}
+            bg={"white"}
+            rounded={"full"}
+          >
             Get Premium
           </Button>
-          <MdOutlineNotifications size={25} />
+          <MdOutlineNotifications size={25} color="white" />
           <Avatar.Root colorPalette={"green"}>
             <Avatar.Fallback name="Dev Abdone" />
           </Avatar.Root>
