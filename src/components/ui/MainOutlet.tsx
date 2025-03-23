@@ -1,4 +1,5 @@
 import { Stack } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
 
 type outletProps = {
   size: string;
@@ -13,7 +14,7 @@ export function MainOutlet({ size }: outletProps) {
       className="bg-darker-overlay"
       rounded={"lg"}
     >
-      MainOutlet dasdad dasda Component
+      <Outlet />
     </Stack>
   );
 }
