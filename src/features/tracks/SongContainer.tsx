@@ -5,9 +5,14 @@ import { Link } from "react-router-dom";
 
 export function SongContainer() {
   return (
-    <Stack w={"1/3"} className="bg-darker-overlay" p={4}>
+    <Stack
+      w={"1/3"}
+      className="bg-darker-overlay"
+      h={"75dvh"}
+      overflow={"auto"}
+    >
       <Stack>
-        <HStack mb={1}>
+        <HStack mb={1} position={"sticky"} top={0} bg={"inherit"} pb={2}>
           <Link to="sada">
             <Text
               textStyle={"lg"}
@@ -33,6 +38,44 @@ export function SongContainer() {
           mb={2}
           src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg"
         />
+        <Stack gap={0}>
+          <Flex>
+            <Stack gap={0}>
+              <Link to="sada">
+                <Text
+                  textStyle={"2xl"}
+                  color={"white"}
+                  transitionDuration={"200ms"}
+                  _hover={{
+                    textDecoration: "underline",
+                    transition: "ease-in-out",
+                  }}
+                  fontWeight={"bold"}
+                >
+                  SPRINTER
+                </Text>
+              </Link>
+              <Text
+                textStyle={"md"}
+                color={"gray.400"}
+                transitionDuration={"200ms"}
+                _hover={{
+                  textDecoration: "underline",
+                  transition: "ease-in-out",
+                }}
+                fontWeight={"medium"}
+              >
+                Central Cee
+              </Text>
+            </Stack>
+            <Spacer />
+            <HStack mr={1}>
+              <Link to="sada"></Link>
+              <HiOutlineUpload size={20} className="text-gray-400" />
+              <GoPlusCircle size={20} className="text-gray-400" />
+            </HStack>
+          </Flex>
+        </Stack>
         <Stack gap={0}>
           <Flex>
             <Stack gap={0}>

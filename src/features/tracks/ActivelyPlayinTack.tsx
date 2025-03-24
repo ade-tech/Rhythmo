@@ -24,7 +24,13 @@ import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
   return (
-    <HStack h={"15dvh"} px={5} bg={"black"}>
+    <HStack
+      h={"fit"}
+      px={5}
+      bg={"black"}
+      display={"flex"}
+      alignItems={"center"}
+    >
       <HStack gap={4} align={"center"}>
         <Avatar.Root shape={"rounded"} size={"2xl"}>
           <Avatar.Fallback>
@@ -60,16 +66,28 @@ const ActivelyPlayinTack = () => {
             Central Cee
           </Text>
         </Stack>
-        <GoPlusCircle size={20} className="text-gray-400" />
+        <IconWithTooltip tooltipText="Add to Fav.">
+          <GoPlusCircle size={20} className="text-gray-400" />
+        </IconWithTooltip>
       </HStack>
       <Spacer />
-      <Stack display={"flex"} alignItems={"center"}>
-        <HStack>
-          <PiShuffle size={20} />
-          <PiSkipBackFill size={20} />
-          <HiPlay size={45} />
-          <PiSkipForwardFill size={20} />
-          <PiRepeatFill size={20} />
+      <Stack display={"flex"} alignItems={"center"} gap={0}>
+        <HStack gap={4}>
+          <IconWithTooltip tooltipText="Shuffle">
+            <PiShuffle size={20} />
+          </IconWithTooltip>
+          <IconWithTooltip tooltipText="Previous">
+            <PiSkipBackFill size={20} />
+          </IconWithTooltip>
+          <IconWithTooltip tooltipText="Play">
+            <HiPlay size={45} />
+          </IconWithTooltip>
+          <IconWithTooltip tooltipText="Next">
+            <PiSkipForwardFill size={20} />
+          </IconWithTooltip>
+          <IconWithTooltip tooltipText="Repeat">
+            <PiRepeatFill size={20} />
+          </IconWithTooltip>
         </HStack>
         <HStack>
           <Text textStyle={"xs"}>1:05</Text>
@@ -87,11 +105,11 @@ const ActivelyPlayinTack = () => {
       <Spacer />
       <HStack gap={3} mr={2}>
         <IconWithTooltip tooltipText="Show Queue">
-          <HiOutlineQueueList size={15} />
+          <HiOutlineQueueList size={18} />
         </IconWithTooltip>
         <HStack>
           <IconWithTooltip tooltipText="mute">
-            <PiSpeakerHigh size={15} />
+            <PiSpeakerHigh size={18} />
           </IconWithTooltip>
           <Slider.Root w={24} size={"sm"} defaultValue={[30]}>
             <Slider.Control>
@@ -103,7 +121,7 @@ const ActivelyPlayinTack = () => {
           </Slider.Root>
         </HStack>
         <IconWithTooltip tooltipText="fullscreen">
-          <SlSizeFullscreen size={15} />
+          <SlSizeFullscreen size={16} />
         </IconWithTooltip>
       </HStack>
     </HStack>
