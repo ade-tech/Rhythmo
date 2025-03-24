@@ -1,12 +1,14 @@
 import { Flex, Stack } from "@chakra-ui/react";
-import MainOutlet from "./MainOutlet";
 import SongContainer from "@/features/tracks/SongContainer";
+import { Outlet } from "react-router-dom";
 
 export function MainContainer() {
   return (
     <Stack h={"full"} w={"full"}>
       <Flex h={"full"} w={"full"} gap={3}>
-        <MainOutlet size="1" />
+        <Stack flex={1} className="bg-darker-overlay" rounded={"lg"}>
+          <Outlet />
+        </Stack>
         <SongContainer />
       </Flex>
     </Stack>
