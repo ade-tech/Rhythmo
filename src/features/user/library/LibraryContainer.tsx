@@ -2,13 +2,13 @@ import { Box } from "@chakra-ui/react";
 import LibraryHeader from "./LibraryHeader";
 import PlaylistShort from "@/components/ui/PlaylistShort";
 import ArtistShort from "@/components/ui/ArtistShort";
-import LibraryFilter from "./LibraryFilter";
+import Filter from "@/components/ui/Filter";
 
 export function LibraryContainer() {
   return (
     <Box className="bg-darker-overlay" h={"full"} rounded={"lg"} pt={5} px={5}>
       <LibraryHeader />
-      <LibraryFilter />
+      <Filter filterValues={["Artists", "Albums", "Playlist"]} />
       <PlaylistShort
         type="album"
         title="Motigbana"
