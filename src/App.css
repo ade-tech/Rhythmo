@@ -11,14 +11,10 @@
 ::-webkit-scrollbar {
   width: 8px; /* Adjust width to be noticeable but not intrusive */
 }
-
+::-webkit-scrollbar-track {
+  border-top-right-radius: 10px;
+}
 ::-webkit-scrollbar-thumb {
   background-color: #545454;
-  display: none;
   transition: all 2s ease-in-out 2s;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  opacity: 1;
-  display: block;
 }
