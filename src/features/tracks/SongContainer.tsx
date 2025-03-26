@@ -1,4 +1,6 @@
+import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import {
+  Avatar,
   Button,
   Card,
   Flex,
@@ -18,37 +20,40 @@ export function SongContainer() {
       w={"1/3"}
       className="bg-darker-overlay"
       h={"75dvh"}
-      overflow={"auto"}
+      overflowY={"auto"}
+      pos={"relative"}
       pb={4}
     >
+      <HStack
+        mb={1}
+        px={2}
+        pos={"sticky"}
+        w={"full"}
+        top={0}
+        bg={"gray.950"}
+        pt={4}
+        pb={3}
+        zIndex={1000000}
+      >
+        <Link to="sada">
+          <Text
+            ml={2}
+            textStyle={"lg"}
+            color={"white"}
+            transitionDuration={"200ms"}
+            _hover={{
+              textDecoration: "underline",
+              transition: "ease-in-out",
+            }}
+            fontWeight={"medium"}
+          >
+            SPRINTER
+          </Text>
+        </Link>
+        <Spacer />
+        <HiX className="text-gray-400" size={20} />
+      </HStack>
       <Stack>
-        <HStack
-          mb={1}
-          px={2}
-          position={"sticky"}
-          top={0}
-          bg={"gray.950"}
-          pt={4}
-          pb={3}
-        >
-          <Link to="sada">
-            <Text
-              ml={2}
-              textStyle={"lg"}
-              color={"white"}
-              transitionDuration={"200ms"}
-              _hover={{
-                textDecoration: "underline",
-                transition: "ease-in-out",
-              }}
-              fontWeight={"medium"}
-            >
-              SPRINTER
-            </Text>
-          </Link>
-          <Spacer />
-          <HiX className="text-gray-400" size={20} />
-        </HStack>
         <Image
           rounded={"lg"}
           width={"300px"}
@@ -152,6 +157,7 @@ export function SongContainer() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
         </Text>
       </Card.Root>
+
       <Card.Root
         mx={"auto"}
         w={"10/12"}
@@ -161,22 +167,20 @@ export function SongContainer() {
         pb={4}
         mt={3}
       >
-        <Link to="sada">
-          <Text
-            ml={4}
-            mt={4}
-            textStyle={"2xl"}
-            fontWeight={"bold"}
-            color={"white"}
-            transitionDuration={"200ms"}
-            _hover={{
-              textDecoration: "underline",
-              transition: "ease-in-out",
-            }}
-          >
-            Credits
-          </Text>
-        </Link>
+        <Text
+          ml={4}
+          mt={4}
+          textStyle={"xl"}
+          fontWeight={"bold"}
+          color={"white"}
+          transitionDuration={"200ms"}
+          _hover={{
+            textDecoration: "underline",
+            transition: "ease-in-out",
+          }}
+        >
+          Credits
+        </Text>
         <HStack mt={3} px={4}>
           <Stack gap={0}>
             <Text
@@ -252,6 +256,83 @@ export function SongContainer() {
               color={"gray.400"}
             >
               Producer, Manager
+            </Text>
+          </Stack>
+        </HStack>
+      </Card.Root>
+      <Card.Root
+        mx={"auto"}
+        w={"10/12"}
+        variant={"subtle"}
+        borderRadius={"xl"}
+        bg={"gray.800"}
+        pb={4}
+        pt={3}
+        px={4}
+        mt={3}
+      >
+        <HStack>
+          <Text
+            mb={2}
+            textStyle={"md"}
+            fontWeight={"bold"}
+            color={"white"}
+            transitionDuration={"200ms"}
+            _hover={{
+              textDecoration: "underline",
+              transition: "ease-in-out",
+            }}
+          >
+            Next in Queue
+          </Text>
+          <Spacer />
+          <Text
+            mb={2}
+            textStyle={"sm"}
+            fontWeight={"bold"}
+            color={"gray.400"}
+            transitionDuration={"200ms"}
+            _hover={{
+              textDecoration: "underline",
+              transition: "ease-in-out",
+            }}
+          >
+            Open queue
+          </Text>
+        </HStack>
+        <HStack gap={4} align={"center"} w={"full"}>
+          <Avatar.Root shape={"rounded"} size={"2xl"}>
+            <Avatar.Fallback>
+              <Image src="/musicfallback.png" />
+            </Avatar.Fallback>
+            <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg" />
+          </Avatar.Root>
+          <Stack gap={0}>
+            <Link to="sada">
+              <Text
+                textStyle={"md"}
+                color={"white"}
+                transitionDuration={"200ms"}
+                _hover={{
+                  textDecoration: "underline",
+                  transition: "ease-in-out",
+                }}
+                fontWeight={"bold"}
+              >
+                SPRINTER
+              </Text>
+            </Link>
+            <Text
+              textStyle={"sm"}
+              color={"gray.400"}
+              transitionDuration={"200ms"}
+              _hover={{
+                textDecoration: "underline",
+                transition: "ease-in-out",
+              }}
+              fontWeight={"medium"}
+            >
+              Central Cee
             </Text>
           </Stack>
         </HStack>
