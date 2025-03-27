@@ -6,7 +6,7 @@ type filterProps = {
 
 const Filter = ({ filterValues }: filterProps) => {
   return (
-    <HStack w={"full"} gap={2} mb={3}>
+    <HStack w={"full"} gap={2} mb={3} zIndex={20}>
       <ButtonGroup size={"sm"} variant={"subtle"} color={"white"}>
         {filterValues.map((filter) => (
           <Button
@@ -14,6 +14,7 @@ const Filter = ({ filterValues }: filterProps) => {
             color={"white"}
             value={filter}
             bg={"gray.900"}
+            key={filter}
           >
             {filter}
           </Button>
