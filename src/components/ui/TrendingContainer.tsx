@@ -1,7 +1,6 @@
 import { Box, Grid, HStack } from "@chakra-ui/react";
 import Filter from "./Filter";
 import MiniSongCard from "./MiniSongCard";
-import { RefObject, useRef, useState } from "react";
 import TrendingSection from "./TrendingSection";
 
 const TrendingContainer = () => {

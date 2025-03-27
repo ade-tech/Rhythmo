@@ -48,7 +48,7 @@ export function TopMenu() {
                     isActive ? (
                       <Image src="/musicFilled.svg" w={6} />
                     ) : (
-                      <Image src="musicOutlined.svg" w={6} />
+                      <Image src="/musicOutlined.svg" w={6} />
                     )
                   }
                 </NavLink>
