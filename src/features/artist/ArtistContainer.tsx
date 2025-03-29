@@ -159,14 +159,9 @@ const ArtistContainer = () => {
             </Table.Row>
           </Table.Body>
         </Table.Root>
-        <Stack mt={10} gap={4} pb={3}>
+        <Stack mt={10} gap={4} pb={3} color={"white"}>
           <Stack gap={0} mb={8}>
-            <Text
-              textStyle={"2xl"}
-              color={"white"}
-              fontWeight={"bold"}
-              color={"white"}
-            >
+            <Text textStyle={"2xl"} color={"white"} fontWeight={"bold"}>
               Recommended
             </Text>
             <Text textStyle={"sm"} color={"gray.400"}>

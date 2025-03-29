@@ -43,7 +43,7 @@ export function TopMenu() {
             endElement={
               <>
                 <Text mr={2}>|</Text>
-                <NavLink to="/findmusic">
+                <NavLink to="/search">
                   {({ isActive }) =>
                     isActive ? (
                       <Image src="/musicFilled.svg" w={6} />

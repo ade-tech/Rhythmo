@@ -29,6 +29,7 @@ const ActivelyPlayinTack = () => {
       px={5}
       bg={"black"}
       display={"flex"}
+      color={"white"}
       alignItems={"center"}
     >
       <HStack gap={4} align={"center"}>

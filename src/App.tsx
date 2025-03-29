@@ -18,6 +18,7 @@ function App() {
         <Route path="album/:id" element={<AlbumContainer />} />
         <Route path="playlist/:id" element={<PlaylistContainer />} />
         <Route path="artist/:id" element={<ArtistContainer />} />
+        <Route path="search" element={<GenreContainer />} />
         <Route path="genre/:id" element={<GenreContainer />} />
       </Route>
 

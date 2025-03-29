@@ -6,12 +6,12 @@ export function MiniSongCard() {
       <Card.Root
         flexDirection="row"
         variant={"subtle"}
+        color={"white"}
         overflow="hidden"
         alignItems={"center"}
         _hover={{ bg: "gray.800" }}
         bg={"gray.900"}
         gap={4}
-        maxW="sm"
         transition="all 0.2s ease-in-out"
         pr={3}
         className="group"

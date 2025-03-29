@@ -48,7 +48,7 @@ export function AlbumContainer() {
           </Avatar.Fallback>
           <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png" />
         </Avatar.Root>
-        <Stack w={"2/3"} gap={0} zIndex={1}>
+        <Stack color={"white"} w={"2/3"} gap={0} zIndex={1}>
           <Text>Playlist</Text>
           <Text textStyle={"7xl"} fontWeight={"black"}>
             Liked Songs
@@ -87,7 +87,7 @@ export function AlbumContainer() {
             />
           </IconWithTooltip>
         </HStack>
-        <Table.Root size="lg" stickyHeader={true}>
+        <Table.Root size="lg" stickyHeader={true} color={"white"}>
           <Table.Header>
             <Table.Row bg={"transparent"}>
               <Table.ColumnHeader color={"gray.400"}>#</Table.ColumnHeader>
@@ -127,7 +127,7 @@ export function AlbumContainer() {
             </Table.Row>
           </Table.Body>
         </Table.Root>
-        <Stack mt={10} gap={4} pb={3}>
+        <Stack mt={10} gap={4} pb={3} color={"white"}>
           <Stack gap={0} mb={8}>
             <Text textStyle={"2xl"} fontWeight={"bold"} color={"white"}>
               Recommended

@@ -1,4 +1,4 @@
-import IconWithTooltip from "@/components/ui/IconWithTooltip";
+import React, { useRef } from "react";
 import {
   Avatar,
   Button,
@@ -13,10 +13,16 @@ import {
 import { GoPlusCircle } from "react-icons/go";
 import { HiOutlineUpload, HiX } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useIsSongOpen } from "@/contexts/songContext";
 
 export function SongContainer() {
+  const { isOpen, setIsOpen } = useIsSongOpen();
+  const ref = useRef<HTMLDivElement>(null);
+
+  if (!isOpen) return null;
   return (
     <Stack
+      ref={ref}
       w={"1/3"}
       className="bg-darker-overlay"
       h={"75dvh"}
@@ -51,7 +57,12 @@ export function SongContainer() {
           </Text>
         </Link>
         <Spacer />
-        <HiX className="text-gray-400" size={20} />
+        <HiX
+          cursor={"pointer"}
+          className="text-gray-400"
+          size={20}
+          onClick={() => setIsOpen(false)}
+        />
       </HStack>
       <Stack>
         <Image

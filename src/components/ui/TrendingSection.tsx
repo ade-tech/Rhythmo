@@ -1,9 +1,11 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SongItem from "./SongItem";
 import { useEffect, useRef, useState } from "react";
+import { useIsSongOpen } from "@/contexts/songContext";
 
 export function TrendingSection() {
+  const { isOpen } = useIsSongOpen();
   const ref = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
@@ -51,7 +53,14 @@ export function TrendingSection() {
     }
   }
   return (
-    <Stack px={6} mt={8} w={"41rem"} overflow={"auto"} position={"relative"}>
+    <Stack
+      px={6}
+      mt={8}
+      w={"full"}
+      whiteSpace={"nowrap"}
+      overflow={"auto"}
+      position={"relative"}
+    >
       <Text textStyle={"2xl"} fontWeight={"semibold"}>
         Trending Poems
       </Text>
@@ -81,11 +90,13 @@ export function TrendingSection() {
           />
         </Stack>
       )}
-      <Stack
-        direction={"row"}
-        w={"38rem"}
+      <HStack
+        w={isOpen ? "37rem" : "60rem"}
+        h={"fit"}
         overflowX={"scroll"}
         gap={1}
+        display={"flex"}
+        whiteSpace={"nowrap"}
         position={"relative"}
         ref={ref}
       >
@@ -97,12 +108,7 @@ export function TrendingSection() {
         <SongItem />
         <SongItem />
         <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-      </Stack>
+      </HStack>
       {canScrollRight && (
         <Stack
           h={"90%"}
