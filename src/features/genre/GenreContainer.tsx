@@ -90,7 +90,7 @@ export function GenreContainer() {
             w={"full"}
             h={"10rem"}
             rounded={"md"}
-            bg={"#1E3264"}
+            bg={"#608108"}
             py={6}
             px={6}
             alignItems={"flex-start"}
@@ -98,7 +98,7 @@ export function GenreContainer() {
             overflow={"hidden"}
           >
             <Text textStyle={"3xl"} fontWeight={"bold"}>
-              Trending
+              New
             </Text>
             <Image
               src="/New.png"
