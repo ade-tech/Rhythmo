@@ -2,11 +2,11 @@ import { Box, Grid, GridItem, HStack, Image, Text } from "@chakra-ui/react";
 
 export function GenreContainer() {
   return (
-    <Box w={"full"} h={"full"} py={10} px={6}>
+    <Box w={"full"} h={"full"} pt={10} px={6}>
       <Text textStyle={"3xl"} fontWeight={"bold"}>
         Browse all
       </Text>
-      <Grid templateColumns={"repeat(2, 1fr)"} p={5} gap={2} mt={5}>
+      <Grid templateColumns={"repeat(2, 1fr)"} p={5} gap={2}>
         <GridItem m={2}>
           <HStack
             w={"full"}

@@ -10,11 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-# Ignore all environment files
+
 .env
-.env.*
 .env.local
 .env.*.local
+
 
 
 # Editor directories and files
