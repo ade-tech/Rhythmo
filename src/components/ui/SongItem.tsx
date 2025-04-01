@@ -2,10 +2,10 @@ import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import IconWithTooltip from "./IconWithTooltip";
 import { IoMdPlay } from "react-icons/io";
 
-export function SongItem() {
+export function SongItem({ isOpen }: { isOpen: boolean }) {
   return (
     <Stack
-      flexBasis={"1/4"}
+      flexBasis={isOpen ? "1/4" : "1/6"}
       flexShrink={0}
       h={"fit"}
       px={3}

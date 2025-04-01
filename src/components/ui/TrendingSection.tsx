@@ -100,14 +100,14 @@ export function TrendingSection() {
         position={"relative"}
         ref={ref}
       >
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
-        <SongItem />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
+        <SongItem isOpen={isOpen} />
       </HStack>
       {canScrollRight && (
         <Stack

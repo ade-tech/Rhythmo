@@ -20,9 +20,8 @@ function App() {
         <Route path="artist/:id" element={<ArtistContainer />} />
         <Route path="search" element={<GenreContainer />} />
         <Route path="genre/:id" element={<GenreContainer />} />
+        <Route path="/profile" element={<ProfileContainer />} />
       </Route>
-
-      <Route path="/profile" element={<ProfileContainer />} />
     </Routes>
   );
 }
