@@ -1,7 +1,7 @@
-import { Box, Grid, HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import Filter from "./Filter";
-import MiniSongCard from "./MiniSongCard";
 import TrendingSection from "./TrendingSection";
+import TrendingTopItems from "./TrendingTopItems";
 
 const TrendingContainer = () => {
   return (
@@ -20,18 +20,8 @@ const TrendingContainer = () => {
       >
         <Filter filterValues={["All", "Quran", "Islamic Music"]} />
       </HStack>
-      <Grid
-        templateColumns={"repeat(2, 1fr)"}
-        mb={3}
-        gap={2}
-        mx={"auto"}
-        w={"5/6"}
-      >
-        <MiniSongCard />
-        <MiniSongCard />
-        <MiniSongCard />
-        <MiniSongCard />
-      </Grid>
+      <TrendingTopItems />
+
       <TrendingSection />
       <TrendingSection />
     </Box>

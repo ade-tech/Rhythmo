@@ -13,6 +13,7 @@ import { Tooltip } from "./tooltip";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { MdOutlineNotifications } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 export function TopMenu() {
   return (
@@ -77,9 +78,11 @@ export function TopMenu() {
             Get Premium
           </Button>
           <MdOutlineNotifications size={25} color="white" />
-          <Avatar.Root colorPalette={"green"}>
-            <Avatar.Fallback name="Dev Abdone" />
-          </Avatar.Root>
+          <Link to={"/profile"}>
+            <Avatar.Root colorPalette={"green"}>
+              <Avatar.Fallback name="Dev Abdone" />
+            </Avatar.Root>
+          </Link>
         </HStack>
       </Flex>
     </Box>

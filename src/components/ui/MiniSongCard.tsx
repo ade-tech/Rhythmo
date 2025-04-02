@@ -45,4 +45,23 @@ export function MiniSongCard() {
   );
 }
 
+export const MiniSongCardPreLoader = () => {
+  return (
+    <GridItem h={10} mb={2}>
+      <Card.Root
+        flexDirection="row"
+        _hover={{ bg: "gray.800" }}
+        bg={"gray.900"}
+        gap={4}
+        pr={3}
+        animation={"pulse"}
+        className="group"
+      >
+        <Box animation={"pulse"} w={"50x"} h={"50px"} />
+        <Box width={"2/3"} h={"1/2"} animation={"pulse"} />
+      </Card.Root>
+    </GridItem>
+  );
+};
+
 export default MiniSongCard;
