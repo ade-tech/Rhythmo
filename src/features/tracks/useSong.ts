@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { SongQuery } from "./songType";
+import { SongsQuery } from "./songType";
 import { fetchSongs } from "@/services/songsApi";
 
-export function useFetchSongs(): SongQuery {
+export function useFetchSongs(): SongsQuery {
   const { data, isLoading } = useQuery({
     queryFn: fetchSongs,
     queryKey: ["initial-songs"],

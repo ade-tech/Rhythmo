@@ -2,8 +2,10 @@ import { Box, HStack } from "@chakra-ui/react";
 import Filter from "./Filter";
 import TrendingSection from "./TrendingSection";
 import TrendingTopItems from "./TrendingTopItems";
+import { useFetchSongs } from "@/features/tracks/useSong";
 
 const TrendingContainer = () => {
+  const { data, isLoading } = useFetchSongs();
   return (
     <Box h={"75dvh"} overflow={"auto"} className="trend-group">
       <HStack
@@ -20,10 +22,14 @@ const TrendingContainer = () => {
       >
         <Filter filterValues={["All", "Quran", "Islamic Music"]} />
       </HStack>
-      <TrendingTopItems />
+      <TrendingTopItems data={data} isLoading={isLoading} />
 
-      <TrendingSection />
-      <TrendingSection />
+      <TrendingSection
+        title="Trending Songs"
+        data={data}
+        isLoading={isLoading}
+      />
+      <TrendingSection title="Jump Back In" data={data} isLoading={isLoading} />
     </Box>
   );
 };

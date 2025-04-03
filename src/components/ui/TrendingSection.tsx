@@ -1,10 +1,21 @@
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import SongItem from "./SongItem";
+import SongItem, { SongItemPreLoader } from "./SongItem";
 import { useEffect, useRef, useState } from "react";
 import { useIsSongOpen } from "@/contexts/songContext";
+import { Song } from "@/features/tracks/songType";
 
-export function TrendingSection() {
+type trendingSectionProps = {
+  data: Song[] | undefined;
+  isLoading: boolean;
+  title: string;
+};
+
+export function TrendingSection({
+  data,
+  title,
+  isLoading,
+}: trendingSectionProps) {
   const { isOpen } = useIsSongOpen();
   const ref = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
@@ -52,6 +63,35 @@ export function TrendingSection() {
       });
     }
   }
+
+  if (isLoading)
+    return (
+      <Stack w={"full"} px={6} mt={8}>
+        <Box
+          w={"1/4"}
+          h={"2rem"}
+          animation={"pulse"}
+          bg={"gray.800"}
+          mb={2}
+          rounded={"md"}
+        />
+        <HStack
+          w={isOpen ? "37rem" : "60rem"}
+          h={"fit"}
+          overflowX={"scroll"}
+          gap={1}
+          display={"flex"}
+          whiteSpace={"nowrap"}
+          position={"relative"}
+          ref={ref}
+        >
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SongItemPreLoader key={i} isOpen={isOpen} />
+          ))}
+        </HStack>
+      </Stack>
+    );
+
   return (
     <Stack
       px={6}
@@ -62,7 +102,7 @@ export function TrendingSection() {
       position={"relative"}
     >
       <Text textStyle={"2xl"} fontWeight={"semibold"}>
-        Trending Poems
+        {title}
       </Text>
       {canScrollLeft && (
         <Stack
@@ -100,14 +140,9 @@ export function TrendingSection() {
         position={"relative"}
         ref={ref}
       >
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
-        <SongItem isOpen={isOpen} />
+        {data?.map((song) => (
+          <SongItem key={song.id} data={song} isOpen={isOpen} />
+        ))}
       </HStack>
       {canScrollRight && (
         <Stack

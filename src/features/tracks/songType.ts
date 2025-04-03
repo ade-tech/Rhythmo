@@ -2,7 +2,7 @@ export type Song = {
   id: number;
   created_at: string;
   title: string;
-  artist: {
+  artists: {
     main: string;
     featured?: string;
   };
@@ -16,8 +16,8 @@ export type Song = {
   cover_url: string;
 };
 
-export type SongQuery = {
-  data: Song | Song[] | undefined;
+export type SongsQuery = {
+  data: Song[] | undefined;
   isLoading: boolean;
   error?: null | Error;
 };

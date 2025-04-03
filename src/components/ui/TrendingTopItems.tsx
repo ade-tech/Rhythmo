@@ -1,30 +1,43 @@
 import { Grid } from "@chakra-ui/react";
 import MiniSongCard, { MiniSongCardPreLoader } from "./MiniSongCard";
-import { useFetchSongs } from "@/features/tracks/useSong";
+import { useIsSongOpen } from "@/contexts/songContext";
+import { JSX } from "@emotion/react/jsx-runtime";
+import { Song } from "@/features/tracks/songType";
 
-export function TrendingTopItems() {
-  const { data, isLoading } = useFetchSongs();
+export function TrendingTopItems({
+  data,
+  isLoading,
+}: {
+  data: Song[] | undefined;
+  isLoading: boolean;
+}) {
+  const { isOpen } = useIsSongOpen();
 
-  if (isLoading) return <TrendingTopItemsPreLoader />;
+  if (isLoading) return <TrendingTopItemsPreLoader isOpen={isOpen} />;
 
   return (
     <Grid
-      templateColumns={"repeat(2, 1fr)"}
+      templateColumns={isOpen ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
       mb={3}
+      px={5}
       gap={2}
       mx={"auto"}
-      w={"5/6"}
+      w={isOpen ? "5/6" : "full"}
     >
       {Array.isArray(data) &&
-        data?.map((song) => <MiniSongCard key={song.id} />)}
+        data?.map((song) => <MiniSongCard song={song} key={song.id} />)}
     </Grid>
   );
 }
 
-const TrendingTopItemsPreLoader = () => {
+const TrendingTopItemsPreLoader = ({
+  isOpen,
+}: {
+  isOpen: boolean;
+}): JSX.Element => {
   return (
     <Grid
-      templateColumns={"repeat(2, 1fr)"}
+      templateColumns={isOpen ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
       mb={3}
       gap={2}
       mx={"auto"}

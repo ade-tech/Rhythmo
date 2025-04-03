@@ -1,6 +1,8 @@
+import { Song } from "@/features/tracks/songType";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
 import { FaPlayCircle } from "react-icons/fa";
-export function MiniSongCard() {
+export function MiniSongCard({ song }: { song: Song }) {
+  console.log(song);
   return (
     <GridItem h={10} mb={2}>
       <Card.Root
@@ -11,7 +13,7 @@ export function MiniSongCard() {
         alignItems={"center"}
         _hover={{ bg: "gray.800" }}
         bg={"gray.900"}
-        gap={4}
+        gap={2}
         transition="all 0.2s ease-in-out"
         pr={3}
         className="group"
@@ -20,16 +22,16 @@ export function MiniSongCard() {
           objectFit="cover"
           w={"50px"}
           h={"50px"}
-          src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+          src={song.cover_url}
           alt="Caffe Latte"
         />
         <Text textStyle={"lg"} fontWeight={"semibold"}>
-          Central Cee
+          {song.artists.main}
         </Text>
         <Spacer />
         <Box
           as={FaPlayCircle}
-          boxSize={8}
+          boxSize={7}
           opacity={0}
           visibility="hidden"
           transition="opacity 0.2s ease-in-out"
@@ -47,19 +49,30 @@ export function MiniSongCard() {
 
 export const MiniSongCardPreLoader = () => {
   return (
-    <GridItem h={10} mb={2}>
-      <Card.Root
-        flexDirection="row"
-        _hover={{ bg: "gray.800" }}
-        bg={"gray.900"}
-        gap={4}
-        pr={3}
+    <GridItem
+      h={"50px"}
+      pr={3}
+      mb={2}
+      bg={"gray.900"}
+      animation={"pulse"}
+      gap={3}
+      display={"flex"}
+      alignItems={"center"}
+    >
+      <Box
         animation={"pulse"}
-        className="group"
-      >
-        <Box animation={"pulse"} w={"50x"} h={"50px"} />
-        <Box width={"2/3"} h={"1/2"} animation={"pulse"} />
-      </Card.Root>
+        w={"50px"}
+        h={"50px"}
+        rounded={"sm"}
+        bg={"gray.800"}
+      />
+      <Box
+        flex={1}
+        h={"1/2"}
+        animation={"pulse"}
+        bg={"gray.800"}
+        rounded={"full"}
+      />
     </GridItem>
   );
 };
