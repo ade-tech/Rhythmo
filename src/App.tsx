@@ -10,6 +10,7 @@ import ArtistContainer from "./features/artist/ArtistContainer";
 import GenreContainer from "./features/genre/GenreContainer";
 import TrendingContainer from "./components/ui/TrendingContainer";
 import ProfileContainer from "./features/user/profile/ProfileContainer";
+import { AudioContextProvider } from "./contexts/audioContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,19 +23,21 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Routes>
-        <Route path="/" element={<Home />}>
-          <Route index element={<TrendingContainer />} />
-          <Route path="track/:id" element={<TrackContainer />} />
-          <Route path="album/:id" element={<AlbumContainer />} />
-          <Route path="playlist/:id" element={<PlaylistContainer />} />
-          <Route path="artist/:id" element={<ArtistContainer />} />
-          <Route path="search" element={<GenreContainer />} />
-          <Route path="genre/:id" element={<GenreContainer />} />
-          <Route path="/profile" element={<ProfileContainer />} />
-        </Route>
-      </Routes>
+      <AudioContextProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route index element={<TrendingContainer />} />
+            <Route path="track/:id" element={<TrackContainer />} />
+            <Route path="album/:id" element={<AlbumContainer />} />
+            <Route path="playlist/:id" element={<PlaylistContainer />} />
+            <Route path="artist/:id" element={<ArtistContainer />} />
+            <Route path="search" element={<GenreContainer />} />
+            <Route path="genre/:id" element={<GenreContainer />} />
+            <Route path="/profile" element={<ProfileContainer />} />
+          </Route>
+        </Routes>
+      </AudioContextProvider>
     </QueryClientProvider>
   );
 }

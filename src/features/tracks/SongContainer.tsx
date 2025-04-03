@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   Avatar,
   Button,
@@ -14,12 +14,15 @@ import { GoPlusCircle } from "react-icons/go";
 import { HiOutlineUpload, HiX } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useIsSongOpen } from "@/contexts/songContext";
+import { useCurrentMusic } from "@/contexts/audioContext";
 
 export function SongContainer() {
   const { isOpen, setIsOpen } = useIsSongOpen();
+  const { activeSong } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
+  if (!activeSong) return null;
   return (
     <Stack
       ref={ref}
@@ -53,7 +56,7 @@ export function SongContainer() {
             }}
             fontWeight={"medium"}
           >
-            SPRINTER
+            {activeSong.title.toUpperCase()}
           </Text>
         </Link>
         <Spacer />
@@ -72,7 +75,7 @@ export function SongContainer() {
           objectFit={"cover"}
           ml={4}
           mb={2}
-          src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg"
+          src={activeSong.cover_url}
         />
         <Stack gap={0} px={5}>
           <Flex>
@@ -88,7 +91,7 @@ export function SongContainer() {
                   }}
                   fontWeight={"bold"}
                 >
-                  SPRINTER
+                  {activeSong.title.toUpperCase()}
                 </Text>
               </Link>
               <Text
@@ -101,7 +104,8 @@ export function SongContainer() {
                 }}
                 fontWeight={"medium"}
               >
-                Central Cee
+                {activeSong.artist} {activeSong.featured_artist && " ft "}
+                {activeSong.featured_artist?.map((cur) => `${cur}`)}
               </Text>
             </Stack>
             <Spacer />

@@ -3,14 +3,16 @@ import TopMenu from "./TopMenu";
 import LibraryContainer from "@/features/user/library/LibraryContainer";
 import MainContainer from "./MainContainer";
 import ActivelyPlayinTack from "@/features/tracks/ActivelyPlayinTack";
+import { useCurrentMusic } from "@/contexts/audioContext";
 
 const Home = () => {
+  const { activeSong } = useCurrentMusic();
   return (
     <Box bg="black" w="100vw" h="100dvh">
       <Stack w="100vw" h="100dvh">
         <TopMenu />
         <Grid
-          h={"75dvh"}
+          h={activeSong ? "75dvh" : "86dvh"}
           templateColumns="repeat(4, 1fr)"
           gap={3}
           px={3}

@@ -18,7 +18,7 @@ export function TrendingSection({
 }: trendingSectionProps) {
   const { isOpen } = useIsSongOpen();
   const ref = useRef<HTMLDivElement>(null);
-  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export function TrendingSection({
           position={"relative"}
           ref={ref}
         >
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <SongItemPreLoader key={i} isOpen={isOpen} />
           ))}
         </HStack>

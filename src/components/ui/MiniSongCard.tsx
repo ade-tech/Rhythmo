@@ -2,7 +2,6 @@ import { Song } from "@/features/tracks/songType";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
 import { FaPlayCircle } from "react-icons/fa";
 export function MiniSongCard({ song }: { song: Song }) {
-  console.log(song);
   return (
     <GridItem h={10} mb={2}>
       <Card.Root
@@ -26,7 +25,7 @@ export function MiniSongCard({ song }: { song: Song }) {
           alt="Caffe Latte"
         />
         <Text textStyle={"lg"} fontWeight={"semibold"}>
-          {song.artists.main}
+          {song.artist}
         </Text>
         <Spacer />
         <Box

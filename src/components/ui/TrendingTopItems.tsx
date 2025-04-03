@@ -19,7 +19,7 @@ export function TrendingTopItems({
     <Grid
       templateColumns={isOpen ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
       mb={3}
-      px={5}
+      px={isOpen ? 0 : 14}
       gap={2}
       mx={"auto"}
       w={isOpen ? "5/6" : "full"}

@@ -2,6 +2,9 @@ import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import IconWithTooltip from "./IconWithTooltip";
 import { IoMdPlay } from "react-icons/io";
 import { Song } from "@/features/tracks/songType";
+import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
+import { useCurrentMusic } from "@/contexts/audioContext";
+import { HiPause } from "react-icons/hi2";
 
 type songItemProps = {
   isOpen: boolean;
@@ -9,6 +12,9 @@ type songItemProps = {
 };
 
 export function SongItem({ isOpen, data }: songItemProps) {
+  const { activeSong, isPlaying } = useCurrentMusic();
+  const play = usePlayMusic();
+  const pause = usePauseMusic();
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}
@@ -22,7 +28,11 @@ export function SongItem({ isOpen, data }: songItemProps) {
     >
       <Stack pos={"relative"} className="group">
         <Image src={data.cover_url} borderRadius={"md"} />
-        <IconWithTooltip tooltipText="play">
+        <IconWithTooltip
+          tooltipText={
+            activeSong?.title === data.title && isPlaying ? "Pause" : "play"
+          }
+        >
           <Stack
             bg={"green.500"}
             rounded={"full"}
@@ -38,8 +48,24 @@ export function SongItem({ isOpen, data }: songItemProps) {
             pos={"absolute"}
             bottom={2}
             right={1}
+            onClick={() => {
+              if (isPlaying && activeSong?.title === data.title) {
+                pause();
+                return;
+              }
+              play(data);
+            }}
+            cursor={"pointer"}
           >
-            <Box as={IoMdPlay} boxSize={6} cursor={"pointer"} color={"black"} />
+            <Box
+              as={
+                activeSong?.title === data.title && isPlaying
+                  ? HiPause
+                  : IoMdPlay
+              }
+              boxSize={6}
+              color={"black"}
+            />
           </Stack>
         </IconWithTooltip>
       </Stack>
@@ -48,7 +74,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
           {data.title}
         </Text>
         <Text color={"gray.400"} fontWeight={"semibold"}>
-          {data.artists.main}
+          {data.artist}
         </Text>
       </Stack>
     </Stack>

@@ -1,13 +1,60 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import Filter from "./Filter";
 import TrendingSection from "./TrendingSection";
 import TrendingTopItems from "./TrendingTopItems";
 import { useFetchSongs } from "@/features/tracks/useSong";
+import { HiOutlineStatusOffline } from "react-icons/hi";
+import { IoReload } from "react-icons/io5";
+import { useCurrentMusic } from "@/contexts/audioContext";
 
 const TrendingContainer = () => {
   const { data, isLoading } = useFetchSongs();
+  const { activeSong } = useCurrentMusic();
+  console.log(data);
+
+  if (!isLoading && (!data || !data?.length))
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        flexDir={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Box
+          as={HiOutlineStatusOffline}
+          boxSize={36}
+          color={"gray.500"}
+          mb={2}
+        />
+        <Text mb={1} textStyle={"6xl"} fontWeight={"medium"} color={"gray.500"}>
+          You are Offline
+        </Text>
+        <Text textAlign={"center"} lineHeight={"1.3"} color={"gray.300"}>
+          Rythymo could not get your music kindly check your <br />
+          internet connection
+        </Text>
+        <Button
+          rounded={"full"}
+          bg={"green.600"}
+          textAlign={"center"}
+          fontWeight={"bold"}
+          color={"black"}
+          mt={4}
+          onClick={() => window.location.reload()}
+        >
+          <IoReload />
+          Try Again
+        </Button>
+      </Box>
+    );
   return (
-    <Box h={"75dvh"} overflow={"auto"} className="trend-group">
+    <Box
+      h={activeSong ? "75dvh" : "86dvh"}
+      overflow={"auto"}
+      className="trend-group"
+    >
       <HStack
         mb={1}
         px={2}

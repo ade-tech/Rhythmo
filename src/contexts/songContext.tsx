@@ -1,4 +1,3 @@
-import { Provider } from "@/components/ui/provider";
 import React, { createContext, useContext, useState } from "react";
 
 type SongType = {
@@ -13,7 +12,7 @@ export default function OpenSongProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <songContext.Provider value={{ isOpen, setIsOpen }}>
       {children}

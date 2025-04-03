@@ -2,10 +2,7 @@ export type Song = {
   id: number;
   created_at: string;
   title: string;
-  artists: {
-    main: string;
-    featured?: string;
-  };
+  artist: string;
   producer: string;
   play_count: number;
   likes: number;
@@ -14,6 +11,7 @@ export type Song = {
   album_id?: string;
   audio_url: string;
   cover_url: string;
+  featured_artist?: string[];
 };
 
 export type SongsQuery = {

@@ -1,4 +1,5 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
+import { useCurrentMusic } from "@/contexts/audioContext";
 import {
   Avatar,
   Box,
@@ -23,6 +24,8 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
+  const { activeSong } = useCurrentMusic();
+  if (!activeSong) return null;
   return (
     <HStack
       h={"fit"}
@@ -37,7 +40,7 @@ const ActivelyPlayinTack = () => {
           <Avatar.Fallback>
             <Image src="/musicfallback.png" />
           </Avatar.Fallback>
-          <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg" />
+          <Avatar.Image src={activeSong.cover_url} />
         </Avatar.Root>
         <Stack gap={0}>
           <Link to="sada">
@@ -51,7 +54,7 @@ const ActivelyPlayinTack = () => {
               }}
               fontWeight={"bold"}
             >
-              SPRINTER
+              {activeSong.title.toUpperCase()}
             </Text>
           </Link>
           <Text
@@ -64,7 +67,10 @@ const ActivelyPlayinTack = () => {
             }}
             fontWeight={"medium"}
           >
-            Central Cee
+            {activeSong.artist}{" "}
+            {activeSong.featured_artist
+              ? `ft ${activeSong.featured_artist.at(0)}`
+              : ""}
           </Text>
         </Stack>
         <IconWithTooltip tooltipText="Add to Fav.">
