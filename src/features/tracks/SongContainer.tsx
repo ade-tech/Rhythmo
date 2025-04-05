@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import {
   Avatar,
+  Box,
   Button,
   Card,
   Flex,
@@ -15,14 +16,18 @@ import { HiOutlineUpload, HiX } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { useCurrentMusic } from "@/contexts/audioContext";
+import { useFetchArtist } from "../artist/useArtist";
 
 export function SongContainer() {
   const { isOpen, setIsOpen } = useIsSongOpen();
   const { activeSong } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
+  const { data, isLoading } = useFetchArtist(activeSong?.artist ?? "");
 
   if (!isOpen) return null;
   if (!activeSong) return null;
+
+  console.log(data, activeSong.artist);
   return (
     <Stack
       ref={ref}
@@ -117,61 +122,117 @@ export function SongContainer() {
           </Flex>
         </Stack>
       </Stack>
-      <Card.Root
-        mx={"auto"}
-        w={"10/12"}
-        variant={"subtle"}
-        borderRadius={"xl"}
-        bg={"gray.800"}
-        pb={4}
-      >
-        <Image
-          h={36}
-          objectFit={"cover"}
-          objectPosition={"center"}
-          borderTopRadius={"xl"}
-          src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg"
-        />
-        <Link to="sada">
-          <Text
-            ml={4}
-            mt={4}
-            textStyle={"2xl"}
-            fontWeight={"bold"}
-            color={"white"}
-            transitionDuration={"200ms"}
-            _hover={{
-              textDecoration: "underline",
-              transition: "ease-in-out",
-            }}
-          >
-            SPRINTER
-          </Text>
-        </Link>
-        <HStack mt={3} px={4}>
-          <Text
-            textStyle={"lg"}
-            fontWeight={"bold"}
-            lineHeight={1.3}
-            color={"gray.400"}
-          >
-            90,920,900 <br />
-            Monthly Listeners
-          </Text>
-          <Spacer />
-          <Button
+      {isLoading ? (
+        <Stack
+          mt={4}
+          mx={"auto"}
+          w={"10/12"}
+          borderRadius={"xl"}
+          bg={"gray.800"}
+          h={"fit"}
+          gap={3}
+          p={4}
+        >
+          <Box
+            w={"full"}
+            borderTopRadius={"md"}
+            h={"7rem"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+          <Box
+            h={"1.5rem"}
             rounded={"full"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+          <Box
+            rounded={"full"}
+            h={"3rem"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+          <Box
+            h={"0.5rem"}
+            rounded={"full"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+          <Box
+            w={"90%"}
+            h={"0.5rem"}
+            rounded={"full"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+          <Box
+            w={"80%"}
+            h={"0.5rem"}
+            rounded={"full"}
+            bg={"gray.700"}
+            animation={"pulse"}
+          />
+        </Stack>
+      ) : (
+        <>
+          <Card.Root
+            mt={4}
+            mx={"auto"}
+            w={"10/12"}
             variant={"subtle"}
-            color={"white"}
-            bg={"green.600"}
+            borderRadius={"xl"}
+            bg={"gray.800"}
+            pb={4}
           >
-            Follow
-          </Button>
-        </HStack>
-        <Text textAlign={"left"} px={4} mt={2} color={"gray.400"}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-        </Text>
-      </Card.Root>
+            <Image
+              h={36}
+              objectFit={"cover"}
+              objectPosition={"center"}
+              borderTopRadius={"xl"}
+              src={activeSong.cover_url}
+            />
+            <Link to="sada">
+              <Text
+                ml={4}
+                mt={4}
+                textStyle={"2xl"}
+                fontWeight={"bold"}
+                color={"white"}
+                transitionDuration={"200ms"}
+                _hover={{
+                  textDecoration: "underline",
+                  transition: "ease-in-out",
+                }}
+              >
+                {activeSong.artist}
+              </Text>
+            </Link>
+            <HStack mt={3} px={4}>
+              <Text
+                textStyle={"lg"}
+                fontWeight={"bold"}
+                lineHeight={1.3}
+                color={"gray.400"}
+              >
+                {data?.monthly_plays.toLocaleString()} <br />
+                Monthly Listeners
+              </Text>
+              <Spacer />
+              <Button
+                rounded={"full"}
+                variant={"subtle"}
+                color={"white"}
+                bg={"green.600"}
+              >
+                Follow
+              </Button>
+            </HStack>
+            <Text textAlign={"left"} px={4} mt={2} color={"gray.400"}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
+            </Text>
+          </Card.Root>
+        </>
+      )}
 
       <Card.Root
         mx={"auto"}

@@ -20,7 +20,7 @@ export function LibraryContainer() {
         type="playlist"
         title="Love it"
         artistName="Olamide"
-        link="/album/2222"
+        link="/track/2222"
       />
       <PlaylistShort
         type="album"
