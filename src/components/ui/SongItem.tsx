@@ -13,7 +13,7 @@ type songItemProps = {
 };
 
 export function SongItem({ isOpen, data }: songItemProps) {
-  const { activeSong, isPlaying } = useCurrentMusic();
+  const { activeSong, audioStatus } = useCurrentMusic();
   const play = usePlayMusic();
   const pause = usePauseMusic();
   return (
@@ -31,7 +31,9 @@ export function SongItem({ isOpen, data }: songItemProps) {
         <Image src={data.cover_url} borderRadius={"md"} />
         <IconWithTooltip
           tooltipText={
-            activeSong?.title === data.title && isPlaying ? "Pause" : "play"
+            activeSong?.title === data.title && audioStatus === "playing"
+              ? "Pause"
+              : "play"
           }
         >
           <Stack
@@ -50,7 +52,10 @@ export function SongItem({ isOpen, data }: songItemProps) {
             bottom={2}
             right={1}
             onClick={() => {
-              if (isPlaying && activeSong?.title === data.title) {
+              if (
+                audioStatus === "playing" &&
+                activeSong?.title === data.title
+              ) {
                 pause();
                 return;
               }
@@ -60,7 +65,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
           >
             <Box
               as={
-                activeSong?.title === data.title && isPlaying
+                activeSong?.title === data.title && audioStatus === "playing"
                   ? HiPause
                   : IoMdPlay
               }

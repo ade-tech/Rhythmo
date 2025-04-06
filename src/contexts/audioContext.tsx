@@ -6,8 +6,10 @@ interface AudioContextType {
   activeSong: Song | null;
   currentHowl: Howl | null;
 
-  isPlaying: boolean;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  audioStatus: "idle" | "playing" | "loading";
+  setAudioStatus: React.Dispatch<
+    React.SetStateAction<"idle" | "playing" | "loading">
+  >;
   setActiveSong: React.Dispatch<React.SetStateAction<Song | null>>;
   setCurrentHowl: React.Dispatch<React.SetStateAction<Howl | null>>;
 }
@@ -20,7 +22,9 @@ export function AudioContextProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [activeSong, setActiveSong] = useState<Song | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [audioStatus, setAudioStatus] = useState<
+    "idle" | "playing" | "loading"
+  >("idle");
   const [currentHowl, setCurrentHowl] = useState<Howl | null>(null);
   return (
     <audioContext.Provider
@@ -29,8 +33,8 @@ export function AudioContextProvider({
         currentHowl,
         setCurrentHowl,
         setActiveSong,
-        isPlaying,
-        setIsPlaying,
+        audioStatus,
+        setAudioStatus,
       }}
     >
       {children}

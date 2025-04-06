@@ -11,7 +11,7 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { IoList, IoPauseOutline } from "react-icons/io5";
+import { IoList, IoPauseOutline, IoReload } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { useFetchSong } from "./useSong";
@@ -19,13 +19,14 @@ import { getSingMusicDurationString } from "@/utils/useMusicDuration";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { IoMdPlay } from "react-icons/io";
+import { HiOutlineStatusOffline } from "react-icons/hi";
 
 export function TrackContainer() {
   const { id } = useParams();
   const { data, isLoading } = useFetchSong(id ?? "");
   const play = usePlayMusic();
   const pause = usePauseMusic();
-  const { activeSong, isPlaying } = useCurrentMusic();
+  const { activeSong, audioStatus } = useCurrentMusic();
 
   if (isLoading)
     return (
@@ -39,8 +40,50 @@ export function TrackContainer() {
         <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
       </Box>
     );
+  if (!isLoading && (!data || !Object.entries(data)?.length))
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        flexDir={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Box
+          as={HiOutlineStatusOffline}
+          boxSize={36}
+          color={"gray.500"}
+          mb={2}
+        />
+        <Text mb={1} textStyle={"6xl"} fontWeight={"medium"} color={"gray.500"}>
+          You are Offline
+        </Text>
+        <Text textAlign={"center"} lineHeight={"1.3"} color={"gray.300"}>
+          Rythmo could not get your music kindly check your <br />
+          internet connection
+        </Text>
+        <Button
+          rounded={"full"}
+          bg={"green.600"}
+          textAlign={"center"}
+          fontWeight={"bold"}
+          color={"black"}
+          mt={4}
+          onClick={() => window.location.reload()}
+        >
+          <IoReload />
+          Try Again
+        </Button>
+      </Box>
+    );
   return (
-    <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
+    <Box
+      h={activeSong ? "75dvh" : "86dvh"}
+      overflow={"auto"}
+      className="trend-group"
+      pos={"relative"}
+    >
       <Box
         w={"100%"}
         opacity={"0.9"}
@@ -99,7 +142,9 @@ export function TrackContainer() {
         <HStack gap={2} pr={4}>
           <IconWithTooltip
             tooltipText={
-              activeSong?.title === data?.title && isPlaying ? "Pause" : "play"
+              activeSong?.title === data?.title && audioStatus === "playing"
+                ? "Pause"
+                : "play"
             }
           >
             <Stack
@@ -109,7 +154,10 @@ export function TrackContainer() {
               transition={"all ease-in-out 0.3s"}
               p={3}
               onClick={() => {
-                if (isPlaying && activeSong?.title === data?.title) {
+                if (
+                  audioStatus === "playing" &&
+                  activeSong?.title === data?.title
+                ) {
                   pause();
                   return;
                 }
@@ -119,7 +167,7 @@ export function TrackContainer() {
             >
               <Box
                 as={
-                  activeSong?.title === data?.title && isPlaying
+                  activeSong?.title === data?.title && audioStatus === "playing"
                     ? IoPauseOutline
                     : IoMdPlay
                 }

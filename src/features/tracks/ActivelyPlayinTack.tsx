@@ -1,6 +1,11 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import {
+  usePauseMusic,
+  usePlayMusic,
+  useReapeatMusic,
+} from "@/hooks/useAudioControls";
+import {
   Avatar,
   Box,
   HStack,
@@ -13,6 +18,7 @@ import {
 import { GoPlusCircle } from "react-icons/go";
 import { HiPlay } from "react-icons/hi";
 import { HiOutlineQueueList } from "react-icons/hi2";
+import { IoPauseCircle } from "react-icons/io5";
 import {
   PiRepeatFill,
   PiShuffle,
@@ -24,8 +30,13 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
+  const { audioStatus } = useCurrentMusic();
   const { activeSong } = useCurrentMusic();
+  const play = usePlayMusic();
+  const pause = usePauseMusic();
+  const repeat = useReapeatMusic();
   if (!activeSong) return null;
+
   return (
     <HStack
       h={"fit"}
@@ -79,21 +90,37 @@ const ActivelyPlayinTack = () => {
       </HStack>
       <Spacer />
       <Stack display={"flex"} alignItems={"center"} gap={0}>
-        <HStack gap={4}>
+        <HStack gap={4} mb={1}>
           <IconWithTooltip tooltipText="Shuffle">
-            <PiShuffle size={20} />
+            <Box as={PiShuffle} boxSize={6} cursor={"pointer"} />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Previous">
-            <PiSkipBackFill size={20} />
+            <Box as={PiSkipBackFill} boxSize={6} cursor={"pointer"} />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Play">
-            <HiPlay size={45} />
+            <Box
+              as={audioStatus === "idle" ? HiPlay : IoPauseCircle}
+              boxSize={10}
+              cursor={"pointer"}
+              onClick={() => {
+                if (audioStatus === "playing") {
+                  pause();
+                  return;
+                }
+                play(activeSong);
+              }}
+            />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Next">
-            <PiSkipForwardFill size={20} />
+            <Box as={PiSkipForwardFill} boxSize={6} cursor={"pointer"} />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Repeat">
-            <PiRepeatFill size={20} />
+            <Box
+              as={PiRepeatFill}
+              boxSize={6}
+              cursor={"pointer"}
+              onClick={() => repeat()}
+            />
           </IconWithTooltip>
         </HStack>
         <HStack>

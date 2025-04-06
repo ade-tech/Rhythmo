@@ -10,7 +10,7 @@ export function usePlayMusic() {
     activeSong,
     currentHowl,
     setCurrentHowl,
-    setIsPlaying,
+    setAudioStatus,
     setActiveSong,
   } = useCurrentMusic();
 
@@ -18,7 +18,7 @@ export function usePlayMusic() {
     setActiveSong(data);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
-      setIsPlaying(true);
+      setAudioStatus("playing");
       return;
     } else {
       currentHowl?.stop();
@@ -26,24 +26,38 @@ export function usePlayMusic() {
     const audio = new Howl({
       src: [data.audio_url],
       html5: true,
+      onload: () => setAudioStatus("playing"),
     });
+    setAudioStatus("loading");
 
     audio.play();
-    console.log("isPlaying");
-    setIsPlaying(true);
     setIsOpen(true);
     setCurrentHowl(audio);
   };
 }
 
 export function usePauseMusic() {
-  const { currentHowl, setIsPlaying } = useCurrentMusic();
+  const { currentHowl, setAudioStatus } = useCurrentMusic();
 
   return () => {
     if (!currentHowl) return;
 
     currentHowl.pause();
-    console.log("isPlaying");
-    setIsPlaying(false);
+    setAudioStatus("idle");
+  };
+}
+
+export function useReapeatMusic() {
+  const { currentHowl } = useCurrentMusic();
+
+  return () => {
+    if (currentHowl?.loop() === true) {
+      currentHowl.loop(false);
+      console.log(currentHowl);
+      return;
+    }
+    currentHowl?.loop(true);
+
+    console.log(currentHowl);
   };
 }
