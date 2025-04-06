@@ -6,7 +6,7 @@ export type Song = {
   producer: string;
   play_count: number;
   likes: number;
-  duration: string;
+  duration: number;
   album?: string;
   album_id?: string;
   audio_url: string;
@@ -16,6 +16,12 @@ export type Song = {
 
 export type SongsQuery = {
   data: Song[] | undefined;
+  isLoading: boolean;
+  error?: null | Error;
+};
+
+export type SongQuery = {
+  data: Song | undefined;
   isLoading: boolean;
   error?: null | Error;
 };

@@ -5,6 +5,7 @@ import { Song } from "@/features/tracks/songType";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { HiPause } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 type songItemProps = {
   isOpen: boolean;
@@ -70,9 +71,16 @@ export function SongItem({ isOpen, data }: songItemProps) {
         </IconWithTooltip>
       </Stack>
       <Stack gap={0} flexShrink={0}>
-        <Text fontWeight={"bold"} textStyle={"lg"}>
-          {data.title}
-        </Text>
+        <Link to={`/track/${data.id}`}>
+          <Text
+            fontWeight={"bold"}
+            textStyle={"lg"}
+            _hover={{ textDecoration: "underline" }}
+          >
+            {data.title}
+          </Text>
+        </Link>
+
         <Text color={"gray.400"} fontWeight={"semibold"}>
           {data.artist}
         </Text>

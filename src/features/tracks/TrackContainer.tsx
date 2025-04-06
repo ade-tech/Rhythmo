@@ -11,10 +11,34 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { HiPlayCircle } from "react-icons/hi2";
-import { IoList } from "react-icons/io5";
+import { IoList, IoPauseOutline } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
+import { useParams } from "react-router-dom";
+import { useFetchSong } from "./useSong";
+import { getSingMusicDurationString } from "@/utils/useMusicDuration";
+import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
+import { useCurrentMusic } from "@/contexts/audioContext";
+import { IoMdPlay } from "react-icons/io";
+
 export function TrackContainer() {
+  const { id } = useParams();
+  const { data, isLoading } = useFetchSong(id ?? "");
+  const play = usePlayMusic();
+  const pause = usePauseMusic();
+  const { activeSong, isPlaying } = useCurrentMusic();
+
+  if (isLoading)
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
+      </Box>
+    );
   return (
     <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
       <Box
@@ -40,21 +64,26 @@ export function TrackContainer() {
         mb={4}
         border={"1"}
         zIndex={10}
+        alignItems={"center"}
       >
         <Avatar.Root h={"10rem"} w={"10rem"} shape={"rounded"}>
           <Avatar.Fallback>
             <Image src="/musicfallback.png" />
           </Avatar.Fallback>
-          <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png" />
+          <Avatar.Image src={data?.cover_url} />
         </Avatar.Root>
         <Stack color={"white"} w={"2/3"} gap={0} zIndex={1}>
           <Text>Single</Text>
-          <Text textStyle={"7xl"} fontWeight={"black"}>
-            Motigbana
+          <Text textStyle={"7xl"} lineHeight={1} fontWeight={"black"}>
+            {data?.title}
           </Text>
 
           <Text fontWeight={"bold"}>
-            Abdone . <Span color={"gray.400"}>1 Song 2mins , 21sec</Span>
+            {data?.artist} .
+            <Span color={"gray.400"}>
+              {" "}
+              1 Song {getSingMusicDurationString(data?.duration!)}
+            </Span>
           </Text>
         </Stack>
       </Box>
@@ -68,13 +97,36 @@ export function TrackContainer() {
         px={4}
       >
         <HStack gap={2} pr={4}>
-          <IconWithTooltip tooltipText="play">
-            <Box
-              as={HiPlayCircle}
-              boxSize={16}
+          <IconWithTooltip
+            tooltipText={
+              activeSong?.title === data?.title && isPlaying ? "Pause" : "play"
+            }
+          >
+            <Stack
+              bg={"green.500"}
+              rounded={"full"}
+              m={0}
+              transition={"all ease-in-out 0.3s"}
+              p={3}
+              onClick={() => {
+                if (isPlaying && activeSong?.title === data?.title) {
+                  pause();
+                  return;
+                }
+                play(data!);
+              }}
               cursor={"pointer"}
-              color={"green.500"}
-            />
+            >
+              <Box
+                as={
+                  activeSong?.title === data?.title && isPlaying
+                    ? IoPauseOutline
+                    : IoMdPlay
+                }
+                boxSize={8}
+                color={"black"}
+              />
+            </Stack>
           </IconWithTooltip>
           <Spacer />
           <IconWithTooltip tooltipText="view as">
@@ -102,23 +154,23 @@ export function TrackContainer() {
               <Table.Cell borderBottom={"none"}>1</Table.Cell>
               <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
                 <Avatar.Root shape={"rounded"} size={"sm"}>
-                  <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg" />
+                  <Avatar.Image src={data?.cover_url} />
                 </Avatar.Root>
                 <Stack gap={0}>
                   <Text textStyle={"md"} fontWeight={"bold"} lineHeight={1.1}>
-                    Motigbana
+                    {data?.title}
                   </Text>
                   <Text
                     textStyle={"sm"}
                     fontWeight={"medium"}
                     color={"gray.400"}
                   >
-                    Olamide
+                    {data?.artist}
                   </Text>
                 </Stack>
               </Table.Cell>
-              <Table.Cell borderBottom={"none"} fontWeight={"bold"}>
-                1,200,220
+              <Table.Cell borderBottom={"none"} fontWeight={"medium"}>
+                {data?.play_count.toLocaleString()} views
               </Table.Cell>
               <Table.Cell borderBottom={"none"} color={"gray.400"}>
                 3:05

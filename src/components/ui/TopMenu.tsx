@@ -19,7 +19,7 @@ export function TopMenu() {
   return (
     <Box px={10} py={3} h={"fit"} w={"full"}>
       <Flex align={"center"} justifyContent={"space-between"}>
-        <Image src="/Asset 4.svg" width={130} mr={14} />
+        <Image src="/Asset 4.png" width={130} mr={14} />
         <HStack w={"1/3"} gap={5}>
           <NavLink
             to="/"

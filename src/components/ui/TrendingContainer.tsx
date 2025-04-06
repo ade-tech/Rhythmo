@@ -10,7 +10,6 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 const TrendingContainer = () => {
   const { data, isLoading } = useFetchSongs();
   const { activeSong } = useCurrentMusic();
-  console.log(data);
 
   if (!isLoading && (!data || !data?.length))
     return (
@@ -32,7 +31,7 @@ const TrendingContainer = () => {
           You are Offline
         </Text>
         <Text textAlign={"center"} lineHeight={"1.3"} color={"gray.300"}>
-          Rythymo could not get your music kindly check your <br />
+          Rythmo could not get your music kindly check your <br />
           internet connection
         </Text>
         <Button
