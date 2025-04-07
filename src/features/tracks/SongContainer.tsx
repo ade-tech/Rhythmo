@@ -20,7 +20,9 @@ import { useFetchArtist } from "../artist/useArtist";
 
 export function SongContainer() {
   const { isOpen, setIsOpen } = useIsSongOpen();
-  const { activeSong } = useCurrentMusic();
+  const {
+    state: { activeSong },
+  } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useFetchArtist(activeSong?.artist ?? "");
 

@@ -7,15 +7,14 @@ import { Song } from "@/features/tracks/songType";
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
   const {
-    activeSong,
-    currentHowl,
+    state: { activeSong, currentHowl },
     setCurrentHowl,
     setAudioStatus,
-    setActiveSong,
+    setCurrentSong,
   } = useCurrentMusic();
 
   return (data: Song) => {
-    setActiveSong(data);
+    setCurrentSong(data);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
       setAudioStatus("playing");
@@ -37,7 +36,10 @@ export function usePlayMusic() {
 }
 
 export function usePauseMusic() {
-  const { currentHowl, setAudioStatus } = useCurrentMusic();
+  const {
+    state: { currentHowl },
+    setAudioStatus,
+  } = useCurrentMusic();
 
   return () => {
     if (!currentHowl) return;
@@ -48,16 +50,21 @@ export function usePauseMusic() {
 }
 
 export function useReapeatMusic() {
-  const { currentHowl } = useCurrentMusic();
+  const {
+    state: { currentHowl, isLoopingSong },
+    loopSong,
+  } = useCurrentMusic();
 
   return () => {
     if (currentHowl?.loop() === true) {
       currentHowl.loop(false);
-      console.log(currentHowl);
+      loopSong();
+      console.log(isLoopingSong);
       return;
     }
     currentHowl?.loop(true);
+    loopSong();
 
-    console.log(currentHowl);
+    console.log(isLoopingSong);
   };
 }

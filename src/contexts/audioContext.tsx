@@ -1,40 +1,108 @@
 import { Song } from "@/features/tracks/songType";
 import { JSX } from "@emotion/react/jsx-runtime";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useReducer } from "react";
+
+interface AudioReducerTypes {
+  state: AudioContextType;
+  setAudioStatus: (status: "idle" | "playing" | "loading") => void;
+  setCurrentHowl: (howl: Howl) => void;
+  setCurrentSong: (song: Song) => void;
+  setCurrentQueue: (queue: Song[]) => void;
+  loopSong: () => void;
+  loopQueue: () => void;
+  shuffleQueue: () => void;
+}
 
 interface AudioContextType {
   activeSong: Song | null;
   currentHowl: Howl | null;
-
   audioStatus: "idle" | "playing" | "loading";
-  setAudioStatus: React.Dispatch<
-    React.SetStateAction<"idle" | "playing" | "loading">
-  >;
-  setActiveSong: React.Dispatch<React.SetStateAction<Song | null>>;
-  setCurrentHowl: React.Dispatch<React.SetStateAction<Howl | null>>;
+  isLoopingSong: boolean;
+  isShufflingQueue: boolean;
+  activeQueue: Song[] | undefined;
+  isLoopingQueue: boolean;
+}
+interface RythymoActionType {
+  type: Action;
+  payload?: any;
 }
 
-const audioContext = createContext<AudioContextType | undefined>(undefined);
+type Action =
+  | "SET_AUDIO_STATUS"
+  | "SET_CURRENT_HOWL"
+  | "SET_SONG_TO_LOOPING"
+  | "SET_QUEUE_TO_SHUFFLING"
+  | "SET_QUEUE_TO_LOOPING"
+  | "SET_CURRENT_SONG"
+  | "SET_CURRENT_QUEUE";
+
+const audioContext = createContext<AudioReducerTypes | undefined>(undefined);
+
+const initialState: AudioContextType = {
+  activeSong: null,
+  currentHowl: null,
+  audioStatus: "idle",
+  isLoopingSong: false,
+  isShufflingQueue: false,
+  activeQueue: undefined,
+  isLoopingQueue: false,
+};
+
+function reducer(
+  state: AudioContextType,
+  action: RythymoActionType
+): AudioContextType {
+  switch (action.type) {
+    case "SET_AUDIO_STATUS":
+      return { ...state, audioStatus: action.payload };
+    case "SET_CURRENT_HOWL":
+      return { ...state, currentHowl: action.payload };
+    case "SET_SONG_TO_LOOPING":
+      return { ...state, isLoopingSong: !state.isLoopingSong };
+    case "SET_QUEUE_TO_SHUFFLING":
+      return { ...state, isShufflingQueue: !state.isShufflingQueue };
+    case "SET_QUEUE_TO_LOOPING":
+      return { ...state, isLoopingQueue: !state.isLoopingQueue };
+    case "SET_CURRENT_SONG":
+      return { ...state, activeSong: action.payload };
+    case "SET_CURRENT_QUEUE":
+      return { ...state, activeQueue: action.payload };
+
+    default:
+      return state;
+  }
+}
 
 export function AudioContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const [activeSong, setActiveSong] = useState<Song | null>(null);
-  const [audioStatus, setAudioStatus] = useState<
-    "idle" | "playing" | "loading"
-  >("idle");
-  const [currentHowl, setCurrentHowl] = useState<Howl | null>(null);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const setAudioStatus = (status: "idle" | "playing" | "loading"): void =>
+    dispatch({ type: "SET_AUDIO_STATUS", payload: status });
+  const setCurrentHowl = (howl: Howl): void =>
+    dispatch({ type: "SET_CURRENT_HOWL", payload: howl });
+  const setCurrentSong = (song: Song): void =>
+    dispatch({ type: "SET_CURRENT_SONG", payload: song });
+  const setCurrentQueue = (queue: Song[]): void =>
+    dispatch({ type: "SET_CURRENT_QUEUE", payload: queue });
+  const loopSong = (): void => dispatch({ type: "SET_SONG_TO_LOOPING" });
+  const loopQueue = (): void => dispatch({ type: "SET_QUEUE_TO_LOOPING" });
+  const shuffleQueue = (): void => dispatch({ type: "SET_QUEUE_TO_SHUFFLING" });
+
   return (
     <audioContext.Provider
       value={{
-        activeSong,
-        currentHowl,
-        setCurrentHowl,
-        setActiveSong,
-        audioStatus,
+        state,
         setAudioStatus,
+        setCurrentQueue,
+        setCurrentSong,
+        setCurrentHowl,
+        loopQueue,
+        loopSong,
+        shuffleQueue,
       }}
     >
       {children}

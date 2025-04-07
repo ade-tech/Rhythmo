@@ -1,7 +1,16 @@
+import { useCurrentMusic } from "@/contexts/audioContext";
 import { Song } from "@/features/tracks/songType";
+import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
 import { FaPlayCircle } from "react-icons/fa";
+import { IoMdPlay } from "react-icons/io";
+import { IoPause } from "react-icons/io5";
 export function MiniSongCard({ song }: { song: Song }) {
+  const {
+    state: { activeSong, audioStatus },
+  } = useCurrentMusic();
+  const play = usePlayMusic();
+  const pause = usePauseMusic();
   return (
     <GridItem h={10} mb={2}>
       <Card.Root
@@ -29,7 +38,11 @@ export function MiniSongCard({ song }: { song: Song }) {
         </Text>
         <Spacer />
         <Box
-          as={FaPlayCircle}
+          as={
+            activeSong?.title === song.title && audioStatus === "playing"
+              ? IoPause
+              : IoMdPlay
+          }
           boxSize={7}
           opacity={0}
           visibility="hidden"
@@ -39,6 +52,13 @@ export function MiniSongCard({ song }: { song: Song }) {
             opacity: 1,
             visibility: "visible",
             color: "green.600",
+          }}
+          onClick={() => {
+            if (audioStatus === "playing" && activeSong?.title === song.title) {
+              pause();
+              return;
+            }
+            play(song);
           }}
         />
       </Card.Root>

@@ -9,7 +9,9 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 
 const TrendingContainer = () => {
   const { data, isLoading } = useFetchSongs();
-  const { activeSong } = useCurrentMusic();
+  const {
+    state: { activeSong },
+  } = useCurrentMusic();
 
   if (!isLoading && (!data || !data?.length))
     return (
