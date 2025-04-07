@@ -6,6 +6,7 @@ import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { HiPause } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import { PlayPause } from "./PlayPause";
 
 type songItemProps = {
   isOpen: boolean;
@@ -13,9 +14,6 @@ type songItemProps = {
 };
 
 export function SongItem({ isOpen, data }: songItemProps) {
-  const { activeSong, audioStatus } = useCurrentMusic();
-  const play = usePlayMusic();
-  const pause = usePauseMusic();
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}
@@ -29,51 +27,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
     >
       <Stack pos={"relative"} className="group">
         <Image src={data.cover_url} borderRadius={"md"} />
-        <IconWithTooltip
-          tooltipText={
-            activeSong?.title === data.title && audioStatus === "playing"
-              ? "Pause"
-              : "play"
-          }
-        >
-          <Stack
-            bg={"green.500"}
-            rounded={"full"}
-            visibility={"hidden"}
-            opacity={0}
-            m={0}
-            transition={"all ease-in-out 0.3s"}
-            _groupHover={{
-              visibility: "visible",
-              opacity: 1,
-            }}
-            p={3}
-            pos={"absolute"}
-            bottom={2}
-            right={1}
-            onClick={() => {
-              if (
-                audioStatus === "playing" &&
-                activeSong?.title === data.title
-              ) {
-                pause();
-                return;
-              }
-              play(data);
-            }}
-            cursor={"pointer"}
-          >
-            <Box
-              as={
-                activeSong?.title === data.title && audioStatus === "playing"
-                  ? HiPause
-                  : IoMdPlay
-              }
-              boxSize={6}
-              color={"black"}
-            />
-          </Stack>
-        </IconWithTooltip>
+        <PlayPause data={data} />
       </Stack>
       <Stack gap={0} flexShrink={0}>
         <Link to={`/track/${data.id}`}>

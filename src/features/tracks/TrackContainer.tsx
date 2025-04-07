@@ -26,7 +26,9 @@ export function TrackContainer() {
   const { data, isLoading } = useFetchSong(id ?? "");
   const play = usePlayMusic();
   const pause = usePauseMusic();
-  const { activeSong, audioStatus } = useCurrentMusic();
+  const {
+    state: { activeSong, audioStatus },
+  } = useCurrentMusic();
 
   if (isLoading)
     return (
