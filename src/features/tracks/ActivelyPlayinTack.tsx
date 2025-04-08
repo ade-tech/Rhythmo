@@ -1,11 +1,7 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import { PlayPauseMini } from "@/components/ui/PlayPause";
 import { useCurrentMusic } from "@/contexts/audioContext";
-import {
-  usePauseMusic,
-  usePlayMusic,
-  useReapeatMusic,
-} from "@/hooks/useAudioControls";
+import { useCurrentPlayTime, useReapeatMusic } from "@/hooks/useAudioControls";
 import {
   Avatar,
   Box,
@@ -30,11 +26,28 @@ import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
   const {
-    state: { activeSong, isLoopingSong },
+    state: { activeSong, isLoopingSong, currentHowl },
   } = useCurrentMusic();
 
   const repeat = useReapeatMusic();
+  const {
+    durationString,
+    setCurrentPlayBackTime,
+    playBackString,
+    duration,
+    currentPlayBackTime,
+  } = useCurrentPlayTime();
+
+  console.log(currentPlayBackTime);
+
   if (!activeSong) return null;
+
+  function handleValueChange({ value }: { value: number[] }) {
+    if (currentHowl) {
+      currentHowl.seek(value.at(0));
+      setCurrentPlayBackTime(value.at(0)!);
+    }
+  }
 
   return (
     <HStack
@@ -111,16 +124,39 @@ const ActivelyPlayinTack = () => {
           </IconWithTooltip>
         </HStack>
         <HStack>
-          <Text textStyle={"xs"}>1:05</Text>
-          <Slider.Root w={"md"} size={"sm"} defaultValue={[30]}>
+          <Text textStyle={"xs"}>{playBackString}</Text>
+          <Slider.Root
+            w={"md"}
+            size={"sm"}
+            value={[currentPlayBackTime]}
+            max={duration}
+            onValueChange={handleValueChange}
+            className="group"
+          >
             <Slider.Control>
-              <Slider.Track h={1} bg="green.100" borderRadius={"full"}>
-                <Slider.Range bg="green.600" borderRadius={"full"} />
+              <Slider.Track
+                h={1}
+                bg="gray.600"
+                _groupHover={{ bg: "white" }}
+                borderRadius={"full"}
+              >
+                <Slider.Range
+                  bg="white"
+                  borderRadius={"full"}
+                  _groupHover={{ bg: "green.600" }}
+                />
               </Slider.Track>
-              <Slider.Thumb index={0} boxSize={3} bg="green.600" shadow="md" />
+              <Slider.Thumb
+                index={0}
+                boxSize={3}
+                bg="green.600"
+                shadow="md"
+                display={"none"}
+                _groupHover={{ display: "block" }}
+              />
             </Slider.Control>
           </Slider.Root>
-          <Text textStyle={"xs"}>1:05</Text>
+          <Text textStyle={"xs"}>{durationString}</Text>
         </HStack>
       </Stack>
       <Spacer />

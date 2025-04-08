@@ -3,6 +3,7 @@ import { useIsSongOpen } from "@/contexts/songContext";
 import { Howl } from "howler";
 
 import { Song } from "@/features/tracks/songType";
+import { useEffect, useRef, useState } from "react";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
@@ -26,6 +27,10 @@ export function usePlayMusic() {
       src: [data.audio_url],
       html5: true,
       onload: () => setAudioStatus("playing"),
+      onloaderror: () => {
+        audio.pause();
+        setAudioStatus("idle");
+      },
     });
     setAudioStatus("loading");
 
@@ -51,7 +56,7 @@ export function usePauseMusic() {
 
 export function useReapeatMusic() {
   const {
-    state: { currentHowl, isLoopingSong },
+    state: { currentHowl },
     loopSong,
   } = useCurrentMusic();
 
@@ -59,12 +64,67 @@ export function useReapeatMusic() {
     if (currentHowl?.loop() === true) {
       currentHowl.loop(false);
       loopSong();
-      console.log(isLoopingSong);
       return;
     }
     currentHowl?.loop(true);
     loopSong();
+  };
+}
 
-    console.log(isLoopingSong);
+type currentTimeType = {
+  durationString: string;
+  playBackString: string;
+  duration: number;
+  currentPlayBackTime: number;
+  setCurrentPlayBackTime: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export function useCurrentPlayTime(): currentTimeType {
+  const {
+    state: { currentHowl },
+  } = useCurrentMusic();
+  const duration = Math.ceil(currentHowl?.duration() ?? 0);
+  const animationRef = useRef<number | undefined>(undefined);
+  const [currentPlayBackTime, setCurrentPlayBackTime] = useState<number>(0);
+
+  const durationString = `${Math.floor(duration / 60)}:${
+    duration % 60 < 10 ? `0${duration % 60}` : duration % 60
+  }`;
+  const playBackString = `${Math.floor(currentPlayBackTime / 60)}:${
+    currentPlayBackTime % 60 < 10
+      ? `0${currentPlayBackTime % 60}`
+      : currentPlayBackTime % 60
+  }`;
+
+  useEffect(() => {
+    if (!currentHowl) return;
+    function updateTime() {
+      const seekTime = (currentHowl?.seek() as number) || 0;
+      setCurrentPlayBackTime(Math.floor(seekTime));
+
+      if (currentHowl?.playing()) {
+        animationRef.current = requestAnimationFrame(updateTime);
+      }
+    }
+
+    const onPlay = () => {
+      animationRef.current = requestAnimationFrame(updateTime);
+    };
+
+    currentHowl.on("play", onPlay);
+
+    return () => {
+      if (animationRef.current !== undefined) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [currentHowl]);
+
+  return {
+    durationString,
+    setCurrentPlayBackTime,
+    playBackString,
+    duration,
+    currentPlayBackTime,
   };
 }

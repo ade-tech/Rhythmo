@@ -15,7 +15,10 @@ import { IoList, IoPauseOutline, IoReload } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { useFetchSong } from "./useSong";
-import { getSingMusicDurationString } from "@/utils/useMusicDuration";
+import {
+  getSingMusicDuration,
+  getSingMusicDurationString,
+} from "@/utils/useMusicDuration";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { IoMdPlay } from "react-icons/io";
@@ -223,7 +226,7 @@ export function TrackContainer() {
                 {data?.play_count.toLocaleString()} views
               </Table.Cell>
               <Table.Cell borderBottom={"none"} color={"gray.400"}>
-                3:05
+                {getSingMusicDuration(data?.duration!)}
               </Table.Cell>
             </Table.Row>
           </Table.Body>
