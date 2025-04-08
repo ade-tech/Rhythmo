@@ -6,7 +6,6 @@ import {
   HStack,
   Image,
   Spacer,
-  Span,
   Stack,
   Table,
   Text,

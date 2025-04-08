@@ -1,5 +1,3 @@
-import IconWithTooltip from "@/components/ui/IconWithTooltip";
-import TrendingSection from "@/components/ui/TrendingSection";
 import {
   Avatar,
   Box,
@@ -13,8 +11,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { HiPencil } from "react-icons/hi";
-import { HiPlayCircle } from "react-icons/hi2";
-import { IoList } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
 
 const ProfileContainer = () => {
@@ -160,7 +156,6 @@ const ProfileContainer = () => {
             </Table.Row>
           </Table.Body>
         </Table.Root>
-        <TrendingSection />
       </Stack>
     </Box>
   );

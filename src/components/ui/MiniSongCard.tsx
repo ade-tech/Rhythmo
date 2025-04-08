@@ -2,7 +2,6 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 import { Song } from "@/features/tracks/songType";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
-import { FaPlayCircle } from "react-icons/fa";
 import { IoMdPlay } from "react-icons/io";
 import { IoPause } from "react-icons/io5";
 export function MiniSongCard({ song }: { song: Song }) {

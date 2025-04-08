@@ -1,10 +1,5 @@
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
-import IconWithTooltip from "./IconWithTooltip";
-import { IoMdPlay } from "react-icons/io";
 import { Song } from "@/features/tracks/songType";
-import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
-import { useCurrentMusic } from "@/contexts/audioContext";
-import { HiPause } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { PlayPause } from "./PlayPause";
 
