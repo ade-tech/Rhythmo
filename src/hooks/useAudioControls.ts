@@ -110,13 +110,18 @@ export function useCurrentPlayTime(): currentTimeType {
     const onPlay = () => {
       animationRef.current = requestAnimationFrame(updateTime);
     };
-
+    const onSeek = () => {
+      animationRef.current = requestAnimationFrame(updateTime);
+    };
     currentHowl.on("play", onPlay);
+    currentHowl.on("seek", onSeek);
 
     return () => {
       if (animationRef.current !== undefined) {
         cancelAnimationFrame(animationRef.current);
       }
+      currentHowl.off("play", onPlay);
+      currentHowl.off("seek", onSeek);
     };
   }, [currentHowl]);
 

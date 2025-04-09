@@ -30,22 +30,17 @@ const ActivelyPlayinTack = () => {
   } = useCurrentMusic();
 
   const repeat = useReapeatMusic();
-  const {
-    durationString,
-    setCurrentPlayBackTime,
-    playBackString,
-    duration,
-    currentPlayBackTime,
-  } = useCurrentPlayTime();
+  const { durationString, playBackString, duration, currentPlayBackTime } =
+    useCurrentPlayTime();
 
   console.log(currentPlayBackTime);
 
   if (!activeSong) return null;
 
   function handleValueChange({ value }: { value: number[] }) {
+    console.log(value);
     if (currentHowl) {
       currentHowl.seek(value.at(0));
-      setCurrentPlayBackTime(value.at(0)!);
     }
   }
 
@@ -132,6 +127,7 @@ const ActivelyPlayinTack = () => {
             max={duration}
             onValueChange={handleValueChange}
             className="group"
+            step={1}
           >
             <Slider.Control>
               <Slider.Track
