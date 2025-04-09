@@ -10,5 +10,5 @@ export type Artist = {
   monthly_plays: number;
   cover_url: number;
   image_url: number;
-  about: number;
+  about: string;
 };

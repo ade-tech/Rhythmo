@@ -1,6 +1,6 @@
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
-import { Howl } from "howler";
+import { Howl, Howler } from "howler";
 
 import { Song } from "@/features/tracks/songType";
 import { useEffect, useRef, useState } from "react";
@@ -131,5 +131,13 @@ export function useCurrentPlayTime(): currentTimeType {
     playBackString,
     duration,
     currentPlayBackTime,
+  };
+}
+
+export function useVolume() {
+  const { setVolume } = useCurrentMusic();
+  return (value: number) => {
+    Howler.volume(value);
+    setVolume(value);
   };
 }

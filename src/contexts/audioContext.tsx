@@ -11,6 +11,7 @@ interface AudioReducerTypes {
   loopSong: () => void;
   loopQueue: () => void;
   shuffleQueue: () => void;
+  setVolume: (value: number) => void;
 }
 
 interface AudioContextType {
@@ -21,6 +22,7 @@ interface AudioContextType {
   isShufflingQueue: boolean;
   activeQueue: Song[] | undefined;
   isLoopingQueue: boolean;
+  volume: number;
 }
 interface RythymoActionType {
   type: Action;
@@ -34,7 +36,8 @@ type Action =
   | "SET_QUEUE_TO_SHUFFLING"
   | "SET_QUEUE_TO_LOOPING"
   | "SET_CURRENT_SONG"
-  | "SET_CURRENT_QUEUE";
+  | "SET_CURRENT_QUEUE"
+  | "CHANGE_VOLUME";
 
 const audioContext = createContext<AudioReducerTypes | undefined>(undefined);
 
@@ -46,6 +49,7 @@ const initialState: AudioContextType = {
   isShufflingQueue: false,
   activeQueue: undefined,
   isLoopingQueue: false,
+  volume: 1,
 };
 
 function reducer(
@@ -67,6 +71,8 @@ function reducer(
       return { ...state, activeSong: action.payload };
     case "SET_CURRENT_QUEUE":
       return { ...state, activeQueue: action.payload };
+    case "CHANGE_VOLUME":
+      return { ...state, volume: action.payload };
 
     default:
       return state;
@@ -91,6 +97,8 @@ export function AudioContextProvider({
   const loopSong = (): void => dispatch({ type: "SET_SONG_TO_LOOPING" });
   const loopQueue = (): void => dispatch({ type: "SET_QUEUE_TO_LOOPING" });
   const shuffleQueue = (): void => dispatch({ type: "SET_QUEUE_TO_SHUFFLING" });
+  const setVolume = (value: number): void =>
+    dispatch({ type: "CHANGE_VOLUME", payload: value });
 
   return (
     <audioContext.Provider
@@ -103,6 +111,7 @@ export function AudioContextProvider({
         loopQueue,
         loopSong,
         shuffleQueue,
+        setVolume,
       }}
     >
       {children}
