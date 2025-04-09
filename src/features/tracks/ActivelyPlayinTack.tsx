@@ -23,7 +23,6 @@ import {
   PiShuffle,
   PiSkipBackFill,
   PiSkipForwardFill,
-  PiSpeakerHifi,
   PiSpeakerHigh,
   PiSpeakerLow,
   PiSpeakerSlash,
