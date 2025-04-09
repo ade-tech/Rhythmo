@@ -1,7 +1,11 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import { PlayPauseMini } from "@/components/ui/PlayPause";
 import { useCurrentMusic } from "@/contexts/audioContext";
-import { useCurrentPlayTime, useReapeatMusic } from "@/hooks/useAudioControls";
+import {
+  useCurrentPlayTime,
+  useReapeatMusic,
+  useVolume,
+} from "@/hooks/useAudioControls";
 import {
   Avatar,
   Box,
@@ -19,21 +23,23 @@ import {
   PiShuffle,
   PiSkipBackFill,
   PiSkipForwardFill,
+  PiSpeakerHifi,
   PiSpeakerHigh,
+  PiSpeakerLow,
+  PiSpeakerSlash,
 } from "react-icons/pi";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
   const {
-    state: { activeSong, isLoopingSong, currentHowl },
+    state: { activeSong, isLoopingSong, currentHowl, volume },
   } = useCurrentMusic();
 
   const repeat = useReapeatMusic();
+  const volumeFn = useVolume();
   const { durationString, playBackString, duration, currentPlayBackTime } =
     useCurrentPlayTime();
-
-  console.log(currentPlayBackTime);
 
   if (!activeSong) return null;
 
@@ -42,6 +48,9 @@ const ActivelyPlayinTack = () => {
     if (currentHowl) {
       currentHowl.seek(value.at(0));
     }
+  }
+  function handleVolumeChange({ value }: { value: number[] }) {
+    volumeFn(value.at(0)!);
   }
 
   return (
@@ -162,14 +171,28 @@ const ActivelyPlayinTack = () => {
         </IconWithTooltip>
         <HStack>
           <IconWithTooltip tooltipText="mute">
-            <PiSpeakerHigh size={18} />
+            {volume > 0.5 ? (
+              <PiSpeakerHigh size={18} />
+            ) : volume === 0 ? (
+              <PiSpeakerSlash size={18} />
+            ) : (
+              <PiSpeakerLow size={18} />
+            )}
           </IconWithTooltip>
-          <Slider.Root w={24} size={"sm"} defaultValue={[30]}>
+          <Slider.Root
+            w={24}
+            size={"sm"}
+            value={[volume]}
+            onValueChange={handleVolumeChange}
+            max={1}
+            step={0.05}
+            min={0}
+          >
             <Slider.Control>
               <Slider.Track h={1} bg="green.100" borderRadius={"full"}>
                 <Slider.Range bg="green.600" borderRadius={"full"} />
               </Slider.Track>
-              <Slider.Thumb index={0} boxSize={3} bg="green.600" shadow="md" />
+              <Slider.Thumb index={0} boxSize={2} bg="green.600" shadow="md" />
             </Slider.Control>
           </Slider.Root>
         </HStack>

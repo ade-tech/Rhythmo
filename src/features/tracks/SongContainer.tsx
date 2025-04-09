@@ -230,7 +230,7 @@ export function SongContainer() {
               </Button>
             </HStack>
             <Text textAlign={"left"} px={4} mt={2} color={"gray.400"}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
+              {data?.about.slice(0, 100)}...
             </Text>
           </Card.Root>
         </>
