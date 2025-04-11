@@ -2,6 +2,7 @@ import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import { Song } from "@/features/tracks/songType";
 import { Link } from "react-router-dom";
 import { PlayPause } from "./PlayPause";
+import { useFetchSong } from "@/features/tracks/useSong";
 
 type songItemProps = {
   isOpen: boolean;
@@ -9,6 +10,7 @@ type songItemProps = {
 };
 
 export function SongItem({ isOpen, data }: songItemProps) {
+  const { data: songs } = useFetchSong(data.id);
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}
@@ -22,7 +24,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
     >
       <Stack pos={"relative"} className="group">
         <Image src={data.cover_url} borderRadius={"md"} />
-        <PlayPause data={data} />
+        <PlayPause data={songs} />
       </Stack>
       <Stack gap={0} flexShrink={0}>
         <Link to={`/track/${data.id}`}>

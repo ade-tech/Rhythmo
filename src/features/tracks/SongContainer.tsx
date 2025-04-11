@@ -17,14 +17,15 @@ import { Link } from "react-router-dom";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useFetchArtist } from "../artist/useArtist";
+import { Song } from "./songType";
 
 export function SongContainer() {
   const { isOpen, setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong },
+    state: { activeSong, activeQueue },
   } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
-  const { data, isLoading } = useFetchArtist(activeSong?.artist ?? "");
+  const { data, isLoading } = useFetchArtist(activeSong?.artist_id ?? "");
 
   if (!isOpen) return null;
   if (!activeSong) return null;
@@ -51,7 +52,7 @@ export function SongContainer() {
         pb={3}
         zIndex={1000000}
       >
-        <Link to="sada">
+        <Link to={`track/${activeSong.id}`}>
           <Text
             ml={2}
             textStyle={"lg"}
@@ -87,7 +88,7 @@ export function SongContainer() {
         <Stack gap={0} px={5}>
           <Flex>
             <Stack gap={0}>
-              <Link to="sada">
+              <Link to={`track/${activeSong.id}`}>
                 <Text
                   textStyle={"2xl"}
                   color={"white"}
@@ -101,23 +102,24 @@ export function SongContainer() {
                   {activeSong.title.toUpperCase()}
                 </Text>
               </Link>
-              <Text
-                textStyle={"md"}
-                color={"gray.400"}
-                transitionDuration={"200ms"}
-                _hover={{
-                  textDecoration: "underline",
-                  transition: "ease-in-out",
-                }}
-                fontWeight={"medium"}
-              >
-                {activeSong.artist} {activeSong.featured_artist && " ft "}
-                {activeSong.featured_artist?.map((cur) => `${cur}`)}
-              </Text>
+              <Link to={`track/${activeSong.id}`}>
+                <Text
+                  textStyle={"md"}
+                  color={"gray.400"}
+                  transitionDuration={"200ms"}
+                  _hover={{
+                    textDecoration: "underline",
+                    transition: "ease-in-out",
+                  }}
+                  fontWeight={"medium"}
+                >
+                  {activeSong.artist} {activeSong.featured_artist && " ft "}
+                  {activeSong.featured_artist?.map((cur) => `${cur}`)}
+                </Text>
+              </Link>
             </Stack>
             <Spacer />
             <HStack mr={1}>
-              <Link to="sada"></Link>
               <HiOutlineUpload size={20} className="text-gray-400" />
               <GoPlusCircle size={20} className="text-gray-400" />
             </HStack>
@@ -193,7 +195,7 @@ export function SongContainer() {
               borderTopRadius={"xl"}
               src={activeSong.cover_url}
             />
-            <Link to="sada">
+            <Link to={`track/${data?.user_id!}`}>
               <Text
                 ml={4}
                 mt={4}
@@ -383,10 +385,10 @@ export function SongContainer() {
             <Avatar.Fallback>
               <Image src="/musicfallback.png" />
             </Avatar.Fallback>
-            <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg" />
+            <Avatar.Image src={(activeQueue as Song[])[1]?.cover_url} />
           </Avatar.Root>
           <Stack gap={0}>
-            <Link to="sada">
+            <Link to={`track/${(activeQueue as Song[])[1].id}`}>
               <Text
                 textStyle={"md"}
                 color={"white"}
@@ -397,7 +399,7 @@ export function SongContainer() {
                 }}
                 fontWeight={"bold"}
               >
-                SPRINTER
+                {(activeQueue as Song[])[1].title.toUpperCase()}
               </Text>
             </Link>
             <Text
@@ -410,7 +412,7 @@ export function SongContainer() {
               }}
               fontWeight={"medium"}
             >
-              Central Cee
+              {(activeQueue as Song[])[1].artist}
             </Text>
           </Stack>
         </HStack>

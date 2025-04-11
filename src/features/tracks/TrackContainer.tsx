@@ -45,7 +45,7 @@ export function TrackContainer() {
         <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
       </Box>
     );
-  if (!isLoading && (!data || !Object.entries(data)?.length))
+  if (!isLoading && (!data?.data || !Object.entries(data.data)?.length))
     return (
       <Box
         w={"full"}
@@ -118,19 +118,19 @@ export function TrackContainer() {
           <Avatar.Fallback>
             <Image src="/musicfallback.png" />
           </Avatar.Fallback>
-          <Avatar.Image src={data?.cover_url} />
+          <Avatar.Image src={data?.data.cover_url} />
         </Avatar.Root>
         <Stack color={"white"} w={"2/3"} gap={0} zIndex={1}>
           <Text>Single</Text>
           <Text textStyle={"7xl"} lineHeight={1} fontWeight={"black"}>
-            {data?.title}
+            {data?.data.title}
           </Text>
 
           <Text fontWeight={"bold"}>
-            {data?.artist} .
+            {data?.data.artist} .
             <Span color={"gray.400"}>
               {" "}
-              1 Song {getSingMusicDurationString(data?.duration!)}
+              1 Song {getSingMusicDurationString(data?.data.duration!)}
             </Span>
           </Text>
         </Stack>
@@ -147,7 +147,8 @@ export function TrackContainer() {
         <HStack gap={2} pr={4}>
           <IconWithTooltip
             tooltipText={
-              activeSong?.title === data?.title && audioStatus === "playing"
+              activeSong?.title === data?.data.title &&
+              audioStatus === "playing"
                 ? "Pause"
                 : "play"
             }
@@ -161,7 +162,7 @@ export function TrackContainer() {
               onClick={() => {
                 if (
                   audioStatus === "playing" &&
-                  activeSong?.title === data?.title
+                  activeSong?.title === data?.data.title
                 ) {
                   pause();
                   return;
@@ -172,7 +173,8 @@ export function TrackContainer() {
             >
               <Box
                 as={
-                  activeSong?.title === data?.title && audioStatus === "playing"
+                  activeSong?.title === data?.data.title &&
+                  audioStatus === "playing"
                     ? IoPauseOutline
                     : IoMdPlay
                 }
@@ -207,26 +209,26 @@ export function TrackContainer() {
               <Table.Cell borderBottom={"none"}>1</Table.Cell>
               <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
                 <Avatar.Root shape={"rounded"} size={"sm"}>
-                  <Avatar.Image src={data?.cover_url} />
+                  <Avatar.Image src={data?.data.cover_url} />
                 </Avatar.Root>
                 <Stack gap={0}>
                   <Text textStyle={"md"} fontWeight={"bold"} lineHeight={1.1}>
-                    {data?.title}
+                    {data?.data.title}
                   </Text>
                   <Text
                     textStyle={"sm"}
                     fontWeight={"medium"}
                     color={"gray.400"}
                   >
-                    {data?.artist}
+                    {data?.data.artist}
                   </Text>
                 </Stack>
               </Table.Cell>
               <Table.Cell borderBottom={"none"} fontWeight={"medium"}>
-                {data?.play_count.toLocaleString()} views
+                {data?.data.play_count.toLocaleString()} views
               </Table.Cell>
               <Table.Cell borderBottom={"none"} color={"gray.400"}>
-                {getSingMusicDuration(data?.duration!)}
+                {getSingMusicDuration(data?.data.duration!)}
               </Table.Cell>
             </Table.Row>
           </Table.Body>

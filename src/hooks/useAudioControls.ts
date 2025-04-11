@@ -1,21 +1,23 @@
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { Howl, Howler } from "howler";
-
-import { Song } from "@/features/tracks/songType";
 import { useEffect, useRef, useState } from "react";
+import { SongQueryType } from "@/services/songsApi";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong, currentHowl },
+    state: { activeSong, currentHowl, activeQueue },
     setCurrentHowl,
+    setCurrentQueue,
     setAudioStatus,
     setCurrentSong,
   } = useCurrentMusic();
 
-  return (data: Song) => {
+  return ({ data, queue }: SongQueryType) => {
+    console.log(data, queue);
     setCurrentSong(data);
+    setCurrentQueue(queue);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
       setAudioStatus("playing");
@@ -23,11 +25,14 @@ export function usePlayMusic() {
     } else {
       currentHowl?.stop();
     }
+    const audioUrl = queue[0].audio_url;
+    console.log(audioUrl);
     const audio = new Howl({
-      src: [data.audio_url],
+      src: [audioUrl],
       html5: true,
       onload: () => setAudioStatus("playing"),
       onloaderror: () => {
+        console.log("Crsahed");
         audio.pause();
         setAudioStatus("idle");
       },
