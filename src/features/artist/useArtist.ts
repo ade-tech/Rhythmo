@@ -7,11 +7,11 @@ interface ArtistQuery {
   isLoading: boolean;
 }
 
-export function useFetchArtist(query: string): ArtistQuery {
+export function useFetchArtist(userID: string): ArtistQuery {
   const { data, isLoading } = useQuery({
-    queryKey: [`Artist--${query}`],
+    queryKey: [`Artist--${userID}`],
     queryFn: ({ queryKey }) => fetchArtist(queryKey[0].split("--")[1]),
-    enabled: !!query,
+    enabled: !!userID,
   });
 
   return { data, isLoading };

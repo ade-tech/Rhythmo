@@ -4,12 +4,12 @@ import { HiPlay } from "react-icons/hi";
 import { IoPause, IoPauseCircle } from "react-icons/io5";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
-import { Song } from "@/features/tracks/songType";
 import { IoMdPlay } from "react-icons/io";
+import { SongQueryType } from "@/services/songsApi";
 
 export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   const {
-    state: { activeSong, audioStatus },
+    state: { activeQueue, activeSong, audioStatus },
   } = useCurrentMusic();
   const play = usePlayMusic();
   const pause = usePauseMusic();
@@ -25,14 +25,15 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
             pause();
             return;
           }
-          play(activeSong!);
+          play({ data: activeSong!, queue: activeQueue! });
         }}
       />
     </IconWithTooltip>
   );
 };
 
-export const PlayPause = ({ data }: { data: Song }) => {
+export const PlayPause = ({ data: song }: { data: SongQueryType }) => {
+  const { data, queue } = song ?? {};
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
@@ -41,7 +42,7 @@ export const PlayPause = ({ data }: { data: Song }) => {
   return (
     <IconWithTooltip
       tooltipText={
-        activeSong?.title === data.title && audioStatus === "playing"
+        activeSong?.title === data?.title && audioStatus === "playing"
           ? "Pause"
           : "play"
       }
@@ -67,17 +68,17 @@ export const PlayPause = ({ data }: { data: Song }) => {
             : {}
         }
         onClick={() => {
-          if (audioStatus === "playing" && activeSong?.title === data.title) {
+          if (audioStatus === "playing" && activeSong?.title === data?.title) {
             pause();
             return;
           }
-          play(data);
+          play({ data, queue });
         }}
         cursor={"pointer"}
       >
         <Box
           as={
-            activeSong?.title === data.title && audioStatus === "playing"
+            activeSong?.title === data?.title && audioStatus === "playing"
               ? IoPause
               : IoMdPlay
           }

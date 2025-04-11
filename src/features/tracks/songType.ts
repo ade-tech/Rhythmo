@@ -1,5 +1,7 @@
+import { SongQueryType } from "@/services/songsApi";
+
 export type Song = {
-  id: number;
+  id: string;
   created_at: string;
   title: string;
   artist: string;
@@ -12,6 +14,8 @@ export type Song = {
   audio_url: string;
   cover_url: string;
   featured_artist?: string[];
+  genre: string;
+  artist_id: string;
 };
 
 export type SongsQuery = {
@@ -21,7 +25,7 @@ export type SongsQuery = {
 };
 
 export type SongQuery = {
-  data: Song | undefined;
+  data: SongQueryType | undefined;
   isLoading: boolean;
   error?: null | Error;
 };
