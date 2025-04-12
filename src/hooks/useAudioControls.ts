@@ -7,7 +7,7 @@ import { SongQueryType } from "@/services/songsApi";
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong, currentHowl, activeQueue },
+    state: { activeSong, currentHowl },
     setCurrentHowl,
     setCurrentQueue,
     setAudioStatus,

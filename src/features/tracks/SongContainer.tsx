@@ -195,7 +195,7 @@ export function SongContainer() {
               borderTopRadius={"xl"}
               src={activeSong.cover_url}
             />
-            <Link to={`track/${data?.user_id!}`}>
+            <Link to={`artist/${data?.user_id!}`}>
               <Text
                 ml={4}
                 mt={4}

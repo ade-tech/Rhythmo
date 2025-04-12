@@ -24,7 +24,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
     >
       <Stack pos={"relative"} className="group">
         <Image src={data.cover_url} borderRadius={"md"} />
-        <PlayPause data={songs} />
+        <PlayPause data={songs!} />
       </Stack>
       <Stack gap={0} flexShrink={0}>
         <Link to={`/track/${data.id}`}>

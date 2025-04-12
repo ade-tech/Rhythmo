@@ -1,10 +1,12 @@
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { Song } from "@/features/tracks/songType";
+import { useFetchSong } from "@/features/tracks/useSong";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
 import { IoMdPlay } from "react-icons/io";
 import { IoPause } from "react-icons/io5";
 export function MiniSongCard({ song }: { song: Song }) {
+  const { data: songs } = useFetchSong(song.id);
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
@@ -57,7 +59,7 @@ export function MiniSongCard({ song }: { song: Song }) {
               pause();
               return;
             }
-            play(song);
+            play(songs!);
           }}
         />
       </Card.Root>
