@@ -96,7 +96,7 @@ export function TrackContainer() {
         zIndex={0}
         top={0}
         bgGradient={"to-b"}
-        gradientFrom={"green.400"}
+        gradientFrom={data?.data.prominent_color}
         gradientTo={"gray.950"}
         position={"absolute"}
         roundedTop={"md"}

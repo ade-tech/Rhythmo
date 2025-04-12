@@ -24,3 +24,10 @@
   visibility: visible;
   opacity: 1;
 }
+.rhythmo-section-trending {
+  scrollbar-width: none;
+}
+
+.rhythmo-section-trending::-webkit-scrollbar {
+  display: none;
+}

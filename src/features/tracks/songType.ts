@@ -16,6 +16,7 @@ export type Song = {
   featured_artist?: string[];
   genre: string;
   artist_id: string;
+  prominent_color: string;
 };
 
 export type SongsQuery = {

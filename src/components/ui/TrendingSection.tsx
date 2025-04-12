@@ -24,8 +24,6 @@ export function TrendingSection({
   console.log(ref.current);
 
   useEffect(() => {
-    console.log("ref is:", ref.current);
-
     function updateScrollableStates() {
       console.log("scrolled");
       if (!ref.current) return;
@@ -35,12 +33,10 @@ export function TrendingSection({
       if (scrollLeft > 0) {
         setCanScrollLeft(true);
         console.log(scrollLeft);
-        console.log(scrollLeft < scrollWidth - clientWidth);
       } else {
         setCanScrollLeft(false);
       }
       if (scrollLeft < scrollWidth - clientWidth) {
-        console.log(scrollLeft < scrollWidth - clientWidth);
         setCanScrollRight(true);
       } else {
         setCanScrollRight(false);
@@ -87,7 +83,7 @@ export function TrendingSection({
         <HStack
           w={isOpen ? "37rem" : "60rem"}
           h={"fit"}
-          overflowX={"scroll"}
+          overflowX={"auto"}
           gap={1}
           display={"flex"}
           whiteSpace={"nowrap"}
@@ -109,6 +105,8 @@ export function TrendingSection({
       whiteSpace={"nowrap"}
       overflow={"auto"}
       position={"relative"}
+      scrollbar={"hidden"}
+      className="rhythmo-section-trending"
     >
       <Text textStyle={"2xl"} fontWeight={"semibold"}>
         {title}
