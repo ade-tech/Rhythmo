@@ -21,18 +21,26 @@ export function TrendingSection({
   const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
 
+  console.log(ref.current);
+
   useEffect(() => {
+    console.log("ref is:", ref.current);
+
     function updateScrollableStates() {
+      console.log("scrolled");
       if (!ref.current) return;
 
       const { scrollWidth, clientWidth, scrollLeft } = ref.current;
 
       if (scrollLeft > 0) {
         setCanScrollLeft(true);
+        console.log(scrollLeft);
+        console.log(scrollLeft < scrollWidth - clientWidth);
       } else {
         setCanScrollLeft(false);
       }
       if (scrollLeft < scrollWidth - clientWidth) {
+        console.log(scrollLeft < scrollWidth - clientWidth);
         setCanScrollRight(true);
       } else {
         setCanScrollRight(false);
@@ -45,7 +53,7 @@ export function TrendingSection({
 
     return () =>
       ref.current?.removeEventListener("scroll", updateScrollableStates);
-  }, []);
+  }, [data]);
 
   function moveRight(): void {
     if (ref.current) {
@@ -57,6 +65,7 @@ export function TrendingSection({
   }
   function moveLeft(): void {
     if (ref.current) {
+      console.log(ref.current);
       ref.current.scrollBy({
         behavior: "smooth",
         left: -400,
@@ -104,7 +113,7 @@ export function TrendingSection({
       <Text textStyle={"2xl"} fontWeight={"semibold"}>
         {title}
       </Text>
-      {canScrollLeft && (
+      {canScrollLeft && !isLoading && (
         <Stack
           h={"90%"}
           bottom={0}
@@ -144,7 +153,7 @@ export function TrendingSection({
           <SongItem key={song.id} data={song} isOpen={isOpen} />
         ))}
       </HStack>
-      {canScrollRight && (
+      {canScrollRight && !isLoading && (
         <Stack
           h={"90%"}
           bottom={0}
