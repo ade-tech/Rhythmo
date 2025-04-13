@@ -53,8 +53,9 @@ export const SongItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
       h={"fit"}
       px={3}
       transition={"background 0.2s ease-in"}
-      _hover={{ bg: "gray.800" }}
       py={3}
+      gap={2}
+      bg={"gray.900"}
       borderRadius={"md"}
     >
       <Box

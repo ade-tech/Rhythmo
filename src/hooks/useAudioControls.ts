@@ -3,9 +3,11 @@ import { useIsSongOpen } from "@/contexts/songContext";
 import { Howl, Howler } from "howler";
 import { useEffect, useRef, useState } from "react";
 import { SongQueryType } from "@/services/songsApi";
+import { Song } from "@/features/tracks/songType";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
+  const nextSong = useNextSong();
   const {
     state: { activeSong, currentHowl },
     setCurrentHowl,
@@ -35,6 +37,10 @@ export function usePlayMusic() {
         console.log("Crsahed");
         audio.pause();
         setAudioStatus("idle");
+      },
+      onend: () => {
+        console.log("ended");
+        nextSong(queue);
       },
     });
     setAudioStatus("loading");
@@ -144,5 +150,37 @@ export function useVolume() {
   return (value: number) => {
     Howler.volume(value);
     setVolume(value);
+  };
+}
+
+export function useNextSong() {
+  const { setIsOpen } = useIsSongOpen();
+  const { setCurrentHowl, setCurrentQueue, setAudioStatus, setCurrentSong } =
+    useCurrentMusic();
+  return (activeQueue: Song[]) => {
+    console.log("active queue now is :", activeQueue);
+    if (activeQueue === undefined || activeQueue.length === 0) return;
+    const [first, ...rest] = activeQueue as [Song, ...Song[]];
+    const newQueue = [...rest, first];
+
+    console.log(activeQueue, newQueue);
+    setCurrentQueue(newQueue);
+    setCurrentSong(activeQueue[1]);
+
+    const audioUrl = activeQueue[1].audio_url;
+    const audio = new Howl({
+      src: [audioUrl],
+      html5: true,
+      onload: () => setAudioStatus("playing"),
+      onloaderror: () => {
+        console.log("Crsahed");
+        audio.stop();
+        setAudioStatus("idle");
+      },
+    });
+    setAudioStatus("loading");
+    audio.play();
+    setIsOpen(true);
+    setCurrentHowl(audio);
   };
 }

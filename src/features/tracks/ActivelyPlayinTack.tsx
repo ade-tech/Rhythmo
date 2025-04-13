@@ -17,7 +17,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { GoPlusCircle } from "react-icons/go";
-import { HiOutlineQueueList } from "react-icons/hi2";
+import { HiOutlineQueueList, HiQueueList } from "react-icons/hi2";
 import {
   PiRepeatFill,
   PiShuffle,
@@ -126,7 +126,7 @@ const ActivelyPlayinTack = () => {
             />
           </IconWithTooltip>
         </HStack>
-        <HStack>
+        <HStack gap={2}>
           <Text textStyle={"xs"}>{playBackString}</Text>
           <Slider.Root
             w={"md"}
@@ -166,7 +166,7 @@ const ActivelyPlayinTack = () => {
       <Spacer />
       <HStack gap={3} mr={2}>
         <IconWithTooltip tooltipText="Show Queue">
-          <HiOutlineQueueList size={18} />
+          <Box as={HiOutlineQueueList} boxSize={5} />
         </IconWithTooltip>
         <HStack>
           <IconWithTooltip tooltipText="mute">
