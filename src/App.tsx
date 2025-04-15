@@ -12,6 +12,7 @@ import TrendingContainer from "./components/ui/TrendingContainer";
 import ProfileContainer from "./features/user/profile/ProfileContainer";
 import { AudioContextProvider } from "./contexts/audioContext";
 import OpenSongProvider from "./contexts/songContext";
+import LoginContainer from "./features/auth/LoginContainer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ function App() {
               <Route path="genre/:id" element={<GenreContainer />} />
               <Route path="/profile" element={<ProfileContainer />} />
             </Route>
+            <Route path="/login" element={<LoginContainer />} />
           </Routes>
         </AudioContextProvider>
       </OpenSongProvider>
