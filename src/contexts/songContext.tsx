@@ -2,7 +2,9 @@ import React, { createContext, useContext, useState } from "react";
 
 type SongType = {
   isOpen: boolean;
+  isShowingQueue: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowingQueue: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const songContext = createContext<SongType | undefined>(undefined);
@@ -13,8 +15,11 @@ export default function OpenSongProvider({
   children: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isShowingQueue, setIsShowingQueue] = useState<boolean>(false);
   return (
-    <songContext.Provider value={{ isOpen, setIsOpen }}>
+    <songContext.Provider
+      value={{ isOpen, setIsOpen, isShowingQueue, setIsShowingQueue }}
+    >
       {children}
     </songContext.Provider>
   );

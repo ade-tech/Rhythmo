@@ -21,18 +21,14 @@ export function TrendingSection({
   const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
 
-  console.log(ref.current);
-
   useEffect(() => {
     function updateScrollableStates() {
-      console.log("scrolled");
       if (!ref.current) return;
 
       const { scrollWidth, clientWidth, scrollLeft } = ref.current;
 
       if (scrollLeft > 0) {
         setCanScrollLeft(true);
-        console.log(scrollLeft);
       } else {
         setCanScrollLeft(false);
       }
@@ -61,7 +57,6 @@ export function TrendingSection({
   }
   function moveLeft(): void {
     if (ref.current) {
-      console.log(ref.current);
       ref.current.scrollBy({
         behavior: "smooth",
         left: -400,

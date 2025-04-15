@@ -1,7 +1,9 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import { PlayPauseMini } from "@/components/ui/PlayPause";
 import { useCurrentMusic } from "@/contexts/audioContext";
+import { useIsSongOpen } from "@/contexts/songContext";
 import {
+  updatePlayBack,
   useCurrentPlayTime,
   useReapeatMusic,
   useVolume,
@@ -31,21 +33,30 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
+  const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const {
     state: { activeSong, isLoopingSong, currentHowl, volume },
   } = useCurrentMusic();
 
   const repeat = useReapeatMusic();
   const volumeFn = useVolume();
-  const { durationString, playBackString, duration, currentPlayBackTime } =
-    useCurrentPlayTime();
+  const {
+    durationString,
+    ref,
+    playBackString,
+    duration,
+    currentPlayBackTime,
+    setCurrentPlayBackTime,
+  } = useCurrentPlayTime();
 
   if (!activeSong) return null;
 
   function handleValueChange({ value }: { value: number[] }) {
     console.log(value);
-    if (currentHowl) {
-      currentHowl.seek(value.at(0));
+    if (currentHowl && value !== undefined) {
+      currentHowl.seek(value[0]);
+      console.log(currentHowl.playing());
+      updatePlayBack({ ref, currentHowl, setter: setCurrentPlayBackTime });
     }
   }
   function handleVolumeChange({ value }: { value: number[] }) {
@@ -55,10 +66,12 @@ const ActivelyPlayinTack = () => {
   return (
     <HStack
       h={"fit"}
+      flex={1}
       px={5}
       bg={"black"}
       display={"flex"}
       color={"white"}
+      zIndex={1000}
       alignItems={"center"}
     >
       <HStack gap={4} align={"center"}>
@@ -104,7 +117,13 @@ const ActivelyPlayinTack = () => {
         </IconWithTooltip>
       </HStack>
       <Spacer />
-      <Stack display={"flex"} alignItems={"center"} gap={0}>
+      <Stack
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        gap={0}
+        h={"full"}
+      >
         <HStack gap={4} mb={1}>
           <IconWithTooltip tooltipText="Shuffle">
             <Box as={PiShuffle} boxSize={6} cursor={"pointer"} />
@@ -126,7 +145,7 @@ const ActivelyPlayinTack = () => {
             />
           </IconWithTooltip>
         </HStack>
-        <HStack>
+        <HStack gap={2}>
           <Text textStyle={"xs"}>{playBackString}</Text>
           <Slider.Root
             w={"md"}
@@ -166,7 +185,12 @@ const ActivelyPlayinTack = () => {
       <Spacer />
       <HStack gap={3} mr={2}>
         <IconWithTooltip tooltipText="Show Queue">
-          <HiOutlineQueueList size={18} />
+          <Box
+            as={HiOutlineQueueList}
+            boxSize={5}
+            color={isShowingQueue ? "green.600" : "white"}
+            onClick={() => setIsShowingQueue((cur) => !cur)}
+          />
         </IconWithTooltip>
         <HStack>
           <IconWithTooltip tooltipText="mute">

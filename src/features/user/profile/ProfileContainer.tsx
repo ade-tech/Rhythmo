@@ -10,7 +10,7 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { HiPencil } from "react-icons/hi";
+import { HiLogout, HiPencil } from "react-icons/hi";
 import { RxTimer } from "react-icons/rx";
 
 const ProfileContainer = () => {
@@ -41,8 +41,8 @@ const ProfileContainer = () => {
         zIndex={10}
       >
         <Avatar.Root h={"10rem"} w={"10rem"} shape={"full"}>
-          <Avatar.Fallback>
-            <Image src="/musicfallback.png" />
+          <Avatar.Fallback rounded={"full"}>
+            <Image src="/musicfallback.png" rounded={"full"} />
           </Avatar.Fallback>
           <Avatar.Image
             shadow={"lg"}
@@ -90,6 +90,20 @@ const ProfileContainer = () => {
           >
             <HiPencil />
             Edit Profile
+          </Button>
+          <Button
+            mt={3}
+            variant={"solid"}
+            rounded={"full"}
+            bg={"red.600"}
+            color={"white"}
+            _hover={{
+              bg: "white",
+              color: "black",
+            }}
+          >
+            <HiLogout />
+            Logout
           </Button>
         </HStack>
         <Stack gap={0} mt={5}>

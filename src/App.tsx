@@ -24,8 +24,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AudioContextProvider>
-        <OpenSongProvider>
+      <OpenSongProvider>
+        <AudioContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />
           <Routes>
             <Route path="/" element={<Home />}>
@@ -39,8 +39,8 @@ function App() {
               <Route path="/profile" element={<ProfileContainer />} />
             </Route>
           </Routes>
-        </OpenSongProvider>
-      </AudioContextProvider>
+        </AudioContextProvider>
+      </OpenSongProvider>
     </QueryClientProvider>
   );
 }

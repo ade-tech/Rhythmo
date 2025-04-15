@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 
 export interface SongQueryType {
   data: Song;
-  queue: Song[];
+  queue?: Song[];
 }
 
 export async function fetchSongs(): Promise<Song[]> {

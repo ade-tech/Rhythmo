@@ -30,7 +30,6 @@ export function SongContainer() {
   if (!isOpen) return null;
   if (!activeSong) return null;
 
-  console.log(data, activeSong.artist);
   return (
     <Stack
       ref={ref}

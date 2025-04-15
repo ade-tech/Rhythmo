@@ -44,7 +44,7 @@ export function AlbumContainer() {
       >
         <Avatar.Root h={"10rem"} w={"10rem"} shape={"full"} shadow={"md"}>
           <Avatar.Fallback>
-            <Image src="/musicfallback.png" />
+            <Image src="/musicfallback.png" rounded={"full"} />
           </Avatar.Fallback>
           <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png" />
         </Avatar.Root>
