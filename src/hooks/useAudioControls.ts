@@ -1,15 +1,14 @@
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { Howl, Howler } from "howler";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SongQueryType } from "@/services/songsApi";
-import { Song } from "@/features/tracks/songType";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
   const nextSong = useNextSong();
   const {
-    state: { activeSong, currentHowl },
+    state: { activeSong, currentHowl, isLoopingSong },
     setCurrentHowl,
     setCurrentQueue,
     setAudioStatus,
@@ -19,7 +18,7 @@ export function usePlayMusic() {
   return ({ data, queue }: SongQueryType) => {
     console.log(data, queue);
     setCurrentSong(data);
-    setCurrentQueue(queue);
+    if (queue && queue !== undefined) setCurrentQueue(queue);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
       setAudioStatus("playing");
@@ -27,20 +26,21 @@ export function usePlayMusic() {
     } else {
       currentHowl?.stop();
     }
-    const audioUrl = queue[0].audio_url;
-    console.log(audioUrl);
+    const audioUrl = data.audio_url;
     const audio = new Howl({
       src: [audioUrl],
       html5: true,
       onload: () => setAudioStatus("playing"),
       onloaderror: () => {
-        console.log("Crsahed");
+        console.log("Crashed");
         audio.pause();
         setAudioStatus("idle");
       },
       onend: () => {
         console.log("ended");
-        nextSong(queue);
+        if (!isLoopingSong) {
+          nextSong();
+        }
       },
     });
     setAudioStatus("loading");
@@ -86,53 +86,45 @@ type currentTimeType = {
   durationString: string;
   playBackString: string;
   duration: number;
+  ref: React.RefObject<number | null>;
   currentPlayBackTime: number;
   setCurrentPlayBackTime: React.Dispatch<React.SetStateAction<number>>;
 };
+
+function formatNumberTime(number: number): string {
+  const string = `${Math.floor(number / 60)}:${
+    number % 60 < 10 ? `0${Math.floor(number % 60)}` : Math.floor(number % 60)
+  }`;
+  return string;
+}
 
 export function useCurrentPlayTime(): currentTimeType {
   const {
     state: { currentHowl },
   } = useCurrentMusic();
   const duration = Math.ceil(currentHowl?.duration() ?? 0);
-  const animationRef = useRef<number | undefined>(undefined);
+  const animationRef = useRef<number | null>(null);
   const [currentPlayBackTime, setCurrentPlayBackTime] = useState<number>(0);
 
-  const durationString = `${Math.floor(duration / 60)}:${
-    duration % 60 < 10 ? `0${duration % 60}` : duration % 60
-  }`;
-  const playBackString = `${Math.floor(currentPlayBackTime / 60)}:${
-    currentPlayBackTime % 60 < 10
-      ? `0${currentPlayBackTime % 60}`
-      : currentPlayBackTime % 60
-  }`;
+  const durationString = formatNumberTime(duration);
+  const playBackString = formatNumberTime(currentPlayBackTime);
 
   useEffect(() => {
     if (!currentHowl) return;
-    function updateTime() {
-      const seekTime = (currentHowl?.seek() as number) || 0;
-      setCurrentPlayBackTime(Math.floor(seekTime));
+    console.log(currentHowl);
 
-      if (currentHowl?.playing()) {
-        animationRef.current = requestAnimationFrame(updateTime);
-      }
-    }
-
-    const onPlay = () => {
-      animationRef.current = requestAnimationFrame(updateTime);
-    };
-    const onSeek = () => {
-      animationRef.current = requestAnimationFrame(updateTime);
-    };
-    currentHowl.on("play", onPlay);
-    currentHowl.on("seek", onSeek);
+    currentHowl.on("play", () =>
+      updatePlayBack({
+        ref: animationRef,
+        currentHowl,
+        setter: setCurrentPlayBackTime,
+      })
+    );
 
     return () => {
-      if (animationRef.current !== undefined) {
+      if (animationRef.current !== null) {
         cancelAnimationFrame(animationRef.current);
       }
-      currentHowl.off("play", onPlay);
-      currentHowl.off("seek", onSeek);
     };
   }, [currentHowl]);
 
@@ -140,6 +132,7 @@ export function useCurrentPlayTime(): currentTimeType {
     durationString,
     setCurrentPlayBackTime,
     playBackString,
+    ref: animationRef,
     duration,
     currentPlayBackTime,
   };
@@ -153,34 +146,33 @@ export function useVolume() {
   };
 }
 
+type PlayBackHookType = {
+  ref: React.RefObject<number | null>;
+  currentHowl: Howl;
+  setter: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export function updatePlayBack(obj: PlayBackHookType): void {
+  if (!obj.currentHowl) return;
+  console.log("it ran");
+  const playBackTime = (obj.currentHowl.seek() as number) ?? 0;
+  obj.setter(playBackTime);
+
+  if (obj.currentHowl.playing()) {
+    obj.ref.current = requestAnimationFrame(() => updatePlayBack(obj));
+  }
+}
+
 export function useNextSong() {
-  const { setIsOpen } = useIsSongOpen();
-  const { setCurrentHowl, setCurrentQueue, setAudioStatus, setCurrentSong } =
-    useCurrentMusic();
-  return (activeQueue: Song[]) => {
-    console.log("active queue now is :", activeQueue);
-    if (activeQueue === undefined || activeQueue.length === 0) return;
-    const [first, ...rest] = activeQueue as [Song, ...Song[]];
-    const newQueue = [...rest, first];
+  const {
+    state: { activeQueue, activeSong },
+  } = useCurrentMusic();
 
-    console.log(activeQueue, newQueue);
-    setCurrentQueue(newQueue);
-    setCurrentSong(activeQueue[1]);
-
-    const audioUrl = activeQueue[1].audio_url;
-    const audio = new Howl({
-      src: [audioUrl],
-      html5: true,
-      onload: () => setAudioStatus("playing"),
-      onloaderror: () => {
-        console.log("Crsahed");
-        audio.stop();
-        setAudioStatus("idle");
-      },
-    });
-    setAudioStatus("loading");
-    audio.play();
-    setIsOpen(true);
-    setCurrentHowl(audio);
+  return () => {
+    const currentIndex = activeQueue?.findIndex(
+      (song) => song.id === activeSong?.id
+    );
+    console.log(activeSong);
+    console.log(currentIndex);
   };
 }

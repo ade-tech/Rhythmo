@@ -72,7 +72,7 @@ export function QueueContainer() {
           <Text fontWeight={"bold"} mb={2}>
             Now Playing
           </Text>
-          <QueueItem song={activeSong} />
+          <QueueItem song={activeSong} textColor="green.600" />
         </Stack>
         <Stack px={4} mt={5}>
           <Text fontWeight={"bold"} mb={2}>

@@ -4,7 +4,13 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { Song } from "./songType";
 
-const QueueItem = ({ song }: { song: Song }) => {
+const QueueItem = ({
+  song,
+  textColor = "white",
+}: {
+  song: Song;
+  textColor?: string;
+}) => {
   return (
     <HStack
       gap={3}
@@ -15,6 +21,7 @@ const QueueItem = ({ song }: { song: Song }) => {
         bg: "gray.800",
         p: 2,
       }}
+      className="group"
     >
       <Avatar.Root shape={"rounded"} size={"2xl"}>
         <Avatar.Fallback name="Adel" />
@@ -24,7 +31,7 @@ const QueueItem = ({ song }: { song: Song }) => {
         <Link to={`track/${song.id}`}>
           <Text
             textStyle={"lg"}
-            color={"white"}
+            color={textColor}
             transitionDuration={"200ms"}
             _hover={{
               textDecoration: "underline",
@@ -50,7 +57,14 @@ const QueueItem = ({ song }: { song: Song }) => {
       </Stack>
       <Spacer />
       <IconWithTooltip tooltipText="More">
-        <Box as={HiDotsHorizontal} boxSize={5} mr={3} color={"gray.400"} />
+        <Box
+          as={HiDotsHorizontal}
+          visibility={"hidden"}
+          _groupHover={{ visibility: "visible" }}
+          boxSize={5}
+          mr={3}
+          color={"gray.400"}
+        />
       </IconWithTooltip>
     </HStack>
   );
