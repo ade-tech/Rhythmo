@@ -2,7 +2,7 @@ import { Flex, Stack } from "@chakra-ui/react";
 import SongContainer from "@/features/tracks/SongContainer";
 import { Outlet } from "react-router-dom";
 import { useIsSongOpen } from "@/contexts/songContext";
-import QueueContainer from "@/features/tracks/queueContainer";
+import QueueContainer from "@/features/tracks/QueueContainer";
 
 export function MainContainer() {
   const { isShowingQueue } = useIsSongOpen();
