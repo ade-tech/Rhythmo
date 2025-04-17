@@ -8,7 +8,6 @@ import {
   Link,
   PinInput,
   Separator,
-  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
@@ -68,21 +67,27 @@ export function LoginContainer() {
           w={"1/3"}
           h={"2/3"}
           px={6}
-          py={5}
+          pt={5}
+          pb={12}
+          pos={"relative"}
           display={"flex"}
-          justifyContent={"center"}
+          justifyContent={"flex-start"}
           alignItems={"center"}
           flexDirection={"column"}
           gap={3}
         >
-          <form className="flex w-full flex-col items-center gap-3">
+          <Text
+            fontWeight={"bold"}
+            textStyle={"3xl"}
+            justifySelf={"flex-start"}
+            display={page === 1 ? "block" : "none"}
+            mt={5}
+          >
+            Sign in start Listening!
+          </Text>
+          <form className="flex w-full h-full flex-col items-center justify-center gap-3">
             {page === 1 && (
               <>
-                <Text fontWeight={"bold"} textStyle={"3xl"} mt={5}>
-                  Sign in start Listening!
-                </Text>
-                <Spacer />
-
                 <Field.Root
                   required
                   alignItems={"center"}
@@ -153,13 +158,15 @@ export function LoginContainer() {
                   color={"white"}
                   boxSize={8}
                   p={1.5}
+                  pos={"absolute"}
+                  top={5}
                   borderWidth="1px"
                   alignSelf={"flex-start"}
                   onClick={() => {
                     setSearchParams({ page: "1" });
                   }}
                 />
-                <Box mt={10}>
+                <Box>
                   <Text
                     textStyle={"3xl"}
                     fontWeight={"bold"}
@@ -227,8 +234,13 @@ export function LoginContainer() {
               </>
             )}
           </form>
-          <Spacer />
-          <Text textStyle={"xs"} fontWeight={"light"} color={"gray.500"}>
+          <Text
+            textStyle={"xs"}
+            fontWeight={"light"}
+            pos={"absolute"}
+            bottom={4}
+            color={"gray.500"}
+          >
             We won't share your details <Link href="#">Our Privacy policy</Link>
           </Text>
         </Box>
