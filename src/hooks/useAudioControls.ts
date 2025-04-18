@@ -3,6 +3,7 @@ import { useIsSongOpen } from "@/contexts/songContext";
 import { Howl, Howler } from "howler";
 import React, { useEffect, useRef, useState } from "react";
 import { SongQueryType } from "@/services/songsApi";
+import { setMediaSessionMetadata } from "./useMediaSession";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
@@ -16,12 +17,21 @@ export function usePlayMusic() {
   } = useCurrentMusic();
 
   return ({ data, queue }: SongQueryType) => {
-    console.log(data, queue);
     setCurrentSong(data);
     if (queue && queue !== undefined) setCurrentQueue(queue);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
       setAudioStatus("playing");
+      setMediaSessionMetadata(
+        {
+          title: data.title,
+          artist: data.artist,
+          artwork: [{ src: data.cover_url, type: "image/jpeg" }],
+        },
+        currentHowl,
+        setAudioStatus
+      );
+
       return;
     } else {
       currentHowl?.stop();
@@ -38,6 +48,7 @@ export function usePlayMusic() {
       },
       onend: () => {
         console.log("ended");
+        setAudioStatus("idle");
         if (!isLoopingSong) {
           nextSong();
         }
@@ -48,6 +59,15 @@ export function usePlayMusic() {
     audio.play();
     setIsOpen(true);
     setCurrentHowl(audio);
+    setMediaSessionMetadata(
+      {
+        title: data.title,
+        artist: data.artist,
+        artwork: [{ src: data.cover_url, type: "image/jpeg" }],
+      },
+      audio,
+      setAudioStatus
+    );
   };
 }
 
@@ -154,7 +174,6 @@ type PlayBackHookType = {
 
 export function updatePlayBack(obj: PlayBackHookType): void {
   if (!obj.currentHowl) return;
-  console.log("it ran");
   const playBackTime = (obj.currentHowl.seek() as number) ?? 0;
   obj.setter(playBackTime);
 
