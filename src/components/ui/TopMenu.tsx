@@ -1,5 +1,5 @@
 import {
-  Avatar,
+  // Avatar,
   Box,
   Button,
   Flex,
@@ -7,13 +7,15 @@ import {
   Image,
   Input,
   InputGroup,
+  Separator,
   Text,
 } from "@chakra-ui/react";
 import { Tooltip } from "./tooltip";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
-import { MdOutlineNotifications } from "react-icons/md";
 import { Link } from "react-router-dom";
+// import { MdOutlineNotifications } from "react-icons/md";
+// import { Link } from "react-router-dom";
 
 export function TopMenu() {
   return (
@@ -68,7 +70,7 @@ export function TopMenu() {
             />
           </InputGroup>
         </HStack>
-        <HStack gap={4}>
+        {/* <HStack gap={4}>
           <Button
             variant={"solid"}
             color={"gray.900"}
@@ -82,6 +84,19 @@ export function TopMenu() {
             <Avatar.Root colorPalette={"green"}>
               <Avatar.Fallback name="Dev Abdone" />
             </Avatar.Root>
+          </Link>
+        </HStack> */}
+        <HStack gap={4}>
+          <Link to={"/login"}>
+            <Button variant={"ghost"} rounded={"full"} colorPalette={"gray"}>
+              Start Listening
+            </Button>
+          </Link>
+          <Separator orientation={"vertical"} height={"4"} mr={2} />
+          <Link to={"/login/artist"}>
+            <Button rounded={"full"} color={"gray.950"} bg={"white"}>
+              Become an Artist
+            </Button>
           </Link>
         </HStack>
       </Flex>

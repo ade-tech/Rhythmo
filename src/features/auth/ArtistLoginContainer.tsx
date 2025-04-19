@@ -20,7 +20,7 @@ type Input = {
   otp: string[];
 };
 
-export function LoginContainer() {
+export function ArtistLoginContainer() {
   const {
     register,
     handleSubmit,
@@ -46,7 +46,7 @@ export function LoginContainer() {
       pos={"relative"}
     >
       <Image
-        src="/onboarding.webp"
+        src="/artistOnboard.jpg"
         w={"full"}
         h={"full"}
         filter="blur(10px)"
@@ -83,7 +83,7 @@ export function LoginContainer() {
             display={page === 1 ? "block" : "none"}
             mt={5}
           >
-            Sign in start Listening!
+            Start sharing your music
           </Text>
           <form className="flex w-full h-full flex-col items-center justify-center gap-3">
             {page === 1 && (
@@ -95,7 +95,7 @@ export function LoginContainer() {
                 >
                   <Field.Label w={"2/3"}>
                     Email
-                    <Field.RequiredIndicator color={"green.600"} />
+                    <Field.RequiredIndicator color={"red.600"} />
                   </Field.Label>
                   <Input
                     placeholder="name@domain.com"
@@ -122,7 +122,7 @@ export function LoginContainer() {
                 <Button
                   w={"2/3"}
                   rounded={"full"}
-                  bg={"green.600"}
+                  bg={"red.600"}
                   color={"black"}
                   onClick={async () => {
                     const isValid = await trigger(["email"]);
@@ -225,7 +225,7 @@ export function LoginContainer() {
                     textStyle={"sm"}
                     textAlign={"center"}
                     fontWeight={"bold"}
-                    color={"green.500"}
+                    color={"red.600"}
                     cursor={"pointer"}
                   >
                     Resend Code
@@ -249,4 +249,4 @@ export function LoginContainer() {
   );
 }
 
-export default LoginContainer;
+export default ArtistLoginContainer;
