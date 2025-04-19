@@ -5,7 +5,7 @@ export async function fetchArtist(userID: string): Promise<Artist | undefined> {
   if (!userID) return;
   const { data, error } = await supabase
     .from("artists")
-    .select("* , profile(full_name , nickname)")
+    .select("* , profiles(full_name , nickname)")
     .eq(`user_id`, `${userID}`)
     .single();
 

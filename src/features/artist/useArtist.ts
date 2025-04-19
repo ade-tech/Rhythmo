@@ -13,6 +13,6 @@ export function useFetchArtist(userID: string): ArtistQuery {
     queryFn: ({ queryKey }) => fetchArtist(queryKey[0].split("--")[1]),
     enabled: !!userID,
   });
-
+  console.log(data);
   return { data, isLoading };
 }

@@ -8,12 +8,15 @@ import {
   Link,
   PinInput,
   Separator,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { SubmitHandler, Controller, useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
+import { useSendOTP, useVerifyWithOTP } from "./useOnboarding";
+import { toaster } from "@/components/ui/toaster";
 
 type Input = {
   email: string;
@@ -25,11 +28,25 @@ export function LoginContainer() {
     register,
     handleSubmit,
     control,
+    getValues,
     trigger,
     formState: { errors },
   } = useForm<Input>();
+  const navigate = useNavigate();
+
+  const { mutate: getIn, isPending } = useVerifyWithOTP();
+  const { sendOTP, isPending: isSending } = useSendOTP();
 
   const submitFn: SubmitHandler<Input> = (data) => {
+    getIn(
+      { email: data.email, token: data.otp.join(""), userType: "user" },
+      {
+        onSuccess: () => {
+          navigate("/");
+        },
+        onError: (error) => console.error(error.message),
+      }
+    );
     console.log(data);
   };
 
@@ -76,6 +93,21 @@ export function LoginContainer() {
           flexDirection={"column"}
           gap={3}
         >
+          {isPending && (
+            <Box
+              w={"full"}
+              h={"full"}
+              top={0}
+              pos={"absolute"}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              bg={"blackAlpha.800"}
+              zIndex={10}
+            >
+              <Spinner color={"green.500"} size={"xl"} />
+            </Box>
+          )}
           <Text
             fontWeight={"bold"}
             textStyle={"3xl"}
@@ -124,14 +156,33 @@ export function LoginContainer() {
                   rounded={"full"}
                   bg={"green.600"}
                   color={"black"}
+                  disabled={isSending}
                   onClick={async () => {
                     const isValid = await trigger(["email"]);
+                    const value = getValues().email;
                     if (isValid) {
-                      setSearchParams({ page: "2" });
+                      sendOTP(value, {
+                        onSuccess: () => {
+                          setSearchParams({ page: "2" });
+                          toaster.success({
+                            title: "OTP Sent",
+                            description: "Kindly check your mail for the OTP",
+                          });
+                        },
+                        onError: (error) =>
+                          toaster.error({
+                            title: error.name,
+                            description: error.message,
+                          }),
+                      });
                     }
                   }}
                 >
-                  Next
+                  {isSending ? (
+                    <Spinner color={"gray.950"} size={"md"} />
+                  ) : (
+                    "Next"
+                  )}
                 </Button>
                 <HStack display={"flex"} w={"2/3"}>
                   <Separator variant={"solid"} flex={1} bg={"gray.900"} />
