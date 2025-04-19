@@ -10,7 +10,6 @@ import {
   Separator,
   Spinner,
   Text,
-  Toast,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { SubmitHandler, Controller, useForm } from "react-hook-form";
