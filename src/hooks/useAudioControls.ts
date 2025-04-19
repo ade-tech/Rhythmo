@@ -48,10 +48,11 @@ export function usePlayMusic() {
       },
       onend: () => {
         console.log("ended");
-        setAudioStatus("idle");
         if (!isLoopingSong) {
           nextSong();
+          setAudioStatus("idle");
         }
+        setAudioStatus("playing");
       },
     });
     setAudioStatus("loading");

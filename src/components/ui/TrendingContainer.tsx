@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
 import Filter from "./Filter";
 import TrendingSection from "./TrendingSection";
 import TrendingTopItems from "./TrendingTopItems";
@@ -8,12 +8,29 @@ import { IoReload } from "react-icons/io5";
 import { useCurrentMusic } from "@/contexts/audioContext";
 
 const TrendingContainer = () => {
-  const { data, isLoading } = useFetchSongs();
+  const { data, isLoading, error } = useFetchSongs();
   const {
     state: { activeSong },
   } = useCurrentMusic();
 
-  if (!isLoading && (!data || !data?.length))
+  if (!isLoading && !error && (!data || !data?.length))
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        flexDir={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Image src="/musicFilled.svg" w={32} />
+        <Text textStyle={"5xl"} fontWeight={"semibold"} color={"gray.400"}>
+          No songs yet
+        </Text>
+        <Text mt={2}>When songs drop, they’ll show up here. Stay tuned.</Text>
+      </Box>
+    );
+  if (!isLoading && error && (!data || !data?.length))
     return (
       <Box
         w={"full"}

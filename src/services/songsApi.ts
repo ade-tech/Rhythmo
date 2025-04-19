@@ -8,7 +8,7 @@ export interface SongQueryType {
 
 export async function fetchSongs(): Promise<Song[]> {
   const { data, error } = await supabase.from("songs").select("*");
-  if (error instanceof Error) throw new Error(error.message);
+  if (error) throw new Error(error.message);
 
   return data as Song[];
 }
@@ -36,6 +36,6 @@ export async function fetchSong(id: string): Promise<SongQueryType> {
   const queue = [...firstItem, ...others];
 
   if (queueError) throw new Error(queueError.message);
-  if (error instanceof Error) throw new Error(error.message);
+  if (error) throw new Error(error.message);
   return { data, queue };
 }

@@ -26,7 +26,7 @@ export function SongContainer() {
   } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useFetchArtist(activeSong?.artist_id ?? "");
-
+  console.log(data, activeSong);
   if (!isOpen) return null;
   if (!activeSong) return null;
 
@@ -379,42 +379,49 @@ export function SongContainer() {
             Open queue
           </Text>
         </HStack>
-        <HStack gap={4} align={"center"} w={"full"}>
-          <Avatar.Root shape={"rounded"} size={"2xl"}>
-            <Avatar.Fallback>
-              <Image src="/musicfallback.png" />
-            </Avatar.Fallback>
-            <Avatar.Image src={(activeQueue as Song[])[1]?.cover_url} />
-          </Avatar.Root>
-          <Stack gap={0}>
-            <Link to={`track/${(activeQueue as Song[])[1].id}`}>
-              <Text
-                textStyle={"md"}
-                color={"white"}
-                transitionDuration={"200ms"}
-                _hover={{
-                  textDecoration: "underline",
-                  transition: "ease-in-out",
-                }}
-                fontWeight={"bold"}
-              >
-                {(activeQueue as Song[])[1].title.toUpperCase()}
-              </Text>
-            </Link>
-            <Text
-              textStyle={"sm"}
-              color={"gray.400"}
-              transitionDuration={"200ms"}
-              _hover={{
-                textDecoration: "underline",
-                transition: "ease-in-out",
-              }}
-              fontWeight={"medium"}
-            >
-              {(activeQueue as Song[])[1].artist}
-            </Text>
-          </Stack>
-        </HStack>
+        {Array.isArray(activeQueue) && activeQueue?.length > 1 ? (
+          <>
+            {" "}
+            <HStack gap={4} align={"center"} w={"full"}>
+              <Avatar.Root shape={"rounded"} size={"2xl"}>
+                <Avatar.Fallback>
+                  <Image src="/musicfallback.png" />
+                </Avatar.Fallback>
+                <Avatar.Image src={(activeQueue as Song[])[1]?.cover_url} />
+              </Avatar.Root>
+              <Stack gap={0}>
+                <Link to={`track/${(activeQueue as Song[])[1]?.id}`}>
+                  <Text
+                    textStyle={"md"}
+                    color={"white"}
+                    transitionDuration={"200ms"}
+                    _hover={{
+                      textDecoration: "underline",
+                      transition: "ease-in-out",
+                    }}
+                    fontWeight={"bold"}
+                  >
+                    {(activeQueue as Song[])[1]?.title.toUpperCase()}
+                  </Text>
+                </Link>
+                <Text
+                  textStyle={"sm"}
+                  color={"gray.400"}
+                  transitionDuration={"200ms"}
+                  _hover={{
+                    textDecoration: "underline",
+                    transition: "ease-in-out",
+                  }}
+                  fontWeight={"medium"}
+                >
+                  {(activeQueue as Song[])[1]?.artist}
+                </Text>
+              </Stack>
+            </HStack>
+          </>
+        ) : (
+          <Text>Queue is empty</Text>
+        )}
       </Card.Root>
     </Stack>
   );
