@@ -41,7 +41,8 @@ export function LoginContainer() {
     getIn(
       { email: data.email, token: data.otp.join(""), userType: "user" },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          console.log(data);
           navigate("/");
         },
         onError: (error) => console.error(error.message),

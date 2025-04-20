@@ -22,13 +22,12 @@ export async function verifyWithOTP(
   if (verificationError)
     throw new Error("we could not confirm your code, try again.");
 
-  let { data: profileInfo, error: profileInfoError } = await supabase
+  let { data: profileInfo } = await supabase
     .from("profiles")
     .select("*")
     .eq("user_email", email)
     .single<Profile>();
-
-  if (profileInfoError) throw new Error("Could not get your profile");
+  console.log(profileInfo);
 
   if (profileInfo && profileInfo.user_type !== userType) {
     await supabase.auth.signOut();
@@ -37,7 +36,7 @@ export async function verifyWithOTP(
     );
   }
 
-  if (profileInfo?.user_type === userType) {
+  if (profileInfo === null || profileInfo?.user_type === userType) {
     return {
       data: data.user,
       profileInfo: profileInfo || "empty",
