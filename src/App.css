@@ -33,10 +33,6 @@
   display: none;
 }
 
-.fadeElementIn {
-  animation: fadeIn 0.5s ease-out fowards;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -55,7 +51,7 @@
   }
   to {
     opacity: 0;
-    transform: translateX(150px);
+    transform: translateX(-150px);
   }
 }
 
