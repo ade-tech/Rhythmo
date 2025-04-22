@@ -14,6 +14,7 @@ import { AudioContextProvider } from "./contexts/audioContext";
 import OpenSongProvider from "./contexts/songContext";
 import LoginContainer from "./features/auth/LoginContainer";
 import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
+import UserOnboarding from "./features/Onboarding/UserOnboarding";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ function App() {
             </Route>
             <Route path="/login" element={<LoginContainer />} />
             <Route path="/login/artist" element={<ArtistLoginContainer />} />
+            <Route path="/user/onboard" element={<UserOnboarding />} />
           </Routes>
         </AudioContextProvider>
       </OpenSongProvider>
