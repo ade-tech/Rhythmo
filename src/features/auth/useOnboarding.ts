@@ -8,6 +8,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Profile } from "./userType";
 import { useNavigate } from "react-router-dom";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 type verifyOtpType = {
   email: string;
   token: string;
@@ -35,6 +36,7 @@ export function useSendOTP() {
 
 export function useCreateProfile() {
   const queryClient = useQueryClient();
+  const { currentUser } = useCurrentUser();
   const {
     mutate: createProfile,
     isPending,
@@ -42,9 +44,9 @@ export function useCreateProfile() {
   } = useMutation({
     mutationFn: (obj: Profile) => createUserProfile(obj),
     onSuccess: (data) => {
-      queryClient.setQueryData(["rhythmo-currentUser"], (oldData: any) => {
-        console.log(oldData);
-        return { ...oldData, profileInfo: data };
+      queryClient.setQueryData(["rhythmo-currentUser"], {
+        data: currentUser?.data,
+        profileInfo: data,
       });
     },
   });
