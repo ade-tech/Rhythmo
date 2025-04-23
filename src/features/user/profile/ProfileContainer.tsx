@@ -1,9 +1,10 @@
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useLogout } from "@/features/auth/useOnboarding";
 import {
   Avatar,
   Box,
   Button,
   HStack,
-  Image,
   Spacer,
   Span,
   Stack,
@@ -11,9 +12,33 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { HiLogout, HiPencil } from "react-icons/hi";
+import { PiEmptyBold } from "react-icons/pi";
 import { RxTimer } from "react-icons/rx";
 
 const ProfileContainer = () => {
+  const { currentUser } = useCurrentUser();
+  const { signOut, isPending, error } = useLogout();
+
+  if (!currentUser || error || typeof currentUser.profileInfo === "string")
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        flexDir={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Box as={PiEmptyBold} color={"white"} boxSize={20} />
+        <Text textStyle={"4xl"} fontWeight={"semibold"}>
+          We could not get your profile...
+        </Text>
+        <Text mt={2} fontWeight={"light"}>
+          Sign in into rhythymo to get a more customized listening
+        </Text>
+      </Box>
+    );
+
   return (
     <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
       <Box
@@ -23,7 +48,7 @@ const ProfileContainer = () => {
         zIndex={0}
         top={0}
         bgGradient={"to-b"}
-        gradientFrom={"blue.600"}
+        gradientFrom={"green.600"}
         gradientTo={"gray.950"}
         position={"absolute"}
         roundedTop={"md"}
@@ -41,12 +66,14 @@ const ProfileContainer = () => {
         zIndex={10}
       >
         <Avatar.Root h={"10rem"} w={"10rem"} shape={"full"}>
-          <Avatar.Fallback rounded={"full"}>
-            <Image src="/musicfallback.png" rounded={"full"} />
-          </Avatar.Fallback>
+          <Avatar.Fallback
+            rounded={"full"}
+            textStyle={"6xl"}
+            name={currentUser.profileInfo.nickname}
+          />
           <Avatar.Image
             shadow={"lg"}
-            src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png"
+            src={currentUser.profileInfo.avatar_url}
           />
         </Avatar.Root>
         <Stack
@@ -58,7 +85,7 @@ const ProfileContainer = () => {
         >
           <Text>Profile</Text>
           <Text textStyle={"7xl"} lineHeight={1} fontWeight={"black"}>
-            Abdone
+            {currentUser.profileInfo.full_name}
           </Text>
 
           <Text fontWeight={"bold"}>
@@ -101,6 +128,8 @@ const ProfileContainer = () => {
               bg: "white",
               color: "black",
             }}
+            disabled={isPending}
+            onClick={() => signOut()}
           >
             <HiLogout />
             Logout

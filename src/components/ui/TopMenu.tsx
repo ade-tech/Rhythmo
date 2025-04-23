@@ -1,5 +1,5 @@
 import {
-  // Avatar,
+  Avatar,
   Box,
   Button,
   Flex,
@@ -14,10 +14,12 @@ import { Tooltip } from "./tooltip";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
-// import { MdOutlineNotifications } from "react-icons/md";
-// import { Link } from "react-router-dom";
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { MdOutlineNotifications } from "react-icons/md";
 
 export function TopMenu() {
+  const { currentUser } = useCurrentUser();
+  console.log(currentUser);
   return (
     <Box px={10} py={3} h={"fit"} w={"full"}>
       <Flex align={"center"} justifyContent={"space-between"}>
@@ -70,35 +72,41 @@ export function TopMenu() {
             />
           </InputGroup>
         </HStack>
-        {/* <HStack gap={4}>
-          <Button
-            variant={"solid"}
-            color={"gray.900"}
-            bg={"white"}
-            rounded={"full"}
-          >
-            Get Premium
-          </Button>
-          <MdOutlineNotifications size={25} color="white" />
-          <Link to={"/profile"}>
-            <Avatar.Root colorPalette={"green"}>
-              <Avatar.Fallback name="Dev Abdone" />
-            </Avatar.Root>
-          </Link>
-        </HStack> */}
-        <HStack gap={4}>
-          <Link to={"/login"}>
-            <Button variant={"ghost"} rounded={"full"} colorPalette={"gray"}>
-              Start Listening
+        {(!currentUser ||
+          !currentUser.data ||
+          typeof currentUser.profileInfo === "string") && (
+          <HStack gap={4}>
+            <Link to={"/login"}>
+              <Button variant={"ghost"} rounded={"full"} colorPalette={"gray"}>
+                Start Listening
+              </Button>
+            </Link>
+            <Separator orientation={"vertical"} height={"4"} mr={2} />
+            <Link to={"/login/artist"}>
+              <Button rounded={"full"} color={"gray.950"} bg={"white"}>
+                Become an Artist
+              </Button>
+            </Link>
+          </HStack>
+        )}
+        {currentUser && typeof currentUser.profileInfo !== "string" && (
+          <HStack gap={4}>
+            <Button
+              variant={"solid"}
+              color={"gray.900"}
+              bg={"white"}
+              rounded={"full"}
+            >
+              Get Premium
             </Button>
-          </Link>
-          <Separator orientation={"vertical"} height={"4"} mr={2} />
-          <Link to={"/login/artist"}>
-            <Button rounded={"full"} color={"gray.950"} bg={"white"}>
-              Become an Artist
-            </Button>
-          </Link>
-        </HStack>
+            <MdOutlineNotifications size={25} color="white" />
+            <Link to={"/profile"}>
+              <Avatar.Root colorPalette={"green"}>
+                <Avatar.Fallback name={currentUser.profileInfo.full_name} />
+              </Avatar.Root>
+            </Link>
+          </HStack>
+        )}
       </Flex>
     </Box>
   );

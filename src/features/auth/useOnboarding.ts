@@ -1,5 +1,13 @@
-import { verifyWithOTP, sendOTP as SendOTPApi } from "@/services/onboardingApi";
-import { useMutation } from "@tanstack/react-query";
+import {
+  verifyWithOTP,
+  sendOTP as SendOTPApi,
+  createUserProfile,
+  getCurrentUser,
+  logOut,
+} from "@/services/onboardingApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Profile } from "./userType";
+import { useNavigate } from "react-router-dom";
 type verifyOtpType = {
   email: string;
   token: string;
@@ -23,4 +31,50 @@ export function useSendOTP() {
     mutationFn: (email: string) => SendOTPApi(email),
   });
   return { sendOTP, error, isPending };
+}
+
+export function useCreateProfile() {
+  const queryClient = useQueryClient();
+  const {
+    mutate: createProfile,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: (obj: Profile) => createUserProfile(obj),
+    onSuccess: (data) => {
+      queryClient.setQueryData(["rhythmo-currentUser"], (oldData: any) => {
+        console.log(oldData);
+        return { ...oldData, profileInfo: data };
+      });
+    },
+  });
+
+  return { createProfile, isPending, error };
+}
+
+export function useGetCurrentUser() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["rhythmo-currentUser"],
+    queryFn: getCurrentUser,
+  });
+  return { data: data?.data, profileInfo: data?.profileInfo, isLoading };
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const {
+    mutate: signOut,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: logOut,
+    onSuccess: () => {
+      queryClient.setQueryData(["rhythmo-currentUser"], null);
+      queryClient.invalidateQueries({ queryKey: ["rhythmo-currentUser"] });
+      navigate("/");
+    },
+  });
+
+  return { signOut, isPending, error };
 }

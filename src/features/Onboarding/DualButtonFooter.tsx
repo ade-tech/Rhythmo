@@ -9,7 +9,7 @@ type DualButtonProps = {
 
 const DualButtonFooter = (obj: DualButtonProps) => {
   return (
-    <Box w={"full"} display={"flex"} mt={4}>
+    <Box w={"full"} display={"flex"} mt={2}>
       <Button onClick={obj.backAction} colorPalette={"white"} rounded={"full"}>
         <Box as={MdOutlineArrowBack} boxSize={4} />
       </Button>

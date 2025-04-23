@@ -13,3 +13,14 @@ export async function fetchArtist(userID: string): Promise<Artist | undefined> {
   if (!data) throw new Error("Artist not found");
   return data as Artist;
 }
+
+export async function fetchArtists(): Promise<Artist[] | null> {
+  const { data, error } = await supabase
+    .from("artists")
+    .select("* , profiles(full_name , avatar_url, nickname)");
+
+  if (error) throw new Error("could not fetch artists");
+  if (!data) return null;
+
+  return data as Artist[];
+}
