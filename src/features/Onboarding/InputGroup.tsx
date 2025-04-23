@@ -14,6 +14,7 @@ type InputGroupProps = {
   fieldName: "Name" | "Date" | "Artist";
   trigger: UseFormTrigger<OnboardingFormInputs>;
   errors: FieldErrors<OnboardingFormInputs>;
+  validateFn?: (value: string) => boolean | string;
 };
 
 const InputGroup = (obj: InputGroupProps) => {
@@ -30,7 +31,6 @@ const InputGroup = (obj: InputGroupProps) => {
       setIsClosed(true);
       if (obj.Increamental !== undefined)
         obj?.Increamental((cur) => {
-          console.log(cur);
           return cur + 1;
         });
     }, 350);
@@ -65,6 +65,13 @@ const InputGroup = (obj: InputGroupProps) => {
           placeholder={obj?.placeholder}
           {...obj.register(obj.fieldName, {
             required: `${obj.fieldName} field cannot be empty`,
+            validate: (value: string | string[]) => {
+              if (typeof value === "string" && obj.validateFn) {
+                return obj.validateFn(value);
+              } else {
+                return true;
+              }
+            },
           })}
         />
         <Field.ErrorText>{obj.errors[obj.fieldName]?.message}</Field.ErrorText>

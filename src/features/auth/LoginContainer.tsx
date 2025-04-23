@@ -17,6 +17,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useSendOTP, useVerifyWithOTP } from "./useOnboarding";
 import { toaster } from "@/components/ui/toaster";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 
 type Input = {
   email: string;
@@ -33,6 +34,7 @@ export function LoginContainer() {
     formState: { errors },
   } = useForm<Input>();
   const navigate = useNavigate();
+  const { setCurrentUser } = useCurrentUser();
 
   const { mutate: getIn, isPending } = useVerifyWithOTP();
   const { sendOTP, isPending: isSending } = useSendOTP();
@@ -42,8 +44,13 @@ export function LoginContainer() {
       { email: data.email, token: data.otp.join(""), userType: "user" },
       {
         onSuccess: (data) => {
+          setCurrentUser(data);
           console.log(data);
-          navigate("/");
+          if (typeof data?.profileInfo === "string") {
+            navigate("/user/onboard");
+          } else {
+            navigate("/");
+          }
         },
         onError: (error) => console.error(error.message),
       }

@@ -15,6 +15,7 @@ import OpenSongProvider from "./contexts/songContext";
 import LoginContainer from "./features/auth/LoginContainer";
 import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
 import UserOnboarding from "./features/Onboarding/UserOnboarding";
+import { CurrentUserProvider } from "./contexts/currentUserContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,26 +28,28 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <OpenSongProvider>
-        <AudioContextProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route index element={<TrendingContainer />} />
-              <Route path="track/:id" element={<TrackContainer />} />
-              <Route path="album/:id" element={<AlbumContainer />} />
-              <Route path="playlist/:id" element={<PlaylistContainer />} />
-              <Route path="artist/:id" element={<ArtistContainer />} />
-              <Route path="search" element={<GenreContainer />} />
-              <Route path="genre/:id" element={<GenreContainer />} />
-              <Route path="/profile" element={<ProfileContainer />} />
-            </Route>
-            <Route path="/login" element={<LoginContainer />} />
-            <Route path="/login/artist" element={<ArtistLoginContainer />} />
-            <Route path="/user/onboard" element={<UserOnboarding />} />
-          </Routes>
-        </AudioContextProvider>
-      </OpenSongProvider>
+      <CurrentUserProvider>
+        <OpenSongProvider>
+          <AudioContextProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Routes>
+              <Route path="/" element={<Home />}>
+                <Route index element={<TrendingContainer />} />
+                <Route path="track/:id" element={<TrackContainer />} />
+                <Route path="album/:id" element={<AlbumContainer />} />
+                <Route path="playlist/:id" element={<PlaylistContainer />} />
+                <Route path="artist/:id" element={<ArtistContainer />} />
+                <Route path="search" element={<GenreContainer />} />
+                <Route path="genre/:id" element={<GenreContainer />} />
+                <Route path="/profile" element={<ProfileContainer />} />
+              </Route>
+              <Route path="/login" element={<LoginContainer />} />
+              <Route path="/login/artist" element={<ArtistLoginContainer />} />
+              <Route path="/user/onboard" element={<UserOnboarding />} />
+            </Routes>
+          </AudioContextProvider>
+        </OpenSongProvider>
+      </CurrentUserProvider>
     </QueryClientProvider>
   );
 }

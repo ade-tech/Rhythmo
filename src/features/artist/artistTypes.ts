@@ -6,11 +6,10 @@ export type Artist = {
   songs_count: number;
   followers_count: number;
   monthly_plays: number;
-  cover_url: number;
-  image_url: number;
   about: string;
-  profile: {
+  profiles: {
     fullname: string;
     nickname: string;
+    avatar_url: string;
   };
 };
