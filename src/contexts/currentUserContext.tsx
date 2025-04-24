@@ -31,7 +31,7 @@ export function CurrentUserProvider({
     if (data && typeof profileInfo !== "string") {
       setCurrentUser({ data, profileInfo: profileInfo?.at(0) || "empty" });
     }
-    if (!data) {
+    if (data === null || typeof profileInfo === "string") {
       setCurrentUser({
         data: null,
         profileInfo: "empty",

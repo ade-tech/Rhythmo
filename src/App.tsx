@@ -16,6 +16,7 @@ import LoginContainer from "./features/auth/LoginContainer";
 import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
 import UserOnboarding from "./features/Onboarding/UserOnboarding";
 import { CurrentUserProvider } from "./contexts/currentUserContext";
+import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <CurrentUserProvider>
         <OpenSongProvider>
           <AudioContextProvider>
