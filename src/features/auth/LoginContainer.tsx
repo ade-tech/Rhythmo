@@ -18,7 +18,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import { useSendOTP, useVerifyWithOTP } from "./useOnboarding";
 import { toaster } from "@/components/ui/toaster";
 import { useCurrentUser } from "@/contexts/currentUserContext";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 type Input = {
   email: string;
