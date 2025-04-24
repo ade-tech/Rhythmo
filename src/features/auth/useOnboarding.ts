@@ -72,7 +72,10 @@ export function useLogout() {
   } = useMutation({
     mutationFn: logOut,
     onSuccess: () => {
-      queryClient.setQueryData(["rhythmo-currentUser"], null);
+      queryClient.setQueryData(["rhythmo-currentUser"], {
+        data: null,
+        profileInfo: "empty",
+      });
       queryClient.invalidateQueries({ queryKey: ["rhythmo-currentUser"] });
       navigate("/");
     },

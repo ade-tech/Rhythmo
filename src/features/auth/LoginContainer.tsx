@@ -18,6 +18,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import { useSendOTP, useVerifyWithOTP } from "./useOnboarding";
 import { toaster } from "@/components/ui/toaster";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useRef, useState } from "react";
 
 type Input = {
   email: string;
@@ -31,32 +32,53 @@ export function LoginContainer() {
     control,
     getValues,
     trigger,
+    watch,
     formState: { errors },
   } = useForm<Input>();
   const navigate = useNavigate();
   const { setCurrentUser } = useCurrentUser();
+  const emailString = watch("email");
 
   const { mutate: getIn, isPending } = useVerifyWithOTP();
   const { sendOTP, isPending: isSending } = useSendOTP();
+  const [canResendOTP, setCanResendOTP] = useState<boolean>(false);
+  const timeoutID = useRef<number | null>(null);
 
   const submitFn: SubmitHandler<Input> = (data) => {
+    if (!data.email || !data.otp) throw new Error("Empty fields!");
     getIn(
       { email: data.email, token: data.otp.join(""), userType: "user" },
       {
         onSuccess: (data) => {
           setCurrentUser(data);
-          console.log(data);
+          toaster.create({
+            title: "✅ OTP has been verified!",
+          });
           if (typeof data?.profileInfo === "string") {
             navigate("/user/onboard");
           } else {
             navigate("/");
           }
         },
-        onError: (error) => console.error(error.message),
+
+        onError: () => {
+          toaster.create({
+            title: "❌ Wrong code! Try Again",
+          });
+        },
       }
     );
     console.log(data);
   };
+  function resendTimeout() {
+    if (timeoutID.current) {
+      clearTimeout(timeoutID.current);
+      timeoutID.current = null;
+    }
+    timeoutID.current = window.setTimeout(() => {
+      setCanResendOTP(true);
+    }, 300000);
+  }
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page: number = Number(searchParams.get("page")) || 1;
@@ -172,15 +194,14 @@ export function LoginContainer() {
                       sendOTP(value, {
                         onSuccess: () => {
                           setSearchParams({ page: "2" });
-                          toaster.success({
-                            title: "OTP Sent",
-                            description: "Kindly check your mail for the OTP",
+                          toaster.create({
+                            description: "✅ OTP Sent Check your email",
                           });
+                          resendTimeout();
                         },
-                        onError: (error) =>
-                          toaster.error({
-                            title: error.name,
-                            description: error.message,
+                        onError: () =>
+                          toaster.create({
+                            title: "❌ We could not send the Code",
                           }),
                       });
                     }
@@ -225,7 +246,7 @@ export function LoginContainer() {
                     setSearchParams({ page: "1" });
                   }}
                 />
-                <Box>
+                <Box textAlign={"center"}>
                   <Text
                     textStyle={"3xl"}
                     fontWeight={"bold"}
@@ -280,15 +301,33 @@ export function LoginContainer() {
                     Do not share your code with anyone
                   </Text>
 
-                  <Text
+                  <Button
+                    variant={"ghost"}
+                    rounded={"full"}
                     textStyle={"sm"}
                     textAlign={"center"}
                     fontWeight={"bold"}
                     color={"green.500"}
-                    cursor={"pointer"}
+                    disabled={!canResendOTP}
+                    onClick={() => {
+                      setCanResendOTP(false);
+                      sendOTP(emailString, {
+                        onSuccess: () => {
+                          toaster.create({
+                            description: "✅ We've resent the OTP",
+                          });
+                          resendTimeout();
+                        },
+                        onError: () =>
+                          toaster.create({
+                            title: "❌ We could not resend the Code",
+                          }),
+                      });
+                      resendTimeout();
+                    }}
                   >
                     Resend Code
-                  </Text>
+                  </Button>
                 </Box>
               </>
             )}
