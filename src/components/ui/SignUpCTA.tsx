@@ -1,0 +1,35 @@
+import { Box, Button, Spacer, Stack, Text } from "@chakra-ui/react";
+
+const SignUpCTA = () => {
+  return (
+    <Box h={20} px={3} pb={3}>
+      <Box
+        bgGradient={"to-l"}
+        h={"full"}
+        gradientTo={"#ce13ac"}
+        gradientFrom={"#67a8f7"}
+        px={4}
+        py={2}
+        display={"flex"}
+        alignItems={"center"}
+        rounded={"sm"}
+      >
+        <Stack gap={0}>
+          <Text textStyle={"lg"} fontWeight={"semibold"} lineHeight={1.2}>
+            Preview of Rhythmo
+          </Text>
+          <Text lineHeight={1} textStyle={"sm"}>
+            Sign up to get unlimited songs and Recitations with occasional ads.
+            No credit card required
+          </Text>
+        </Stack>
+        <Spacer />
+        <Button rounded={"full"} size={"sm"}>
+          Sign Up
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export default SignUpCTA;
