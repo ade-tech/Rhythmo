@@ -3,12 +3,33 @@ import LibraryHeader from "./LibraryHeader";
 import PlaylistShort from "@/components/ui/PlaylistShort";
 import ArtistShort from "@/components/ui/ArtistShort";
 import Filter from "@/components/ui/Filter";
+import EmptyLibrary from "./EmptyLibrary";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 
 export function LibraryContainer() {
+  const { currentUser } = useCurrentUser();
+
+  if (
+    typeof currentUser?.profileInfo === "string" ||
+    !currentUser?.profileInfo.avatar_url
+  )
+    return (
+      <Box
+        className="bg-darker-overlay"
+        h={"full"}
+        rounded={"lg"}
+        pt={5}
+        px={5}
+      >
+        <LibraryHeader />
+        <EmptyLibrary />
+      </Box>
+    );
   return (
     <Box className="bg-darker-overlay" h={"full"} rounded={"lg"} pt={5} px={5}>
       <LibraryHeader />
       <Filter filterValues={["Artists", "Albums", "Playlist"]} />
+
       <PlaylistShort
         type="album"
         title="Motigbana"
