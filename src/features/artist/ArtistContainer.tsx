@@ -1,4 +1,5 @@
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
+
 import {
   Avatar,
   Box,
@@ -11,11 +12,71 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { HiPlayCircle } from "react-icons/hi2";
-import { IoList } from "react-icons/io5";
+import { IoList, IoReload } from "react-icons/io5";
 import { MdVerified } from "react-icons/md";
 import { RxTimer } from "react-icons/rx";
+import { useParams } from "react-router-dom";
+import { useFetchArtist } from "./useArtist";
+import { HiOutlineStatusOffline } from "react-icons/hi";
+import TotalEmpty from "@/components/ui/TotalEmpty";
 
 export function AlbumContainer() {
+  const { id } = useParams();
+  const { data, isLoading } = useFetchArtist(id ?? "");
+
+  console.log(data);
+  if (isLoading)
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
+      </Box>
+    );
+  if (!isLoading && (!data || !Object.entries(data)?.length))
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        flexDir={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Box
+          as={HiOutlineStatusOffline}
+          boxSize={36}
+          color={"gray.500"}
+          mb={2}
+        />
+        <Text mb={1} textStyle={"6xl"} fontWeight={"medium"} color={"gray.500"}>
+          You are Offline
+        </Text>
+        <Text textAlign={"center"} lineHeight={"1.3"} color={"gray.300"}>
+          Rythmo could not get your music kindly check your <br />
+          internet connection
+        </Text>
+        <Button
+          rounded={"full"}
+          bg={"green.600"}
+          textAlign={"center"}
+          fontWeight={"bold"}
+          color={"black"}
+          mt={4}
+          onClick={() => window.location.reload()}
+        >
+          <IoReload />
+          Try Again
+        </Button>
+      </Box>
+    );
+
+  if (data === null || data === undefined) return <TotalEmpty />;
+
   return (
     <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
       <Box
@@ -46,7 +107,7 @@ export function AlbumContainer() {
           <Avatar.Fallback>
             <Image src="/musicfallback.png" rounded={"full"} />
           </Avatar.Fallback>
-          <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png" />
+          <Avatar.Image src={data.profiles.avatar_url} rounded={"full"} />
         </Avatar.Root>
         <Stack
           color={"white"}
@@ -60,11 +121,11 @@ export function AlbumContainer() {
             <MdVerified color="#ffffff" /> Verified Artist
           </Text>
           <Text textStyle={"7xl"} lineHeight={"1"} fontWeight={"black"}>
-            Rybeena
+            {data.profiles.nickname}
           </Text>
 
           <Text fontWeight={"bold"} mt={1}>
-            21,345,232,212 Monthly Listeners
+            {data.monthly_plays.toLocaleString()} Monthly Listeners
           </Text>
         </Stack>
       </Box>
@@ -121,7 +182,7 @@ export function AlbumContainer() {
               <Table.Cell borderBottom={"none"}>1</Table.Cell>
               <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
                 <Avatar.Root shape={"rounded"} size={"sm"}>
-                  <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg" />
+                  <Avatar.Image src={data.profiles.avatar_url} />
                 </Avatar.Root>
                 <Stack gap={0}>
                   <Text textStyle={"md"} fontWeight={"bold"} lineHeight={1.1}>

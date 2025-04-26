@@ -2,7 +2,7 @@ import { type Song } from "@/features/tracks/songType";
 import { supabase } from "./supabase";
 
 export interface SongQueryType {
-  data: Song;
+  data: Song | null;
   queue?: Song[];
 }
 

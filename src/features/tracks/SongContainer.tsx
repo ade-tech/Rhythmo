@@ -49,7 +49,7 @@ export function SongContainer() {
         bg={"gray.950"}
         pt={4}
         pb={3}
-        zIndex={1000000}
+        zIndex={100}
       >
         <Link to={`track/${activeSong.id}`}>
           <Text

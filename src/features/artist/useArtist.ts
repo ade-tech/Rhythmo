@@ -8,7 +8,7 @@ interface ArtistQuery {
 }
 
 interface ArtistsQuery {
-  data: Artist[] | null;
+  data: Artist[] | undefined;
   isLoading: boolean;
 }
 
@@ -27,5 +27,5 @@ export function useFetchArtists(): ArtistsQuery {
     queryFn: fetchArtists,
   });
 
-  return { data: data || null, isLoading };
+  return { data: data || undefined, isLoading };
 }

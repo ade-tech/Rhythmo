@@ -1,19 +1,17 @@
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
-import { Song } from "@/features/tracks/songType";
 import { Link } from "react-router-dom";
 import { PlayPause } from "./PlayPause";
 import { useFetchSong } from "@/features/tracks/useSong";
-import SongDialog from "./SongDialog";
-import { useCurrentUser } from "@/contexts/currentUserContext";
+import { Artist } from "@/features/artist/artistTypes";
 
-type songItemProps = {
+type ArtistItemProps = {
   isOpen: boolean;
-  data: Song;
+  data: Artist;
 };
 
-export function SongItem({ isOpen, data }: songItemProps) {
-  const { currentUser } = useCurrentUser();
-  const { data: songs } = useFetchSong(data.id);
+export function ArtistItem({ isOpen, data }: ArtistItemProps) {
+  const { data: songs } = useFetchSong(data.user_id);
+  console.log(data);
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}
@@ -24,35 +22,29 @@ export function SongItem({ isOpen, data }: songItemProps) {
       _hover={{ bg: "gray.800" }}
       py={3}
       borderRadius={"md"}
+      mb={5}
     >
       <Stack pos={"relative"} className="group">
-        <Image src={data.cover_url} borderRadius={"md"} />
-        <SongDialog
-          triggerButton={<PlayPause data={currentUser ? songs! : null} />}
-          triggerSongImage={data.cover_url}
-          triggerSongColor={data.prominent_color}
-        />
+        <Image src={data.profiles.avatar_url} borderRadius={"full"} />
+        <PlayPause data={songs!} />
       </Stack>
       <Stack gap={0} flexShrink={0}>
-        <Link to={`/track/${data.id}`}>
+        <Link to={`/artist/${data.user_id}`}>
           <Text
             fontWeight={"bold"}
+            textAlign={"center"}
             textStyle={"lg"}
             _hover={{ textDecoration: "underline" }}
           >
-            {data.title}
+            {data.profiles.nickname}
           </Text>
         </Link>
-
-        <Text color={"gray.400"} fontWeight={"semibold"}>
-          {data.artist}
-        </Text>
       </Stack>
     </Stack>
   );
 }
 
-export const SongItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
+export const ArtistItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}
@@ -70,7 +62,7 @@ export const SongItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
         h={"8rem"}
         bg={"gray.800"}
         animation={"pulse"}
-        rounded={"md"}
+        rounded={"full"}
       />
       <Box
         w={"3/4"}
@@ -90,4 +82,4 @@ export const SongItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
-export default SongItem;
+export default ArtistItem;

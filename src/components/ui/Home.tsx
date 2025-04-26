@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Stack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Spacer, Stack } from "@chakra-ui/react";
 import TopMenu from "./TopMenu";
 import LibraryContainer from "@/features/user/library/LibraryContainer";
 import MainContainer from "./MainContainer";
@@ -10,12 +10,13 @@ import { useCurrentUser } from "@/contexts/currentUserContext";
 const Home = () => {
   const { state } = useCurrentMusic();
   const { currentUser } = useCurrentUser();
+
   return (
     <Box bg="black" w="100vw" h="100dvh">
       <Stack w="100vw" h="100dvh">
         <TopMenu />
         <Grid
-          h={state.activeSong ? "75dvh" : "86dvh"}
+          h={state.activeSong ? "75dvh" : !currentUser ? "74dvh" : "86dvh"}
           templateColumns="repeat(4, 1fr)"
           gap={3}
           px={3}
@@ -29,7 +30,10 @@ const Home = () => {
           </GridItem>
         </Grid>
         <ActivelyPlayinTack />
-        {typeof currentUser?.profileInfo === "string" && <SignUpCTA />}
+        <Spacer />
+        {(!currentUser || typeof currentUser?.profileInfo === "string") && (
+          <SignUpCTA />
+        )}
       </Stack>
     </Box>
   );

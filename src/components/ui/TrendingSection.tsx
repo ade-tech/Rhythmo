@@ -4,17 +4,21 @@ import SongItem, { SongItemPreLoader } from "./SongItem";
 import { useEffect, useRef, useState } from "react";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { Song } from "@/features/tracks/songType";
+import { Artist } from "@/features/artist/artistTypes";
+import ArtistItem, { ArtistItemPreLoader } from "./ArtistItem";
 
 type trendingSectionProps = {
-  data: Song[] | undefined;
+  data: Song[] | Artist[] | undefined;
   isLoading: boolean;
   title: string;
+  type?: "song" | "artist";
 };
 
 export function TrendingSection({
   data,
   title,
   isLoading,
+  type = "song",
 }: trendingSectionProps) {
   const { isOpen } = useIsSongOpen();
   const ref = useRef<HTMLDivElement>(null);
@@ -85,9 +89,13 @@ export function TrendingSection({
           position={"relative"}
           ref={ref}
         >
-          {Array.from({ length: 6 }).map((_, i) => (
-            <SongItemPreLoader key={i} isOpen={isOpen} />
-          ))}
+          {Array.from({ length: 6 }).map((_, i) =>
+            type === "song" ? (
+              <SongItemPreLoader key={i} isOpen={isOpen} />
+            ) : (
+              <ArtistItemPreLoader key={i} isOpen={isOpen} />
+            )
+          )}
         </HStack>
       </Stack>
     );
@@ -95,7 +103,7 @@ export function TrendingSection({
   return (
     <Stack
       px={6}
-      mt={8}
+      mt={5}
       w={"full"}
       whiteSpace={"nowrap"}
       overflow={"auto"}
@@ -142,9 +150,21 @@ export function TrendingSection({
         position={"relative"}
         ref={ref}
       >
-        {data?.map((song) => (
-          <SongItem key={song.id} data={song} isOpen={isOpen} />
-        ))}
+        {data?.map((item) =>
+          type === "song" ? (
+            <SongItem
+              key={(item as Song).id}
+              data={item as Song}
+              isOpen={isOpen}
+            />
+          ) : (
+            <ArtistItem
+              key={(item as Artist).id}
+              data={item as Artist}
+              isOpen={isOpen}
+            />
+          )
+        )}
       </HStack>
       {canScrollRight && !isLoading && (
         <Stack
