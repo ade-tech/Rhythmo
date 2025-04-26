@@ -1,72 +1,27 @@
-import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import Filter from "./Filter";
 import TrendingSection from "./TrendingSection";
 import TrendingTopItems from "./TrendingTopItems";
 import { useFetchSongs } from "@/features/tracks/useSong";
-import { HiOutlineStatusOffline } from "react-icons/hi";
-import { IoReload } from "react-icons/io5";
+
 import { useCurrentMusic } from "@/contexts/audioContext";
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import TotalEmpty from "./TotalEmpty";
+import ErrorComp from "./ErrorComp";
+import LandingPageAlt from "./LandingPageAlt";
 
 const TrendingContainer = () => {
   const { data, isLoading, error } = useFetchSongs();
+  const { currentUser } = useCurrentUser();
   const {
     state: { activeSong },
   } = useCurrentMusic();
 
-  if (!isLoading && !error && (!data || !data?.length))
-    return (
-      <Box
-        w={"full"}
-        h={"full"}
-        display={"flex"}
-        flexDir={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
-        <Image src="/musicFilled.svg" w={32} />
-        <Text textStyle={"5xl"} fontWeight={"semibold"} color={"gray.400"}>
-          No songs yet
-        </Text>
-        <Text mt={2}>When songs drop, they’ll show up here. Stay tuned.</Text>
-      </Box>
-    );
-  if (!isLoading && error && (!data || !data?.length))
-    return (
-      <Box
-        w={"full"}
-        h={"full"}
-        display={"flex"}
-        flexDir={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
-        <Box
-          as={HiOutlineStatusOffline}
-          boxSize={36}
-          color={"gray.500"}
-          mb={2}
-        />
-        <Text mb={1} textStyle={"6xl"} fontWeight={"medium"} color={"gray.500"}>
-          You are Offline
-        </Text>
-        <Text textAlign={"center"} lineHeight={"1.3"} color={"gray.300"}>
-          Rythmo could not get your music kindly check your <br />
-          internet connection
-        </Text>
-        <Button
-          rounded={"full"}
-          bg={"green.600"}
-          textAlign={"center"}
-          fontWeight={"bold"}
-          color={"black"}
-          mt={4}
-          onClick={() => window.location.reload()}
-        >
-          <IoReload />
-          Try Again
-        </Button>
-      </Box>
-    );
+  if (!isLoading && !error && (!data || !data?.length)) return <TotalEmpty />;
+  if (!isLoading && error && (!data || !data?.length)) return <ErrorComp />;
+
+  if (!currentUser || typeof currentUser.profileInfo === "string")
+    return <LandingPageAlt user={currentUser} />;
   return (
     <Box
       h={activeSong ? "75dvh" : "86dvh"}

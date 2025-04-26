@@ -4,6 +4,7 @@ import { Howl, Howler } from "howler";
 import React, { useEffect, useRef, useState } from "react";
 import { SongQueryType } from "@/services/songsApi";
 import { setMediaSessionMetadata } from "./useMediaSession";
+import { toaster } from "@/components/ui/toaster";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
@@ -17,10 +18,18 @@ export function usePlayMusic() {
   } = useCurrentMusic();
 
   return ({ data, queue }: SongQueryType) => {
+    if (data === null) return;
     setCurrentSong(data);
     if (queue && queue !== undefined) setCurrentQueue(queue);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
+      currentHowl.on("loaderror", () => {
+        audio.pause();
+        toaster.create({
+          title: "❌ We could not play the song!",
+        });
+        setAudioStatus("idle");
+      });
       setAudioStatus("playing");
       setMediaSessionMetadata(
         {
@@ -42,8 +51,10 @@ export function usePlayMusic() {
       html5: true,
       onload: () => setAudioStatus("playing"),
       onloaderror: () => {
-        console.log("Crashed");
         audio.pause();
+        toaster.create({
+          title: "❌ We could not play the song!",
+        });
         setAudioStatus("idle");
       },
       onend: () => {

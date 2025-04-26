@@ -3,7 +3,7 @@ import { Profile } from "@/features/auth/userType";
 import { User } from "@supabase/supabase-js";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-interface RhythmoUser {
+export interface RhythmoUser {
   data: User | null;
   profileInfo: string | Profile;
 }

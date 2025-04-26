@@ -17,5 +17,5 @@ export function useFetchSong(id: string): SongQuery {
     queryFn: ({ queryKey }) => fetchSong(queryKey[0].split("--")[1]),
     enabled: !!id,
   });
-  return { data, isLoading, error };
+  return { data: data, isLoading, error };
 }

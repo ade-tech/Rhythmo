@@ -32,13 +32,14 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   );
 };
 
-export const PlayPause = ({ data: song }: { data: SongQueryType }) => {
+export const PlayPause = ({ data: song }: { data: SongQueryType | null }) => {
   const { data, queue } = song ?? {};
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
   const play = usePlayMusic();
   const pause = usePauseMusic();
+
   return (
     <IconWithTooltip
       tooltipText={
@@ -68,6 +69,7 @@ export const PlayPause = ({ data: song }: { data: SongQueryType }) => {
             : {}
         }
         onClick={() => {
+          if (!song || data === undefined) return;
           if (audioStatus === "playing" && activeSong?.title === data?.title) {
             pause();
             return;
