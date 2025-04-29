@@ -32,8 +32,16 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   );
 };
 
-export const PlayPause = ({ data: song }: { data: SongQueryType | null }) => {
-  const { data, queue } = song ?? {};
+export const PlayPause = ({
+  data: songs,
+  boxSize = 6,
+  isRelative = false,
+}: {
+  data: SongQueryType | null;
+  isRelative?: boolean;
+  boxSize?: number;
+}) => {
+  const { data, queue } = songs ?? {};
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
@@ -51,8 +59,8 @@ export const PlayPause = ({ data: song }: { data: SongQueryType | null }) => {
       <Stack
         bg={"green.500"}
         rounded={"full"}
-        visibility={"hidden"}
-        opacity={0}
+        visibility={isRelative ? "visible" : "hidden"}
+        opacity={isRelative ? 1 : 0}
         m={0}
         transition={"all ease-in-out 0.3s"}
         _groupHover={{
@@ -60,16 +68,16 @@ export const PlayPause = ({ data: song }: { data: SongQueryType | null }) => {
           opacity: 1,
         }}
         p={3}
-        pos={"absolute"}
-        bottom={2}
-        right={1}
+        pos={isRelative ? "relative" : "absolute"}
+        bottom={isRelative ? 0 : 2}
+        right={isRelative ? 0 : 1}
         _disabled={
           audioStatus === "loading"
             ? { pointerEvents: "none", opacity: 0.6 }
             : {}
         }
         onClick={() => {
-          if (!song || data === undefined) return;
+          if (!songs || data === undefined) return;
           if (audioStatus === "playing" && activeSong?.title === data?.title) {
             pause();
             return;
@@ -84,7 +92,7 @@ export const PlayPause = ({ data: song }: { data: SongQueryType | null }) => {
               ? IoPause
               : IoMdPlay
           }
-          boxSize={6}
+          boxSize={boxSize}
           color={"black"}
         />
       </Stack>

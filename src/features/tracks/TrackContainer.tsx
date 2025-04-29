@@ -11,7 +11,7 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { IoList, IoPauseOutline, IoReload } from "react-icons/io5";
+import { IoList, IoReload } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { useFetchSong } from "./useSong";
@@ -19,20 +19,17 @@ import {
   getSingMusicDuration,
   getSingMusicDurationString,
 } from "@/utils/useMusicDuration";
-import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
-import { IoMdPlay } from "react-icons/io";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import TotalEmpty from "@/components/ui/TotalEmpty";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import SongDialog from "@/components/ui/SongDialog";
+import { PlayPause } from "@/components/ui/PlayPause";
 
 export function TrackContainer() {
   const { id } = useParams();
   const { data, isLoading } = useFetchSong(id ?? "");
   const { currentUser } = useCurrentUser();
-  const play = usePlayMusic();
-  const pause = usePauseMusic();
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
@@ -160,42 +157,17 @@ export function TrackContainer() {
                 : "play"
             }
           >
-            <SongDialog
-              triggerSongImage={data.data.cover_url}
-              triggerSongColor={data.data.prominent_color}
-              triggerButton={
-                <Stack
-                  bg={"green.500"}
-                  rounded={"full"}
-                  m={0}
-                  transition={"all ease-in-out 0.3s"}
-                  p={3}
-                  onClick={() => {
-                    if (!currentUser?.data) return;
-                    if (
-                      audioStatus === "playing" &&
-                      activeSong?.title === data?.data!.title
-                    ) {
-                      pause();
-                      return;
-                    }
-                    play(data!);
-                  }}
-                  cursor={"pointer"}
-                >
-                  <Box
-                    as={
-                      activeSong?.title === data?.data.title &&
-                      audioStatus === "playing"
-                        ? IoPauseOutline
-                        : IoMdPlay
-                    }
-                    boxSize={8}
-                    color={"black"}
-                  />
-                </Stack>
-              }
-            />
+            {currentUser?.data ? (
+              <PlayPause boxSize={8} data={data} isRelative={true} />
+            ) : (
+              <SongDialog
+                triggerSongImage={data.data.cover_url}
+                triggerSongColor={data.data.prominent_color}
+                triggerButton={
+                  <PlayPause boxSize={8} data={data} isRelative={true} />
+                }
+              />
+            )}
           </IconWithTooltip>
           <Spacer />
           <IconWithTooltip tooltipText="view as">
