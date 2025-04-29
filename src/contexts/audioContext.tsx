@@ -11,6 +11,7 @@ interface AudioReducerTypes {
   loopSong: () => void;
   loopQueue: () => void;
   shuffleQueue: () => void;
+  resetApp: () => void;
   setVolume: (value: number) => void;
 }
 
@@ -37,7 +38,8 @@ type Action =
   | "SET_QUEUE_TO_LOOPING"
   | "SET_CURRENT_SONG"
   | "SET_CURRENT_QUEUE"
-  | "CHANGE_VOLUME";
+  | "CHANGE_VOLUME"
+  | "RESET";
 
 const audioContext = createContext<AudioReducerTypes | undefined>(undefined);
 
@@ -49,7 +51,7 @@ const initialState: AudioContextType = {
   isShufflingQueue: false,
   activeQueue: undefined,
   isLoopingQueue: false,
-  volume: 1,
+  volume: 0.5,
 };
 
 function reducer(
@@ -73,6 +75,8 @@ function reducer(
       return { ...state, activeQueue: action.payload };
     case "CHANGE_VOLUME":
       return { ...state, volume: action.payload };
+    case "RESET":
+      return initialState;
 
     default:
       return state;
@@ -99,6 +103,7 @@ export function AudioContextProvider({
   const shuffleQueue = (): void => dispatch({ type: "SET_QUEUE_TO_SHUFFLING" });
   const setVolume = (value: number): void =>
     dispatch({ type: "CHANGE_VOLUME", payload: value });
+  const resetApp = (): void => dispatch({ type: "RESET" });
 
   return (
     <audioContext.Provider
@@ -112,6 +117,7 @@ export function AudioContextProvider({
         loopSong,
         shuffleQueue,
         setVolume,
+        resetApp,
       }}
     >
       {children}

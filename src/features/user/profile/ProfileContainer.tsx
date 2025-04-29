@@ -1,3 +1,4 @@
+import { useCurrentMusic } from "@/contexts/audioContext";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useLogout } from "@/features/auth/useOnboarding";
 import {
@@ -17,6 +18,7 @@ import { RxTimer } from "react-icons/rx";
 
 const ProfileContainer = () => {
   const { currentUser } = useCurrentUser();
+  const { resetApp } = useCurrentMusic();
   const { signOut, isPending, error } = useLogout();
 
   if (!currentUser || error || typeof currentUser.profileInfo === "string")
@@ -129,7 +131,10 @@ const ProfileContainer = () => {
               color: "black",
             }}
             disabled={isPending}
-            onClick={() => signOut()}
+            onClick={() => {
+              signOut();
+              resetApp();
+            }}
           >
             <HiLogout />
             Logout

@@ -1,3 +1,4 @@
+import { useCurrentUser } from "@/contexts/currentUserContext";
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const EmptyLibrary = () => {
+  const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
   return (
     <Box
@@ -28,15 +30,22 @@ const EmptyLibrary = () => {
       <Text textStyle={"sm"} lineHeight={1.25}>
         it's easy, create and share your playlist with your friends
       </Text>
+      {currentUser?.data && (
+        <Button rounded={"full"} w={"full"} size={"sm"}>
+          Create Playlist
+        </Button>
+      )}
       <Popover.Root
         modal={true}
         positioning={{ placement: "left-end", offset: { mainAxis: 30 } }}
       >
-        <Popover.Trigger asChild>
-          <Button rounded={"full"} w={"full"} size={"sm"}>
-            Create Playlist
-          </Button>
-        </Popover.Trigger>
+        {!currentUser?.data && (
+          <Popover.Trigger asChild>
+            <Button rounded={"full"} w={"full"} size={"sm"}>
+              Create Playlist
+            </Button>
+          </Popover.Trigger>
+        )}
         <Portal>
           <Popover.Positioner>
             <Popover.Content>
