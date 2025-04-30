@@ -62,6 +62,7 @@ export function usePlayMusic() {
         if (!isLoopingSong) {
           audio.stop();
           setAudioStatus("idle");
+          nextSong();
         }
         setAudioStatus("playing");
       },
@@ -196,15 +197,59 @@ export function useVolume() {
 }
 
 export function useNextSong() {
+  const { setIsOpen } = useIsSongOpen();
   const {
-    state: { activeQueue, activeSong },
+    state: { activeQueue, currentHowl, isLoopingSong, activeSong },
+    setCurrentSong,
+    setAudioStatus,
+    setCurrentHowl,
   } = useCurrentMusic();
 
   return () => {
-    const currentIndex = activeQueue?.findIndex(
-      (song) => song.id === activeSong?.id
+    const currentIndex =
+      activeQueue?.findIndex((song) => song.id === activeSong?.id) ?? 0;
+    const data = activeQueue?.at(currentIndex + 1) || activeSong;
+
+    if (!data) return;
+
+    setCurrentSong(activeQueue ? activeQueue[currentIndex! + 1] : activeSong!);
+
+    if (currentHowl?.playing()) currentHowl.stop();
+
+    const audioUrl = data?.audio_url;
+    const audio = new Howl({
+      src: [audioUrl!],
+      html5: true,
+      onload: () => setAudioStatus("playing"),
+      onloaderror: () => {
+        audio.pause();
+        toaster.create({
+          title: "❌ We could not play the song!",
+        });
+        setAudioStatus("idle");
+      },
+      onend: () => {
+        console.log("ended");
+        if (!isLoopingSong) {
+          audio.stop();
+          setAudioStatus("idle");
+        }
+        setAudioStatus("playing");
+      },
+    });
+    setAudioStatus("loading");
+
+    audio.play();
+    setIsOpen(true);
+    setCurrentHowl(audio);
+    setMediaSessionMetadata(
+      {
+        title: data.title,
+        artist: data.artist,
+        artwork: [{ src: data.cover_url, type: "image/jpeg" }],
+      },
+      audio,
+      setAudioStatus
     );
-    console.log(activeSong);
-    console.log(currentIndex);
   };
 }

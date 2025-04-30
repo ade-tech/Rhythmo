@@ -5,6 +5,7 @@ import { useIsSongOpen } from "@/contexts/songContext";
 import {
   formatNumberTime,
   useMusicPlayBack,
+  useNextSong,
   useReapeatMusic,
   useVolume,
 } from "@/hooks/useAudioControls";
@@ -42,6 +43,7 @@ const ActivelyPlayinTack = () => {
 
   const repeat = useReapeatMusic();
   const volumeFn = useVolume();
+  const nextFn = useNextSong();
 
   if (!activeSong) return null;
 
@@ -125,7 +127,12 @@ const ActivelyPlayinTack = () => {
           </IconWithTooltip>
           <PlayPauseMini />
           <IconWithTooltip tooltipText="Next">
-            <Box as={PiSkipForwardFill} boxSize={6} cursor={"pointer"} />
+            <Box
+              as={PiSkipForwardFill}
+              boxSize={6}
+              cursor={"pointer"}
+              onClick={nextFn}
+            />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Repeat">
             <Box
