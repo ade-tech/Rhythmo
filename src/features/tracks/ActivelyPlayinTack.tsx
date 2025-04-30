@@ -3,8 +3,8 @@ import { PlayPauseMini } from "@/components/ui/PlayPause";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
 import {
-  updatePlayBack,
-  useCurrentPlayTime,
+  formatNumberTime,
+  useMusicPlayBack,
   useReapeatMusic,
   useVolume,
 } from "@/hooks/useAudioControls";
@@ -37,26 +37,18 @@ const ActivelyPlayinTack = () => {
   const {
     state: { activeSong, isLoopingSong, currentHowl, volume },
   } = useCurrentMusic();
+  const { timeString, duration, currentTime, setCurrentTime } =
+    useMusicPlayBack();
 
   const repeat = useReapeatMusic();
   const volumeFn = useVolume();
-  const {
-    durationString,
-    ref,
-    playBackString,
-    duration,
-    currentPlayBackTime,
-    setCurrentPlayBackTime,
-  } = useCurrentPlayTime();
 
   if (!activeSong) return null;
 
   function handleValueChange({ value }: { value: number[] }) {
-    console.log(value);
     if (currentHowl && value !== undefined) {
       currentHowl.seek(value[0]);
-      console.log(currentHowl.playing());
-      updatePlayBack({ ref, currentHowl, setter: setCurrentPlayBackTime });
+      setCurrentTime(value[0]);
     }
   }
   function handleVolumeChange({ value }: { value: number[] }) {
@@ -146,11 +138,13 @@ const ActivelyPlayinTack = () => {
           </IconWithTooltip>
         </HStack>
         <HStack gap={2}>
-          <Text textStyle={"xs"}>{playBackString}</Text>
+          <Text textStyle={"xs"} textAlign={"left"} w={"2rem"}>
+            {timeString}
+          </Text>
           <Slider.Root
             w={"md"}
             size={"sm"}
-            value={[currentPlayBackTime]}
+            value={[currentTime]}
             max={duration}
             onValueChange={handleValueChange}
             className="group"
@@ -179,7 +173,7 @@ const ActivelyPlayinTack = () => {
               />
             </Slider.Control>
           </Slider.Root>
-          <Text textStyle={"xs"}>{durationString}</Text>
+          <Text textStyle={"xs"}>{formatNumberTime(duration!)}</Text>
         </HStack>
       </Stack>
       <Spacer />

@@ -9,8 +9,6 @@ export async function fetchArtist(userID: string): Promise<Artist | undefined> {
     .eq(`user_id`, `${userID}`)
     .single();
 
-  console.log(data);
-
   if (error) throw new Error("Could not get the artist");
   if (!data) throw new Error("Artist not found");
   return data as Artist;
