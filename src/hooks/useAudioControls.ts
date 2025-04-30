@@ -60,8 +60,9 @@ export function usePlayMusic() {
       onend: () => {
         console.log("ended");
         if (!isLoopingSong) {
-          nextSong();
+          audio.stop();
           setAudioStatus("idle");
+          nextSong();
         }
         setAudioStatus("playing");
       },
@@ -115,58 +116,75 @@ export function useReapeatMusic() {
 }
 
 type currentTimeType = {
-  durationString: string;
-  playBackString: string;
-  duration: number;
-  ref: React.RefObject<number | null>;
-  currentPlayBackTime: number;
-  setCurrentPlayBackTime: React.Dispatch<React.SetStateAction<number>>;
+  duration: number | undefined;
+  timeString: string;
+  currentTime: number;
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function formatNumberTime(number: number): string {
+export function formatNumberTime(number: number): string {
   const string = `${Math.floor(number / 60)}:${
     number % 60 < 10 ? `0${Math.floor(number % 60)}` : Math.floor(number % 60)
   }`;
   return string;
 }
 
-export function useCurrentPlayTime(): currentTimeType {
+export function useMusicPlayBack(): currentTimeType {
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const {
     state: { currentHowl },
   } = useCurrentMusic();
-  const duration = Math.ceil(currentHowl?.duration() ?? 0);
-  const animationRef = useRef<number | null>(null);
-  const [currentPlayBackTime, setCurrentPlayBackTime] = useState<number>(0);
+  const intervalRef = useRef<number | null>(null);
 
-  const durationString = formatNumberTime(duration);
-  const playBackString = formatNumberTime(currentPlayBackTime);
+  function updateTime() {
+    if (!currentHowl || !currentHowl.playing()) return;
+    if (intervalRef.current !== 0) {
+      window.clearInterval(intervalRef.current!);
+    }
+    intervalRef.current = window.setInterval(() => {
+      setCurrentTime((cur) => cur + 1);
+    }, 1000);
+  }
+  function clearCustomInterval() {
+    window.clearInterval(intervalRef.current!);
+    intervalRef.current === null;
+  }
+  function reset() {
+    window.clearInterval(intervalRef.current!);
+    intervalRef.current === null;
+    setCurrentTime(0);
+  }
 
+  function stopUpdatingTime() {
+    window.clearInterval(intervalRef.current!);
+    intervalRef.current = null;
+  }
   useEffect(() => {
-    if (!currentHowl) return;
-    console.log(currentHowl);
-
-    currentHowl.on("play", () =>
-      updatePlayBack({
-        ref: animationRef,
-        currentHowl,
-        setter: setCurrentPlayBackTime,
-      })
-    );
+    currentHowl?.on("play", updateTime);
+    currentHowl?.on("pause", clearCustomInterval);
+    currentHowl?.on("end", reset);
+    currentHowl?.on("stop", reset);
+    currentHowl?.on("seek", () => {
+      if (currentHowl.playing()) {
+        updateTime();
+      }
+    });
 
     return () => {
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      stopUpdatingTime();
+      currentHowl?.off("play", updateTime);
+      currentHowl?.off("stop", reset);
+      currentHowl?.off("pause", clearCustomInterval);
+      currentHowl?.off("end", clearCustomInterval);
+      currentHowl?.off("seek", clearCustomInterval);
     };
   }, [currentHowl]);
 
   return {
-    durationString,
-    setCurrentPlayBackTime,
-    playBackString,
-    ref: animationRef,
-    duration,
-    currentPlayBackTime,
+    duration: currentHowl?.duration(),
+    timeString: formatNumberTime(currentTime),
+    currentTime,
+    setCurrentTime,
   };
 }
 
@@ -178,32 +196,60 @@ export function useVolume() {
   };
 }
 
-type PlayBackHookType = {
-  ref: React.RefObject<number | null>;
-  currentHowl: Howl;
-  setter: React.Dispatch<React.SetStateAction<number>>;
-};
-
-export function updatePlayBack(obj: PlayBackHookType): void {
-  if (!obj.currentHowl) return;
-  const playBackTime = (obj.currentHowl.seek() as number) ?? 0;
-  obj.setter(playBackTime);
-
-  if (obj.currentHowl.playing()) {
-    obj.ref.current = requestAnimationFrame(() => updatePlayBack(obj));
-  }
-}
-
 export function useNextSong() {
+  const { setIsOpen } = useIsSongOpen();
   const {
-    state: { activeQueue, activeSong },
+    state: { activeQueue, currentHowl, isLoopingSong, activeSong },
+    setCurrentSong,
+    setAudioStatus,
+    setCurrentHowl,
   } = useCurrentMusic();
 
   return () => {
-    const currentIndex = activeQueue?.findIndex(
-      (song) => song.id === activeSong?.id
+    const currentIndex =
+      activeQueue?.findIndex((song) => song.id === activeSong?.id) ?? 0;
+    const data = activeQueue?.at(currentIndex + 1) || activeSong;
+
+    if (!data) return;
+
+    setCurrentSong(activeQueue ? activeQueue[currentIndex! + 1] : activeSong!);
+
+    if (currentHowl?.playing()) currentHowl.stop();
+
+    const audioUrl = data?.audio_url;
+    const audio = new Howl({
+      src: [audioUrl!],
+      html5: true,
+      onload: () => setAudioStatus("playing"),
+      onloaderror: () => {
+        audio.pause();
+        toaster.create({
+          title: "❌ We could not play the song!",
+        });
+        setAudioStatus("idle");
+      },
+      onend: () => {
+        console.log("ended");
+        if (!isLoopingSong) {
+          audio.stop();
+          setAudioStatus("idle");
+        }
+        setAudioStatus("playing");
+      },
+    });
+    setAudioStatus("loading");
+
+    audio.play();
+    setIsOpen(true);
+    setCurrentHowl(audio);
+    setMediaSessionMetadata(
+      {
+        title: data.title,
+        artist: data.artist,
+        artwork: [{ src: data.cover_url, type: "image/jpeg" }],
+      },
+      audio,
+      setAudioStatus
     );
-    console.log(activeSong);
-    console.log(currentIndex);
   };
 }
