@@ -11,7 +11,6 @@ type ArtistItemProps = {
 
 export function ArtistItem({ isOpen, data }: ArtistItemProps) {
   const { data: songs } = useFetchSong(data.user_id);
-  console.log(data);
   return (
     <Stack
       flexBasis={isOpen ? "1/4" : "1/6"}

@@ -7,15 +7,15 @@ import { HiX } from "react-icons/hi";
 import QueueItem from "./QueueItem";
 
 export function QueueContainer() {
-  const { isOpen, setIsShowingQueue } = useIsSongOpen();
+  const { isOpen, isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const {
     state: { activeSong, activeQueue },
   } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
 
-  if (!isOpen) return null;
   if (!activeSong) return null;
-
+  if (!isShowingQueue) return null;
+  console.log(activeQueue?.reverse());
   return (
     <Stack
       ref={ref}

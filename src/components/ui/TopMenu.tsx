@@ -19,7 +19,6 @@ import { MdOutlineNotifications } from "react-icons/md";
 
 export function TopMenu() {
   const { currentUser } = useCurrentUser();
-  console.log(currentUser);
   return (
     <Box px={10} py={3} h={"fit"} w={"full"}>
       <Flex align={"center"} justifyContent={"space-between"}>

@@ -4,8 +4,10 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
 import {
   formatNumberTime,
+  useGetNextSong,
+  useGetPrevSong,
   useMusicPlayBack,
-  useNextSong,
+  usePlayMusic,
   useReapeatMusic,
   useVolume,
 } from "@/hooks/useAudioControls";
@@ -19,6 +21,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { GoPlusCircle } from "react-icons/go";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import {
@@ -35,15 +38,17 @@ import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
   const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
+  const { isOpen, setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong, isLoopingSong, currentHowl, volume },
+    state: { activeSong, isLoopingSong, currentHowl, activeQueue, volume },
   } = useCurrentMusic();
   const { timeString, duration, currentTime, setCurrentTime } =
     useMusicPlayBack();
-
+  const play = usePlayMusic();
   const repeat = useReapeatMusic();
   const volumeFn = useVolume();
-  const nextFn = useNextSong();
+  const nextSong = useGetNextSong();
+  const prevSong = useGetPrevSong();
 
   if (!activeSong) return null;
 
@@ -69,7 +74,34 @@ const ActivelyPlayinTack = () => {
       alignItems={"center"}
     >
       <HStack gap={4} align={"center"}>
-        <Avatar.Root shape={"rounded"} size={"2xl"}>
+        <Avatar.Root
+          shape={"rounded"}
+          size={"2xl"}
+          pos={"relative"}
+          className="group"
+        >
+          <IconWithTooltip
+            positioning="top"
+            tooltipText={isOpen ? "Collapse" : "Expand"}
+          >
+            <Box
+              as={isOpen ? FiChevronDown : FiChevronUp}
+              pos={"absolute"}
+              boxSize={6}
+              color={"gray.50"}
+              cursor={"pointer"}
+              bg={"blackAlpha.900"}
+              top={1}
+              right={1}
+              display={"none"}
+              borderColor={"gray.900"}
+              rounded={"full"}
+              _groupHover={{
+                display: "block",
+              }}
+              onClick={() => setIsOpen((cur) => !cur)}
+            />
+          </IconWithTooltip>
           <Avatar.Fallback>
             <Image src="/musicfallback.png" />
           </Avatar.Fallback>
@@ -123,7 +155,17 @@ const ActivelyPlayinTack = () => {
             <Box as={PiShuffle} boxSize={6} cursor={"pointer"} />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Previous">
-            <Box as={PiSkipBackFill} boxSize={6} cursor={"pointer"} />
+            <Box
+              as={PiSkipBackFill}
+              boxSize={6}
+              cursor={"pointer"}
+              onClick={() =>
+                play({
+                  data: prevSong === undefined ? null : prevSong,
+                  queue: activeQueue,
+                })
+              }
+            />
           </IconWithTooltip>
           <PlayPauseMini />
           <IconWithTooltip tooltipText="Next">
@@ -131,7 +173,12 @@ const ActivelyPlayinTack = () => {
               as={PiSkipForwardFill}
               boxSize={6}
               cursor={"pointer"}
-              onClick={nextFn}
+              onClick={() =>
+                play({
+                  data: nextSong === undefined ? null : nextSong,
+                  queue: activeQueue,
+                })
+              }
             />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Repeat">
@@ -190,7 +237,12 @@ const ActivelyPlayinTack = () => {
             as={HiOutlineQueueList}
             boxSize={5}
             color={isShowingQueue ? "green.600" : "white"}
-            onClick={() => setIsShowingQueue((cur) => !cur)}
+            onClick={() => {
+              if (!isShowingQueue && !isOpen) {
+                setIsOpen(true);
+              }
+              setIsShowingQueue((cur) => !cur);
+            }}
           />
         </IconWithTooltip>
         <HStack>
