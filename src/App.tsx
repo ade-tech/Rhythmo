@@ -17,6 +17,7 @@ import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
 import UserOnboarding from "./features/Onboarding/UserOnboarding";
 import { CurrentUserProvider } from "./contexts/currentUserContext";
 import { Toaster } from "./components/ui/toaster";
+import ArtistHome from "./features/artist/ArtistHome";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,8 @@ function App() {
               </Route>
               <Route path="/login" element={<LoginContainer />} />
               <Route path="/login/artist" element={<ArtistLoginContainer />} />
+              <Route path="/artist" element={<ArtistHome />}></Route>
+
               <Route path="/user/onboard" element={<UserOnboarding />} />
             </Routes>
           </AudioContextProvider>

@@ -1,6 +1,8 @@
 import { Box, Button, Spacer, Stack, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const SignUpCTA = () => {
+  const naviagte = useNavigate();
   return (
     <Box h={20} px={3} pb={3}>
       <Box
@@ -24,7 +26,7 @@ const SignUpCTA = () => {
           </Text>
         </Stack>
         <Spacer />
-        <Button rounded={"full"} size={"sm"}>
+        <Button rounded={"full"} size={"sm"} onClick={() => naviagte("/login")}>
           Sign Up
         </Button>
       </Box>

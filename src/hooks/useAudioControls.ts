@@ -239,5 +239,3 @@ export function useGetNextSong() {
 
   return activeQueue[nextIndex];
 }
-
-function useAutoNext() {}
