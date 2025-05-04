@@ -26,7 +26,6 @@ export function SongContainer() {
   } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useFetchArtist(activeSong?.artist_id ?? "");
-  console.log(data, activeSong);
   if (!isOpen) return null;
   if (!activeSong) return null;
 

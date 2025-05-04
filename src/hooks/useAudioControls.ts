@@ -5,10 +5,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { SongQueryType } from "@/services/songsApi";
 import { setMediaSessionMetadata } from "./useMediaSession";
 import { toaster } from "@/components/ui/toaster";
+import { Song } from "@/features/tracks/songType";
 
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
-  const nextSong = useNextSong();
   const {
     state: { activeSong, currentHowl, isLoopingSong },
     setCurrentHowl,
@@ -16,10 +16,15 @@ export function usePlayMusic() {
     setAudioStatus,
     setCurrentSong,
   } = useCurrentMusic();
+  const nextSong = useGetNextSong();
+
+  const nextSongRef = useRef<Song | null>(null);
+  nextSongRef.current = nextSong === undefined ? null : nextSong;
 
   return ({ data, queue }: SongQueryType) => {
     if (data === null) return;
     setCurrentSong(data);
+
     if (queue && queue !== undefined) setCurrentQueue(queue);
     if (currentHowl && activeSong?.id === data.id) {
       currentHowl.play();
@@ -45,6 +50,7 @@ export function usePlayMusic() {
     } else {
       currentHowl?.stop();
     }
+
     const audioUrl = data.audio_url;
     const audio = new Howl({
       src: [audioUrl],
@@ -58,13 +64,7 @@ export function usePlayMusic() {
         setAudioStatus("idle");
       },
       onend: () => {
-        console.log("ended");
-        if (!isLoopingSong) {
-          audio.stop();
-          setAudioStatus("idle");
-          nextSong();
-        }
-        setAudioStatus("playing");
+        if (isLoopingSong) setAudioStatus("playing");
       },
     });
     setAudioStatus("loading");
@@ -112,6 +112,7 @@ export function useReapeatMusic() {
     }
     currentHowl?.loop(true);
     loopSong();
+    console.log(currentHowl);
   };
 }
 
@@ -196,60 +197,45 @@ export function useVolume() {
   };
 }
 
-export function useNextSong() {
-  const { setIsOpen } = useIsSongOpen();
+export function useGetPrevSong() {
   const {
-    state: { activeQueue, currentHowl, isLoopingSong, activeSong },
-    setCurrentSong,
-    setAudioStatus,
-    setCurrentHowl,
+    state: { activeSong, activeQueue },
   } = useCurrentMusic();
+  if (
+    !activeQueue ||
+    activeQueue === undefined ||
+    !activeSong ||
+    activeQueue?.length === 1
+  )
+    return;
 
-  return () => {
-    const currentIndex =
-      activeQueue?.findIndex((song) => song.id === activeSong?.id) ?? 0;
-    const data = activeQueue?.at(currentIndex + 1) || activeSong;
+  const currIndex = activeQueue.findIndex(
+    (curSong) => curSong.id === activeSong.id
+  );
 
-    if (!data) return;
+  const prevIndex = currIndex - 1;
+  if (prevIndex < 0) return activeQueue.at(prevIndex);
+  return activeQueue[prevIndex];
+}
 
-    setCurrentSong(activeQueue ? activeQueue[currentIndex! + 1] : activeSong!);
+export function useGetNextSong() {
+  const {
+    state: { activeSong, activeQueue },
+  } = useCurrentMusic();
+  if (
+    !activeQueue ||
+    activeQueue === undefined ||
+    !activeSong ||
+    activeQueue?.length === 1
+  )
+    return;
 
-    if (currentHowl?.playing()) currentHowl.stop();
+  const currIndex = activeQueue.findIndex(
+    (curSong) => curSong.id === activeSong.id
+  );
 
-    const audioUrl = data?.audio_url;
-    const audio = new Howl({
-      src: [audioUrl!],
-      html5: true,
-      onload: () => setAudioStatus("playing"),
-      onloaderror: () => {
-        audio.pause();
-        toaster.create({
-          title: "❌ We could not play the song!",
-        });
-        setAudioStatus("idle");
-      },
-      onend: () => {
-        console.log("ended");
-        if (!isLoopingSong) {
-          audio.stop();
-          setAudioStatus("idle");
-        }
-        setAudioStatus("playing");
-      },
-    });
-    setAudioStatus("loading");
+  const nextIndex = currIndex + 1;
+  if (nextIndex === activeQueue.length) return activeQueue[0];
 
-    audio.play();
-    setIsOpen(true);
-    setCurrentHowl(audio);
-    setMediaSessionMetadata(
-      {
-        title: data.title,
-        artist: data.artist,
-        artwork: [{ src: data.cover_url, type: "image/jpeg" }],
-      },
-      audio,
-      setAudioStatus
-    );
-  };
+  return activeQueue[nextIndex];
 }
