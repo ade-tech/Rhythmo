@@ -1,4 +1,5 @@
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useCreatePlaylist } from "@/features/playlist/usePlaylist";
 import {
   Box,
   Button,
@@ -12,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const EmptyLibrary = () => {
   const { currentUser } = useCurrentUser();
+  const { createPlaylist, isPending } = useCreatePlaylist();
   const navigate = useNavigate();
   return (
     <Box
@@ -30,8 +32,26 @@ const EmptyLibrary = () => {
       <Text textStyle={"sm"} lineHeight={1.25}>
         it's easy, create and share your playlist with your friends
       </Text>
-      {currentUser?.data && (
-        <Button rounded={"full"} w={"full"} size={"sm"}>
+      {currentUser?.data && currentUser.data !== null && (
+        <Button
+          disabled={isPending}
+          rounded={"full"}
+          w={"full"}
+          size={"sm"}
+          onClick={() =>
+            createPlaylist(
+              {
+                is_public: false,
+                name: "Playlist #1",
+                created_by: currentUser.data?.id!,
+              },
+              {
+                onSuccess: (data) => navigate(`/album/${data.playlist_id}`),
+                onError: (error) => console.log(error),
+              }
+            )
+          }
+        >
           Create Playlist
         </Button>
       )}

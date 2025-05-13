@@ -1,18 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import LibraryHeader from "./LibraryHeader";
 import PlaylistShort from "@/components/ui/PlaylistShort";
-import ArtistShort from "@/components/ui/ArtistShort";
 import Filter from "@/components/ui/Filter";
 import EmptyLibrary from "./EmptyLibrary";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useFetchPlaylists } from "@/features/playlist/usePlaylist";
 
 export function LibraryContainer() {
   const { currentUser } = useCurrentUser();
+  const { data, isLoading, error } = useFetchPlaylists(currentUser?.data?.id!);
 
-  if (
-    typeof currentUser?.profileInfo === "string" ||
-    !currentUser?.profileInfo.avatar_url
-  )
+  if (typeof currentUser?.profileInfo === "string")
     return (
       <Box
         className="bg-darker-overlay"
@@ -25,36 +23,47 @@ export function LibraryContainer() {
         <EmptyLibrary />
       </Box>
     );
+
+  if (isLoading)
+    return (
+      <Box
+        w={"full"}
+        h={"full"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        className="bg-darker-overlay"
+        rounded={"lg"}
+      >
+        <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
+      </Box>
+    );
+
+  if (!isLoading && error)
+    return (
+      <Box
+        className="bg-darker-overlay"
+        h={"full"}
+        rounded={"lg"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Text>We could not fetch the Playlists</Text>
+      </Box>
+    );
   return (
     <Box className="bg-darker-overlay" h={"full"} rounded={"lg"} pt={5} px={5}>
       <LibraryHeader />
       <Filter filterValues={["Artists", "Albums", "Playlist"]} />
-
-      <PlaylistShort
-        type="album"
-        title="Motigbana"
-        artistName="Olamide"
-        link="/album/2222"
-      />
-
-      <PlaylistShort
-        type="playlist"
-        title="Love it"
-        artistName="Olamide"
-        link="/track/2222"
-      />
-      <PlaylistShort
-        type="album"
-        title="Mofesa"
-        artistName="Kulapo"
-        link="/album/2222"
-        avatar="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png"
-      />
-      <ArtistShort
-        artistName="Central Cee"
-        link="/artist/2222"
-        avatar="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//ab6761610000e5ebf6469f2cbf0a7e78744a3173.jpg"
-      />
+      {data?.map((curPlaylist) => (
+        <PlaylistShort
+          key={curPlaylist.playlist_id}
+          type="playlist"
+          title={curPlaylist.name}
+          link={`/album/${curPlaylist.playlist_id}`}
+        />
+      ))}
     </Box>
   );
 }
