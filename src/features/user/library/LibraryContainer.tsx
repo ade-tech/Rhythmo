@@ -1,7 +1,6 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import LibraryHeader from "./LibraryHeader";
 import PlaylistShort from "@/components/ui/PlaylistShort";
-import ArtistShort from "@/components/ui/ArtistShort";
 import Filter from "@/components/ui/Filter";
 import EmptyLibrary from "./EmptyLibrary";
 import { useCurrentUser } from "@/contexts/currentUserContext";
