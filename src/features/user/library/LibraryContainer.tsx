@@ -5,8 +5,10 @@ import Filter from "@/components/ui/Filter";
 import EmptyLibrary from "./EmptyLibrary";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useFetchPlaylists } from "@/features/playlist/usePlaylist";
+import { useState } from "react";
 
 export function LibraryContainer() {
+  const [filterState, setFilteredState] = useState<string | null>(null);
   const { currentUser } = useCurrentUser();
   const { data, isLoading, error } = useFetchPlaylists(currentUser?.data?.id!);
 
@@ -55,13 +57,18 @@ export function LibraryContainer() {
   return (
     <Box className="bg-darker-overlay" h={"full"} rounded={"lg"} pt={5} px={5}>
       <LibraryHeader />
-      <Filter filterValues={["Artists", "Albums", "Playlist"]} />
+      <Filter
+        filterValues={["artists", "albums", "playlist"]}
+        filterState={filterState}
+        filterUpdate={setFilteredState}
+      />
       {data?.map((curPlaylist) => (
         <PlaylistShort
           key={curPlaylist.playlist_id}
           type="playlist"
           title={curPlaylist.name}
           link={`/album/${curPlaylist.playlist_id}`}
+          playlistID={curPlaylist.playlist_id!}
         />
       ))}
     </Box>

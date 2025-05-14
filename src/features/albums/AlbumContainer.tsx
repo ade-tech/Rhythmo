@@ -93,7 +93,7 @@ export function AlbumContainer() {
         zIndex={0}
         top={0}
         bgGradient={"to-b"}
-        gradientFrom={"green.400"}
+        gradientFrom={songs?.at(0)?.song.prominent_color ?? "green.500"}
         gradientTo={"gray.950"}
         position={"absolute"}
         roundedTop={"md"}
@@ -114,7 +114,13 @@ export function AlbumContainer() {
           <Avatar.Fallback>
             <Image src="/musicfallback.png" rounded={"md"} />
           </Avatar.Fallback>
-          <Avatar.Image src="https://swjwzsoqbpfsivdzudfx.supabase.co/storage/v1/object/public/Temp//0x1900-000000-80-0-0.png" />
+          <Avatar.Image
+            src={
+              data?.cover_url
+                ? data.cover_url
+                : songs?.at(0)?.song.cover_url ?? ""
+            }
+          />
         </Avatar.Root>
         <Stack color={"white"} w={"2/3"} gap={0} zIndex={1}>
           <Text>Playlist</Text>
