@@ -6,6 +6,7 @@ export type Playlist = {
   created_at?: string;
   is_public: boolean;
   playlist_id?: string;
+  cover_url?: string;
 };
 
 export type PlaylistQuery = {

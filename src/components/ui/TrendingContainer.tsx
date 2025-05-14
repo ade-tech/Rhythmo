@@ -9,9 +9,11 @@ import { useCurrentUser } from "@/contexts/currentUserContext";
 import TotalEmpty from "./TotalEmpty";
 import ErrorComp from "./ErrorComp";
 import LandingPageAlt from "./LandingPageAlt";
+import { useState } from "react";
 
 const TrendingContainer = () => {
   const { data, isLoading, error } = useFetchSongs();
+  const [filterState, setFilterState] = useState<string | null>("all");
   const { currentUser } = useCurrentUser();
   const {
     state: { activeSong },
@@ -40,7 +42,11 @@ const TrendingContainer = () => {
         pb={3}
         zIndex={10}
       >
-        <Filter filterValues={["All", "Quran", "Islamic Music"]} />
+        <Filter
+          filterState={filterState}
+          filterUpdate={setFilterState}
+          filterValues={["all", "quran", "islamic music"]}
+        />
       </HStack>
       <TrendingTopItems data={data} isLoading={isLoading} />
 
