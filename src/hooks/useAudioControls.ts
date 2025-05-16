@@ -10,78 +10,105 @@ import { Song } from "@/features/tracks/songType";
 export function usePlayMusic() {
   const { setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong, currentHowl, isLoopingSong },
+    state: { activeSong, activeQueue, currentHowl },
     setCurrentHowl,
     setCurrentQueue,
-    setAudioStatus,
     setCurrentSong,
+    setAudioStatus,
   } = useCurrentMusic();
-  const nextSong = useGetNextSong();
+  const activeQueueRef = useRef<Song[] | null>(null);
 
-  const nextSongRef = useRef<Song | null>(null);
-  nextSongRef.current = nextSong === undefined ? null : nextSong;
+  function setNextMusic(queue: Song[]) {
+    if (!queue || queue.length === 1) return;
+    const [currentSong, ...restSongs] = queue;
+    const newQueue = [...restSongs, currentSong];
+    playMusic({ data: newQueue[0], queue: newQueue });
+  }
 
-  return ({ data, queue }: SongQueryType) => {
-    if (data === null) return;
+  function playMusic({ data, queue }: SongQueryType) {
+    if (!data) return;
     setCurrentSong(data);
+    if (queue) setCurrentQueue(queue);
 
-    if (queue && queue !== undefined) setCurrentQueue(queue);
-    if (currentHowl && activeSong?.id === data.id) {
-      currentHowl.play();
-      currentHowl.on("loaderror", () => {
-        audio.pause();
-        toaster.create({
-          title: "❌ We could not play the song!",
-        });
-        setAudioStatus("idle");
-      });
+    if (activeSong && activeSong.id === data.id) {
+      currentHowl?.play();
       setAudioStatus("playing");
-      setMediaSessionMetadata(
-        {
-          title: data.title,
-          artist: data.artist,
-          artwork: [{ src: data.cover_url, type: "image/jpeg" }],
-        },
-        currentHowl,
-        setAudioStatus
-      );
-
       return;
     } else {
       currentHowl?.stop();
     }
 
-    const audioUrl = data.audio_url;
-    const audio = new Howl({
-      src: [audioUrl],
-      html5: true,
-      onload: () => setAudioStatus("playing"),
-      onloaderror: () => {
-        audio.pause();
-        toaster.create({
-          title: "❌ We could not play the song!",
-        });
-        setAudioStatus("idle");
-      },
-      onend: () => {
-        if (isLoopingSong) setAudioStatus("playing");
-      },
-    });
-    setAudioStatus("loading");
-
-    audio.play();
+    const howlObject = PlayMusic(queue ?? [data]);
+    setCurrentHowl(howlObject);
     setIsOpen(true);
-    setCurrentHowl(audio);
+    howlObject.on("load", () => setAudioStatus("playing"));
+    howlObject.on("loaderror", () => setAudioStatus("idle"));
     setMediaSessionMetadata(
       {
         title: data.title,
         artist: data.artist,
-        artwork: [{ src: data.cover_url, type: "image/jpeg" }],
+        album: data.album,
+        artwork: [
+          {
+            src: data.cover_url,
+          },
+        ],
       },
-      audio,
+      howlObject,
       setAudioStatus
     );
+    howlObject.on("end", () => {
+      setNextMusic(activeQueueRef.current!);
+    });
+  }
+
+  useEffect(() => {
+    if (!activeQueue) return;
+    activeQueueRef.current = activeQueue;
+  }, [activeQueue]);
+
+  return playMusic;
+}
+function PlayMusic(queue: Song[]): Howl {
+  console.log(queue);
+  const audio_url = queue[0].audio_url;
+  const audio = new Howl({
+    src: [audio_url],
+    html5: true,
+    onloaderror: () =>
+      toaster.create({
+        title: `❌ We could not play ${queue.at(0)?.title}`,
+      }),
+  });
+  audio.play();
+  return audio;
+}
+
+export function useAddMusicNextToSong() {
+  const {
+    state: { activeQueue, activeSong },
+    setCurrentQueue,
+  } = useCurrentMusic();
+  return (song: Song) => {
+    if (activeQueue === undefined) return;
+    const activeSongIndex = activeQueue?.findIndex(
+      (curSong) => curSong.id === activeSong?.id
+    );
+    const nextIndex = activeSongIndex! + 1;
+    const newArray = [
+      ...activeQueue?.slice(0, nextIndex),
+      song,
+      ...activeQueue?.slice(nextIndex),
+    ];
+    setCurrentQueue(newArray);
   };
+}
+export function useAddtoQueue() {
+  const {
+    state: { activeQueue },
+    setCurrentQueue,
+  } = useCurrentMusic();
+  return (song: Song) => setCurrentQueue([...activeQueue!, song]);
 }
 
 export function usePauseMusic() {
