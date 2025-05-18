@@ -152,11 +152,7 @@ export function TrendingSection({
       >
         {data?.map((item) =>
           type === "song" ? (
-            <SongItem
-              key={(item as Song).id}
-              data={item as Song}
-              isOpen={isOpen}
-            />
+            <SongItem key={item.id} data={item as Song} isOpen={isOpen} />
           ) : (
             <ArtistItem
               key={(item as Artist).id}

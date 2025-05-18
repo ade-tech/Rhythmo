@@ -20,7 +20,7 @@ import { useFetchArtist } from "../artist/useArtist";
 import { Song } from "./songType";
 
 export function SongContainer() {
-  const { isOpen, setIsOpen } = useIsSongOpen();
+  const { isOpen, setIsOpen, setIsShowingQueue } = useIsSongOpen();
   const {
     state: { activeSong, activeQueue },
   } = useCurrentMusic();
@@ -374,6 +374,8 @@ export function SongContainer() {
               textDecoration: "underline",
               transition: "ease-in-out",
             }}
+            onClick={() => setIsShowingQueue(true)}
+            cursor={"pointer"}
           >
             Open queue
           </Text>
@@ -400,21 +402,23 @@ export function SongContainer() {
                     }}
                     fontWeight={"bold"}
                   >
-                    {(activeQueue as Song[])[1]?.title.toUpperCase()}
+                    {activeQueue[1]?.title.toUpperCase()}
                   </Text>
                 </Link>
-                <Text
-                  textStyle={"sm"}
-                  color={"gray.400"}
-                  transitionDuration={"200ms"}
-                  _hover={{
-                    textDecoration: "underline",
-                    transition: "ease-in-out",
-                  }}
-                  fontWeight={"medium"}
-                >
-                  {(activeQueue as Song[])[1]?.artist}
-                </Text>
+                <Link to={`/artist/${activeQueue[1]?.artist_id}`}>
+                  <Text
+                    textStyle={"sm"}
+                    color={"gray.400"}
+                    transitionDuration={"200ms"}
+                    _hover={{
+                      textDecoration: "underline",
+                      transition: "ease-in-out",
+                    }}
+                    fontWeight={"medium"}
+                  >
+                    {activeQueue[1]?.artist}
+                  </Text>
+                </Link>
               </Stack>
             </HStack>
           </>

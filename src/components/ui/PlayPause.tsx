@@ -6,11 +6,13 @@ import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { IoMdPlay } from "react-icons/io";
 import { SongQueryType } from "@/services/songsApi";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 
 export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   const {
     state: { activeQueue, activeSong, audioStatus },
   } = useCurrentMusic();
+  const { currentUser } = useCurrentUser();
   const play = usePlayMusic();
   const pause = usePauseMusic();
   return (
@@ -21,6 +23,8 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
         cursor={"pointer"}
         color={color}
         onClick={() => {
+          if (!currentUser?.data || currentUser?.profileInfo === "string")
+            return;
           if (audioStatus === "playing") {
             pause();
             return;
@@ -37,7 +41,7 @@ export const PlayPause = ({
   boxSize = 6,
   isRelative = false,
 }: {
-  data: SongQueryType | null;
+  data: SongQueryType | undefined;
   isRelative?: boolean;
   boxSize?: number;
 }) => {
@@ -47,6 +51,7 @@ export const PlayPause = ({
   } = useCurrentMusic();
   const play = usePlayMusic();
   const pause = usePauseMusic();
+  const { currentUser } = useCurrentUser();
 
   return (
     <IconWithTooltip
@@ -77,7 +82,13 @@ export const PlayPause = ({
             : {}
         }
         onClick={() => {
-          if (!songs || data === undefined) return;
+          if (
+            !songs ||
+            data === undefined ||
+            !currentUser?.data ||
+            currentUser?.profileInfo === "string"
+          )
+            return;
           if (audioStatus === "playing" && activeSong?.title === data?.title) {
             pause();
             return;

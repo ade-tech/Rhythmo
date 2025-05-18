@@ -7,6 +7,7 @@ import { IoMdPlay } from "react-icons/io";
 import { IoPause } from "react-icons/io5";
 export function MiniSongCard({ song }: { song: Song }) {
   const { data: songs } = useFetchSong(song.id);
+
   const {
     state: { activeSong, audioStatus },
   } = useCurrentMusic();
