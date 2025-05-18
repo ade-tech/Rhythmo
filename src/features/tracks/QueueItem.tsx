@@ -42,18 +42,20 @@ const QueueItem = ({
             {song.title}
           </Text>
         </Link>
-        <Text
-          textStyle={"sm"}
-          color={"gray.400"}
-          transitionDuration={"200ms"}
-          _hover={{
-            textDecoration: "underline",
-            transition: "ease-in-out",
-          }}
-          fontWeight={"medium"}
-        >
-          {song.artist}
-        </Text>
+        <Link to={`/artist/${song.artist_id}`}>
+          <Text
+            textStyle={"sm"}
+            color={"gray.400"}
+            transitionDuration={"200ms"}
+            _hover={{
+              textDecoration: "underline",
+              transition: "ease-in-out",
+            }}
+            fontWeight={"medium"}
+          >
+            {song.artist}
+          </Text>
+        </Link>
       </Stack>
       <Spacer />
       <IconWithTooltip tooltipText="More">

@@ -4,10 +4,9 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 import { useIsSongOpen } from "@/contexts/songContext";
 import {
   formatNumberTime,
-  useGetNextSong,
-  useGetPrevSong,
   useMusicPlayBack,
-  usePlayMusic,
+  useNextSong,
+  usePrevSong,
   useReapeatMusic,
   useVolume,
 } from "@/hooks/useAudioControls";
@@ -40,16 +39,14 @@ const ActivelyPlayinTack = () => {
   const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const { isOpen, setIsOpen } = useIsSongOpen();
   const {
-    state: { activeSong, isLoopingSong, currentHowl, activeQueue, volume },
+    state: { activeSong, isLoopingSong, currentHowl, volume },
   } = useCurrentMusic();
   const { timeString, duration, currentTime, setCurrentTime } =
     useMusicPlayBack();
-  const play = usePlayMusic();
   const repeat = useReapeatMusic();
   const volumeFn = useVolume();
-  const nextSong = useGetNextSong();
-  const prevSong = useGetPrevSong();
-
+  const next = useNextSong();
+  const previous = usePrevSong();
   if (!activeSong) return null;
 
   function handleValueChange({ value }: { value: number[] }) {
@@ -159,12 +156,7 @@ const ActivelyPlayinTack = () => {
               as={PiSkipBackFill}
               boxSize={6}
               cursor={"pointer"}
-              onClick={() =>
-                play({
-                  data: prevSong === undefined ? null : prevSong,
-                  queue: activeQueue,
-                })
-              }
+              onClick={previous}
             />
           </IconWithTooltip>
           <PlayPauseMini />
@@ -173,12 +165,7 @@ const ActivelyPlayinTack = () => {
               as={PiSkipForwardFill}
               boxSize={6}
               cursor={"pointer"}
-              onClick={() =>
-                play({
-                  data: nextSong === undefined ? null : nextSong,
-                  queue: activeQueue,
-                })
-              }
+              onClick={next}
             />
           </IconWithTooltip>
           <IconWithTooltip tooltipText="Repeat">

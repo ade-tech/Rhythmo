@@ -12,7 +12,11 @@ export function LibraryContainer() {
   const { currentUser } = useCurrentUser();
   const { data, isLoading, error } = useFetchPlaylists(currentUser?.data?.id!);
 
-  if (typeof currentUser?.profileInfo === "string")
+  if (
+    !currentUser?.data ||
+    typeof currentUser?.profileInfo === "string" ||
+    data?.length! < 1
+  )
     return (
       <Box
         className="bg-darker-overlay"

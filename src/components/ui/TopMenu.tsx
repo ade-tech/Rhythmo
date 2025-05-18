@@ -10,12 +10,12 @@ import {
   Separator,
   Text,
 } from "@chakra-ui/react";
-import { Tooltip } from "./tooltip";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { MdOutlineNotifications } from "react-icons/md";
+import IconWithTooltip from "./IconWithTooltip";
 
 export function TopMenu() {
   const { currentUser } = useCurrentUser();
@@ -33,13 +33,13 @@ export function TopMenu() {
             }
           >
             {({ isActive }) => (
-              <Tooltip content="Home">
+              <IconWithTooltip tooltipText="Home">
                 {isActive ? (
                   <GoHomeFill size={30} color="white" />
                 ) : (
                   <GoHome size={30} color="white" />
                 )}
-              </Tooltip>
+              </IconWithTooltip>
             )}
           </NavLink>
 

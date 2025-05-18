@@ -69,6 +69,7 @@ export function usePlayMusic() {
 
   return playMusic;
 }
+
 function PlayMusic(queue: Song[]): Howl {
   console.log(queue);
   const audio_url = queue[0].audio_url;
@@ -245,24 +246,28 @@ export function useGetPrevSong() {
   return activeQueue[prevIndex];
 }
 
-export function useGetNextSong() {
+export function useNextSong() {
   const {
-    state: { activeSong, activeQueue },
+    state: { activeQueue },
   } = useCurrentMusic();
-  if (
-    !activeQueue ||
-    activeQueue === undefined ||
-    !activeSong ||
-    activeQueue?.length === 1
-  )
-    return;
+  const playMusic = usePlayMusic();
+  return () => {
+    if (!activeQueue || activeQueue.length === 1) return;
+    const [currentSong, ...restSongs] = activeQueue;
+    const newQueue = [...restSongs, currentSong];
+    playMusic({ data: newQueue[0], queue: newQueue });
+  };
+}
 
-  const currIndex = activeQueue.findIndex(
-    (curSong) => curSong.id === activeSong.id
-  );
-
-  const nextIndex = currIndex + 1;
-  if (nextIndex === activeQueue.length) return activeQueue[0];
-
-  return activeQueue[nextIndex];
+export function usePrevSong() {
+  const {
+    state: { activeQueue },
+  } = useCurrentMusic();
+  const playMusic = usePlayMusic();
+  return () => {
+    if (!activeQueue || activeQueue.length === 1) return;
+    const otherSongs = activeQueue.slice(0, activeQueue.length - 1);
+    const lastSong = activeQueue[activeQueue.length - 1];
+    playMusic({ data: lastSong, queue: [lastSong, ...otherSongs] });
+  };
 }

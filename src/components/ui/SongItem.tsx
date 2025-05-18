@@ -27,11 +27,11 @@ export function SongItem({ isOpen, data }: songItemProps) {
     >
       <Stack pos={"relative"} className="group">
         <Image src={data.cover_url} borderRadius={"md"} />
-        {currentUser?.data && <PlayPause data={currentUser ? songs! : null} />}
+        {currentUser?.data && <PlayPause data={songs} />}
 
         {(currentUser?.data === null || currentUser?.data === undefined) && (
           <SongDialog
-            triggerButton={<PlayPause data={currentUser ? songs! : null} />}
+            triggerButton={<PlayPause data={songs} />}
             triggerSongImage={data.cover_url}
             triggerSongColor={data.prominent_color}
           />

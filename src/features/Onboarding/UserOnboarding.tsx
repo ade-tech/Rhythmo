@@ -22,6 +22,7 @@ import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useCreateProfile } from "../auth/useOnboarding";
 import { useNavigate } from "react-router-dom";
 import { getTimeDifference } from "@/utils/useTimeDifference";
+import { toaster } from "@/components/ui/toaster";
 
 export type OnboardingFormInputs = {
   Name: string;
@@ -66,6 +67,11 @@ const UserOnboarding = () => {
           setIsending(true);
 
           navigate("/");
+        },
+        onError: () => {
+          toaster.create({
+            title: "❌ Error, check your inputs",
+          });
         },
       }
     );

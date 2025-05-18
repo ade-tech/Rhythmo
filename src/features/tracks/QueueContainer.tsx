@@ -15,7 +15,6 @@ export function QueueContainer() {
 
   if (!activeSong) return null;
   if (!isShowingQueue) return null;
-  console.log(activeQueue?.reverse());
   return (
     <Stack
       ref={ref}
