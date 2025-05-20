@@ -24,8 +24,23 @@ type Input = {
   email: string;
   otp: string[];
 };
+type loginProps = {
+  userType: "user" | "artist";
+  colorPallete: "red" | "green";
+  title: string;
+  signInNav: string;
+  signUpNav: string;
+  bgImage: string;
+};
 
-export function LoginContainer() {
+export function LoginContainer({
+  userType,
+  colorPallete,
+  title,
+  signInNav,
+  signUpNav,
+  bgImage,
+}: loginProps) {
   const {
     register,
     handleSubmit,
@@ -47,7 +62,7 @@ export function LoginContainer() {
   const submitFn: SubmitHandler<Input> = (data) => {
     if (!data.email || !data.otp) throw new Error("Empty fields!");
     getIn(
-      { email: data.email, token: data.otp.join(""), userType: "user" },
+      { email: data.email, token: data.otp.join(""), userType },
       {
         onSuccess: (data) => {
           setCurrentUser(data);
@@ -55,9 +70,9 @@ export function LoginContainer() {
             title: "✅ OTP has been verified!",
           });
           if (typeof data?.profileInfo === "string") {
-            navigate("/user/onboard");
+            navigate(signUpNav);
           } else {
-            navigate("/");
+            navigate(signInNav);
           }
         },
 
@@ -68,7 +83,6 @@ export function LoginContainer() {
         },
       }
     );
-    console.log(data);
   };
   function resendTimeout() {
     if (timeoutID.current) {
@@ -93,7 +107,7 @@ export function LoginContainer() {
       pos={"relative"}
     >
       <Image
-        src="/onboarding.webp"
+        src={bgImage}
         w={"full"}
         h={"full"}
         filter="blur(10px)"
@@ -135,7 +149,7 @@ export function LoginContainer() {
               bg={"blackAlpha.800"}
               zIndex={10}
             >
-              <Spinner color={"green.500"} size={"xl"} />
+              <Spinner color={`${colorPallete}.500`} size={"xl"} />
             </Box>
           )}
           <Text
@@ -145,7 +159,7 @@ export function LoginContainer() {
             display={page === 1 ? "block" : "none"}
             mt={5}
           >
-            Sign in start Listening!
+            {title}
           </Text>
           <form className="flex w-full h-full flex-col items-center justify-center gap-3">
             {page === 1 && (
@@ -157,7 +171,7 @@ export function LoginContainer() {
                 >
                   <Field.Label w={"2/3"}>
                     Email
-                    <Field.RequiredIndicator color={"green.600"} />
+                    <Field.RequiredIndicator color={`${colorPallete}.600`} />
                   </Field.Label>
                   <Input
                     placeholder="name@domain.com"
@@ -184,7 +198,7 @@ export function LoginContainer() {
                 <Button
                   w={"2/3"}
                   rounded={"full"}
-                  bg={"green.600"}
+                  bg={`${colorPallete}.600`}
                   color={"black"}
                   disabled={isSending}
                   onClick={async () => {
@@ -307,7 +321,7 @@ export function LoginContainer() {
                     textStyle={"sm"}
                     textAlign={"center"}
                     fontWeight={"bold"}
-                    color={"green.500"}
+                    color={`${colorPallete}.500`}
                     disabled={!canResendOTP}
                     onClick={() => {
                       setCanResendOTP(false);

@@ -5,26 +5,32 @@ type DualButtonProps = {
   action?: () => void;
   backAction?: () => void;
   buttonTitle: string;
+  colorPallete?: "green" | "red";
 };
 
-const DualButtonFooter = (obj: DualButtonProps) => {
+const DualButtonFooter = ({
+  action,
+  backAction,
+  buttonTitle,
+  colorPallete = "green",
+}: DualButtonProps) => {
   return (
     <Box w={"full"} display={"flex"} mt={2}>
-      <Button onClick={obj.backAction} colorPalette={"white"} rounded={"full"}>
+      <Button onClick={backAction} colorPalette={"white"} rounded={"full"}>
         <Box as={MdOutlineArrowBack} boxSize={4} />
       </Button>
       <Spacer />
       <Button
         textStyle={"lg"}
         fontWeight={"semibold"}
-        onClick={obj.action}
+        onClick={action}
         w={"1/3"}
         rounded={"full"}
-        bg={"green.500"}
+        bg={`${colorPallete}.600`}
         color={"gray.950"}
         size={"lg"}
       >
-        {obj.buttonTitle}
+        {buttonTitle}
       </Button>
     </Box>
   );

@@ -1,5 +1,6 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { HiOutlineStatusOffline } from "react-icons/hi";
+import ReloadButton from "./ReloadButton";
 import { IoReload } from "react-icons/io5";
 
 const ErrorComp = () => {
@@ -20,18 +21,7 @@ const ErrorComp = () => {
         Rythmo could not get your music kindly check your <br />
         internet connection
       </Text>
-      <Button
-        rounded={"full"}
-        bg={"green.600"}
-        textAlign={"center"}
-        fontWeight={"bold"}
-        color={"black"}
-        mt={4}
-        onClick={() => window.location.reload()}
-      >
-        <IoReload />
-        Try Again
-      </Button>
+      <ReloadButton type="reload" icon={<IoReload />} title="Try Again" />
     </Box>
   );
 };
