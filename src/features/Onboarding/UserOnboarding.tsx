@@ -125,7 +125,7 @@ const UserOnboarding = () => {
           {onboardingState === 2 && (
             <InputGroupAbdone
               register={register}
-              title="When we're you born"
+              title="When were you born"
               buttonLabel="Proceed"
               InputType="date"
               Increamental={setOnboardingState}

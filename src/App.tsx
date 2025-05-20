@@ -12,12 +12,14 @@ import TrendingContainer from "./components/ui/TrendingContainer";
 import ProfileContainer from "./features/user/profile/ProfileContainer";
 import { AudioContextProvider } from "./contexts/audioContext";
 import OpenSongProvider from "./contexts/songContext";
-import LoginContainer from "./features/auth/LoginContainer";
 import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
 import UserOnboarding from "./features/Onboarding/UserOnboarding";
 import { CurrentUserProvider } from "./contexts/currentUserContext";
 import { Toaster } from "./components/ui/toaster";
 import ArtistHome from "./features/artist/ArtistHome";
+import UserLoginContainer from "./features/auth/UserLoginContainer";
+import PageNotFound from "./components/ui/PageNotFound";
+import ArtistOnboarding from "./features/Onboarding/ArtistOnboarding";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,11 +48,13 @@ function App() {
                 <Route path="genre/:id" element={<GenreContainer />} />
                 <Route path="/profile" element={<ProfileContainer />} />
               </Route>
-              <Route path="/login" element={<LoginContainer />} />
+              <Route path="/login" element={<UserLoginContainer />} />
               <Route path="/login/artist" element={<ArtistLoginContainer />} />
               <Route path="/artist" element={<ArtistHome />}></Route>
 
               <Route path="/user/onboard" element={<UserOnboarding />} />
+              <Route path="/artist/onboard" element={<ArtistOnboarding />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </AudioContextProvider>
         </OpenSongProvider>
