@@ -4,7 +4,7 @@ import DualButtonFooter from "./DualButtonFooter";
 import { FieldErrors, UseFormRegister, UseFormTrigger } from "react-hook-form";
 import { ArtistOnboardingFormInputs } from "./ArtistOnboarding";
 
-type FieldNames =
+export type FieldNames =
   | "Name"
   | "Date"
   | "Nickname"

@@ -8,6 +8,7 @@ import ArtistInputGroup from "./ArtistInputGroup";
 import LocationSelect from "./LocationSelect";
 import GenereSelect from "./GenereSelect";
 import BioUpdate from "./BioUpdate";
+import { getTimeDifference } from "@/utils/useTimeDifference";
 export type ArtistOnboardingFormInputs = {
   Name: string;
   Nickname: string;
@@ -22,12 +23,22 @@ export type ArtistOnboardingFormInputs = {
 };
 
 export function ArtistOnboarding() {
-  const [onboardingState, setOnboardingState] = useState<number>(1);
+  const [onboardingState, setOnboardingState] = useState<number>(5);
   const {
     register,
     trigger,
+    watch,
+    control,
     formState: { errors },
-  } = useForm<ArtistOnboardingFormInputs>();
+  } = useForm<ArtistOnboardingFormInputs>({
+    defaultValues: {
+      Name: "abdone",
+      Nickname: "abdone",
+      Date: "01-01-2002",
+      Genre: ["Afrobeats"],
+      Location: "usa",
+    },
+  });
   // const { createProfile, isPending } = useCreateProfile();
   // const { currentUser } = useCurrentUser();
   // const navigate = useNavigate();
@@ -64,7 +75,7 @@ export function ArtistOnboarding() {
       bgPos={"center"}
       bgSize={"cover"}
       backdropBlur={"20px"}
-      bg={"blackAlpha.200"}
+      bg={"blackAlpha.400"}
       pos={"relative"}
     >
       <Image
@@ -72,7 +83,7 @@ export function ArtistOnboarding() {
         w={"full"}
         h={"full"}
         filter="blur(10px)"
-        opacity={"0.05"}
+        opacity={"0.15"}
       />
       <Box
         w={"full"}
@@ -114,15 +125,23 @@ export function ArtistOnboarding() {
         )}
         {onboardingState === 3 && (
           <LocationSelect
+            errors={errors}
+            trigger={trigger}
             Increamental={setOnboardingState}
             title="Where are you from?"
+            control={control}
           />
         )}
-        {onboardingState === 4 && (
-          <GenereSelect Increamental={setOnboardingState} />
+        {onboardingState === 5 && (
+          <GenereSelect
+            control={control}
+            errors={errors}
+            Increamental={setOnboardingState}
+            trigger={trigger}
+          />
         )}
 
-        {onboardingState === 5 && (
+        {onboardingState === 4 && (
           <ArtistInputGroup
             title="When were you born?"
             buttonLabel="Proceed"
@@ -134,10 +153,25 @@ export function ArtistOnboarding() {
             fieldName="Date"
             trigger={trigger}
             errors={errors}
+            validateFn={(value) => {
+              const differnceInYears = getTimeDifference(value as string);
+              if (differnceInYears < 16) {
+                return "You have to be at least 16 years to join Rhythmo!";
+              } else {
+                return true;
+              }
+            }}
           />
         )}
         {onboardingState === 6 && (
-          <BioUpdate Increamental={setOnboardingState} />
+          <BioUpdate
+            control={control}
+            watch={watch}
+            register={register}
+            errors={errors}
+            trigger={trigger}
+            Increamental={setOnboardingState}
+          />
         )}
       </Box>
     </Box>
