@@ -81,7 +81,7 @@ export function TopMenu() {
               </Button>
             </Link>
             <Separator orientation={"vertical"} height={"4"} mr={2} />
-            <Link to={"/login/artist"}>
+            <Link to={"/artist/login"}>
               <Button rounded={"full"} color={"gray.950"} bg={"white"}>
                 Become an Artist
               </Button>

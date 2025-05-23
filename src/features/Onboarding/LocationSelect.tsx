@@ -5,6 +5,7 @@ import {
   Field,
   Portal,
   Select,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -14,40 +15,82 @@ import {
   Control,
   Controller,
   FieldErrors,
+  UseFormSetValue,
   UseFormTrigger,
 } from "react-hook-form";
 import { ArtistOnboardingFormInputs } from "./ArtistOnboarding";
+import { toaster } from "@/components/ui/toaster";
+import { LocationType } from "../auth/userType";
 type LocationSelectProps = {
   title: string;
   Increamental?: React.Dispatch<React.SetStateAction<number>>;
   trigger: UseFormTrigger<ArtistOnboardingFormInputs>;
   errors: FieldErrors<ArtistOnboardingFormInputs>;
   control: Control<ArtistOnboardingFormInputs>;
+  setValue: UseFormSetValue<ArtistOnboardingFormInputs>;
 };
 const LocationSelect = ({
   title,
   errors,
   control,
+  setValue,
   trigger,
   Increamental,
 }: LocationSelectProps) => {
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [loadingLocation, setLoadingLocation] = useState<boolean>(false);
   const allCountries = createListCollection({
     items: Array.from(
       countries.map((country) => {
         return {
           label: country.name.common,
-          value: `${country.latlng[0]},${country.latlng[0]}`,
+          value: country.name.common,
           flag: country.flag,
         };
       })
     ),
   });
+  const getmylocation = async () => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          setLoadingLocation(true);
+          const { latitude, longitude } = pos.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          );
+          const data: LocationType = await response.json();
+
+          if (!response.ok) {
+            toaster.create({
+              title: "We could not get your Location",
+            });
+            return;
+          }
+          if (data) {
+            setLoadingLocation(false);
+            setValue("Location", data.address.country);
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            toaster.create({
+              title: "We could not fetch your location",
+            });
+          }
+        } finally {
+          setLoadingLocation(false);
+        }
+      },
+      () =>
+        toaster.create({
+          title: "Location not available",
+        })
+    );
+  };
 
   const handleClick = async () => {
     const isvalid = await trigger(["Location"]);
-    console.log(isvalid);
 
     if (!isvalid) return;
     setIsClosing(true);
@@ -96,8 +139,17 @@ const LocationSelect = ({
           zIndex={"100"}
           color={"green.600"}
           focusRing={"none"}
+          onClick={getmylocation}
         >
-          Use my location
+          {loadingLocation ? (
+            <Spinner
+              size={"md"}
+              color="green.500"
+              css={{ "--spinner-track-color": "colors.green.900" }}
+            />
+          ) : (
+            "Use my location"
+          )}
         </Button>
       </Box>
       <Field.Root invalid={!!errors["Location"]}>

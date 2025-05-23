@@ -3,12 +3,15 @@ import {
   sendOTP as SendOTPApi,
   createUserProfile,
   getCurrentUser,
+  createArtistProfile as createArtistProfileApi,
   logOut,
+  getCurrentArtist,
 } from "@/services/onboardingApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Profile } from "./userType";
+import { ArtistSignUpData, Profile } from "./userType";
 import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useCurrentArtist } from "@/contexts/currentArtistContext";
 type verifyOtpType = {
   email: string;
   token: string;
@@ -62,6 +65,15 @@ export function useGetCurrentUser() {
   return { data: data?.data, profileInfo: data?.profileInfo, isLoading };
 }
 
+export function useGetCurrentArtist() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["rhythmo-currentArtist"],
+    queryFn: getCurrentArtist,
+    retry: false,
+  });
+  return { data: data?.data, profileInfo: data?.profileInfo, isLoading };
+}
+
 export function useLogout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -82,4 +94,24 @@ export function useLogout() {
   });
 
   return { signOut, isPending, error };
+}
+
+export function useCreateArtistProfile() {
+  const queryClient = useQueryClient();
+  const { currentArtist } = useCurrentArtist();
+  const {
+    mutate: createArtist,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: (obj: ArtistSignUpData) => createArtistProfileApi(obj),
+    onSuccess: (data) => {
+      queryClient.setQueryData(["rhythmo-currentArtist"], {
+        data: currentArtist?.data,
+        profileInfo: data,
+      });
+    },
+  });
+
+  return { createArtist, isPending, error };
 }

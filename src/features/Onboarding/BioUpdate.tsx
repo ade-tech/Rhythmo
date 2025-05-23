@@ -4,6 +4,7 @@ import {
   Image,
   Input,
   Link,
+  Spinner,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -16,30 +17,33 @@ import {
   Control,
   Controller,
   FieldErrors,
+  SubmitHandler,
+  UseFormHandleSubmit,
   UseFormRegister,
-  UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
 import { ArtistOnboardingFormInputs } from "./ArtistOnboarding";
+import { useNavigate } from "react-router-dom";
+import { useCurrentArtist } from "@/contexts/currentArtistContext";
+import { useCreateArtistProfile } from "../auth/useOnboarding";
+import { toaster } from "@/components/ui/toaster";
 type BioUpdateProps = {
   Increamental?: React.Dispatch<React.SetStateAction<number>>;
   register: UseFormRegister<ArtistOnboardingFormInputs>;
-  trigger: UseFormTrigger<ArtistOnboardingFormInputs>;
   errors: FieldErrors<ArtistOnboardingFormInputs>;
   control: Control<ArtistOnboardingFormInputs>;
   watch: UseFormWatch<ArtistOnboardingFormInputs>;
+  handleSubmit: UseFormHandleSubmit<ArtistOnboardingFormInputs>;
 };
 
 export function BioUpdate({
   Increamental,
   control,
+  handleSubmit,
   errors,
   watch,
-  trigger,
   register,
 }: BioUpdateProps) {
-  const [isClosed, setIsClosed] = useState<boolean>(false);
-  const [isClosing, setIsClosing] = useState<boolean>(false);
   const coverImageRef = useRef<HTMLInputElement | null>(null);
   const profileRef = useRef<HTMLInputElement | null>(null);
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
@@ -48,6 +52,46 @@ export function BioUpdate({
   );
   const image = watch("Profile_image");
   const cover = watch("Cover_image");
+
+  const { createArtist, isPending } = useCreateArtistProfile();
+  const { currentArtist } = useCurrentArtist();
+  const navigate = useNavigate();
+
+  const submitFn: SubmitHandler<ArtistOnboardingFormInputs> = (data) => {
+    if (!currentArtist || !currentArtist.data) {
+      toaster.create({
+        title: "❌ You have to sign in first!",
+      });
+      return;
+    }
+    createArtist(
+      {
+        profileDetails: {
+          user_email: currentArtist.data.email!,
+          user_id: currentArtist.data.id!,
+          user_type: "artist",
+          nickname: data.Nickname,
+          full_name: data.Name,
+        },
+        songs: null,
+        songs_count: 0,
+        followers_count: 0,
+        monthly_plays: 0,
+        user_id: currentArtist.data.id!,
+        about: data.Bio,
+        cover_image: data?.Cover_image?.[0],
+        profile_image: data.Profile_image[0],
+        location: data.Location,
+      },
+      {
+        onSuccess: () => navigate("/artist"),
+        onError: (error) =>
+          toaster.create({
+            title: error.message,
+          }),
+      }
+    );
+  };
 
   useEffect(() => {
     if (!image || image.length < 1) return;
@@ -77,28 +121,16 @@ export function BioUpdate({
     reader.readAsDataURL(file);
   }, [cover]);
 
-  const handleClick = async () => {
-    const isvalid = await trigger(["Bio", "Cover_image", "Profile_image"]);
-
-    if (!isvalid) return;
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosed(true);
-      if (Increamental !== undefined) {
-        Increamental((cur) => cur + 1);
-      }
-    }, 350);
-  };
   return (
     <Box
       w={"1/3"}
       h={"1/2"}
-      display={isClosed ? "none" : "flex"}
+      display={"flex"}
       pos={"relative"}
       flexDir={"column"}
       alignItems={"center"}
       justifyContent={"center"}
-      data-state={isClosing ? "closed" : "open"}
+      data-state={"open"}
       gap={4}
       _open={{
         animation: "400ms fadeIn  ease-out ",
@@ -373,14 +405,15 @@ export function BioUpdate({
         )}
       </Box>
       <DualButtonFooter
-        buttonTitle="Submit"
+        buttonTitle={isPending ? <Spinner color={"gray.950"} /> : "Submit"}
         colorPallete="green"
         backAction={() => {
           if (Increamental !== undefined) {
             Increamental((cur) => cur - 1);
           }
         }}
-        action={handleClick}
+        nextDisabled={isPending}
+        action={handleSubmit(submitFn)}
       />
     </Box>
   );

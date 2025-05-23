@@ -17,8 +17,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useSendOTP, useVerifyWithOTP } from "./useOnboarding";
 import { toaster } from "@/components/ui/toaster";
-import { useCurrentUser } from "@/contexts/currentUserContext";
+import { RhythmoUser, useCurrentUser } from "@/contexts/currentUserContext";
 import { useRef, useState } from "react";
+import {
+  RhythmoArtist,
+  useCurrentArtist,
+} from "@/contexts/currentArtistContext";
 
 type Input = {
   email: string;
@@ -52,6 +56,7 @@ export function LoginContainer({
   } = useForm<Input>();
   const navigate = useNavigate();
   const { setCurrentUser } = useCurrentUser();
+  const { setCurrentArtist } = useCurrentArtist();
   const emailString = watch("email");
 
   const { mutate: getIn, isPending } = useVerifyWithOTP();
@@ -65,20 +70,27 @@ export function LoginContainer({
       { email: data.email, token: data.otp.join(""), userType },
       {
         onSuccess: (data) => {
-          setCurrentUser(data);
+          if (userType === "user") {
+            setCurrentUser(data as RhythmoUser);
+          } else {
+            setCurrentArtist(data as RhythmoArtist);
+          }
           toaster.create({
             title: "✅ OTP has been verified!",
           });
-          if (typeof data?.profileInfo === "string") {
+          if (
+            typeof data?.profileInfo === "string" ||
+            data.profileInfo === null
+          ) {
             navigate(signUpNav);
           } else {
             navigate(signInNav);
           }
         },
 
-        onError: () => {
+        onError: (error) => {
           toaster.create({
-            title: "❌ Wrong code! Try Again",
+            title: error.message,
           });
         },
       }

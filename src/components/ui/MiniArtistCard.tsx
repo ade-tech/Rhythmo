@@ -31,6 +31,7 @@ export function MiniSongCard({ song }: { song: Song }) {
           objectFit="cover"
           w={"50px"}
           h={"50px"}
+          objectPosition={"center"}
           rounded={"full"}
           src={song.cover_url}
           alt="Caffe Latte"

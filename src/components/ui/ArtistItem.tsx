@@ -24,7 +24,11 @@ export function ArtistItem({ isOpen, data }: ArtistItemProps) {
       mb={5}
     >
       <Stack pos={"relative"} className="group">
-        <Image src={data.profiles.avatar_url} borderRadius={"full"} />
+        <Image
+          src={data.profiles.avatar_url}
+          borderRadius={"full"}
+          h={"135px"}
+        />
         <PlayPause data={songs!} />
       </Stack>
       <Stack gap={0} flexShrink={0}>

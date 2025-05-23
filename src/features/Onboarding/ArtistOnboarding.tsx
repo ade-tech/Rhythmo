@@ -1,9 +1,7 @@
 import { Box, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import { useCreateProfile } from "../auth/useOnboarding";
-// import { useCurrentUser } from "@/contexts/currentUserContext";
-// import { useNavigate } from "react-router-dom";
+
 import ArtistInputGroup from "./ArtistInputGroup";
 import LocationSelect from "./LocationSelect";
 import GenereSelect from "./GenereSelect";
@@ -23,50 +21,16 @@ export type ArtistOnboardingFormInputs = {
 };
 
 export function ArtistOnboarding() {
-  const [onboardingState, setOnboardingState] = useState<number>(5);
+  const [onboardingState, setOnboardingState] = useState<number>(1);
   const {
     register,
+    setValue,
     trigger,
+    handleSubmit,
     watch,
     control,
     formState: { errors },
-  } = useForm<ArtistOnboardingFormInputs>({
-    defaultValues: {
-      Name: "abdone",
-      Nickname: "abdone",
-      Date: "01-01-2002",
-      Genre: ["Afrobeats"],
-      Location: "usa",
-    },
-  });
-  // const { createProfile, isPending } = useCreateProfile();
-  // const { currentUser } = useCurrentUser();
-  // const navigate = useNavigate();
-
-  // const submitFn: SubmitHandler<ArtistOnboardingFormInputs> = (data) => {
-  //   createProfile(
-  //     {
-  //       user_type: "user",
-  //       user_id: currentUser?.data?.id ?? "",
-  //       user_email: currentUser?.data?.email ?? "",
-  //       fav_artist: data.Artist,
-  //       full_name: data.Name,
-  //       nickname: data.Name.split(" ")[0],
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         setIsending(true);
-
-  //         navigate("/");
-  //       },
-  //       onError: () => {
-  //         toaster.create({
-  //           title: "❌ Error, check your inputs",
-  //         });
-  //       },
-  //     }
-  //   );
-  // };
+  } = useForm<ArtistOnboardingFormInputs>();
 
   return (
     <Box
@@ -130,6 +94,7 @@ export function ArtistOnboarding() {
             Increamental={setOnboardingState}
             title="Where are you from?"
             control={control}
+            setValue={setValue}
           />
         )}
         {onboardingState === 5 && (
@@ -169,8 +134,8 @@ export function ArtistOnboarding() {
             watch={watch}
             register={register}
             errors={errors}
-            trigger={trigger}
             Increamental={setOnboardingState}
+            handleSubmit={handleSubmit}
           />
         )}
       </Box>
