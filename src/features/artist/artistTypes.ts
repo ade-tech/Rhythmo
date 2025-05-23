@@ -13,3 +13,14 @@ export type Artist = {
     avatar_url: string;
   };
 };
+
+export type ArtistQuery = {
+  id: number;
+  created_at: string;
+  user_id: string;
+  songs: object;
+  songs_count: number;
+  followers_count: number;
+  monthly_plays: number;
+  about: string;
+};

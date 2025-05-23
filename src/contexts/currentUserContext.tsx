@@ -28,14 +28,20 @@ export function CurrentUserProvider({
   const { data, profileInfo } = useGetCurrentUser();
 
   useEffect(() => {
-    if (data && typeof profileInfo !== "string") {
-      setCurrentUser({ data, profileInfo: profileInfo?.at(0) || "empty" });
-    }
-    if (data === null || typeof profileInfo === "string") {
+    if (
+      data === null ||
+      typeof profileInfo === "string" ||
+      profileInfo?.at(0)?.user_type !== "user"
+    ) {
       setCurrentUser({
         data: null,
         profileInfo: "empty",
       });
+      return;
+    }
+
+    if (data && typeof profileInfo !== "string") {
+      setCurrentUser({ data, profileInfo: profileInfo?.at(0) || "empty" });
     }
   }, [data, profileInfo?.at(0)]);
   return (

@@ -1,16 +1,19 @@
 import { Box, Button, Spacer } from "@chakra-ui/react";
+import React from "react";
 import { MdOutlineArrowBack } from "react-icons/md";
 
 type DualButtonProps = {
   action?: () => void;
   backAction?: () => void;
-  buttonTitle: string;
+  buttonTitle: string | React.ReactNode;
   colorPallete?: "green" | "red";
+  nextDisabled?: boolean;
 };
 
 const DualButtonFooter = ({
   action,
   backAction,
+  nextDisabled,
   buttonTitle,
   colorPallete = "green",
 }: DualButtonProps) => {
@@ -29,6 +32,7 @@ const DualButtonFooter = ({
         bg={`${colorPallete}.600`}
         color={"gray.950"}
         size={"lg"}
+        disabled={nextDisabled}
       >
         {buttonTitle}
       </Button>

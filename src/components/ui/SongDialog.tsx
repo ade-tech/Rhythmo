@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { HiX } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 interface SongDialogProps {
   triggerSongImage: string;
   triggerSongColor: string;
@@ -20,6 +21,7 @@ const SongDialog = ({
   triggerButton,
   triggerSongColor,
 }: SongDialogProps) => {
+  const navigate = useNavigate();
   return (
     <Dialog.Root placement={"center"} size={"xl"}>
       <Dialog.Trigger>{triggerButton}</Dialog.Trigger>
@@ -75,6 +77,7 @@ const SongDialog = ({
                   fontWeight={"bold"}
                   rounded={"full"}
                   bg={"green.600"}
+                  onClick={() => navigate("/login")}
                 >
                   Start Listening
                 </Button>
@@ -84,6 +87,7 @@ const SongDialog = ({
                   fontWeight={"bold"}
                   rounded={"full"}
                   variant={"outline"}
+                  onClick={() => navigate("/artist/login")}
                 >
                   Become an Artist
                 </Button>

@@ -16,10 +16,15 @@ import ArtistLoginContainer from "./features/auth/ArtistLoginContainer";
 import UserOnboarding from "./features/Onboarding/UserOnboarding";
 import { CurrentUserProvider } from "./contexts/currentUserContext";
 import { Toaster } from "./components/ui/toaster";
-import ArtistHome from "./features/artist/ArtistHome";
 import UserLoginContainer from "./features/auth/UserLoginContainer";
 import PageNotFound from "./components/ui/PageNotFound";
 import ArtistOnboarding from "./features/Onboarding/ArtistOnboarding";
+import ArtistProtectedRoute from "./components/ui/ArtistProtectedRoute";
+
+import ArtistLayout from "./components/ui/ArtistLayout";
+import ArtistDashboard from "./features/artist/ArtistDashboard";
+import { CurrentArtistProvider } from "./contexts/currentArtistContext";
+import ArtistHome from "./features/artist/ArtistHome";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,30 +39,43 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <CurrentUserProvider>
-        <OpenSongProvider>
-          <AudioContextProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <Routes>
-              <Route path="/" element={<Home />}>
-                <Route index element={<TrendingContainer />} />
-                <Route path="track/:id" element={<TrackContainer />} />
-                <Route path="album/:id" element={<AlbumContainer />} />
-                <Route path="playlist/:id" element={<PlaylistContainer />} />
-                <Route path="artist/:id" element={<ArtistContainer />} />
-                <Route path="search" element={<GenreContainer />} />
-                <Route path="genre/:id" element={<GenreContainer />} />
-                <Route path="/profile" element={<ProfileContainer />} />
-              </Route>
-              <Route path="/login" element={<UserLoginContainer />} />
-              <Route path="/login/artist" element={<ArtistLoginContainer />} />
-              <Route path="/artist" element={<ArtistHome />}></Route>
+        <CurrentArtistProvider>
+          <OpenSongProvider>
+            <AudioContextProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <Routes>
+                <Route path="/" element={<Home />}>
+                  <Route index element={<TrendingContainer />} />
+                  <Route path="track/:id" element={<TrackContainer />} />
+                  <Route path="album/:id" element={<AlbumContainer />} />
+                  <Route path="playlist/:id" element={<PlaylistContainer />} />
+                  <Route path="artist/:id" element={<ArtistContainer />} />
+                  <Route path="search" element={<GenreContainer />} />
+                  <Route path="genre/:id" element={<GenreContainer />} />
+                  <Route path="/profile" element={<ProfileContainer />} />
+                </Route>
+                <Route path="/login" element={<UserLoginContainer />} />
 
-              <Route path="/user/onboard" element={<UserOnboarding />} />
-              <Route path="/artist/onboard" element={<ArtistOnboarding />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </AudioContextProvider>
-        </OpenSongProvider>
+                <Route path="/user/onboard" element={<UserOnboarding />} />
+
+                <Route path="/artist" element={<ArtistLayout />}>
+                  <Route
+                    element={
+                      <ArtistProtectedRoute>
+                        <ArtistHome />
+                      </ArtistProtectedRoute>
+                    }
+                  >
+                    <Route index element={<ArtistDashboard />} />
+                  </Route>
+                  <Route path="login" element={<ArtistLoginContainer />} />
+                  <Route path="onboard" element={<ArtistOnboarding />} />
+                </Route>
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </AudioContextProvider>
+          </OpenSongProvider>
+        </CurrentArtistProvider>
       </CurrentUserProvider>
     </QueryClientProvider>
   );
