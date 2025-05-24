@@ -61,7 +61,7 @@ export function TopMenu() {
           >
             <Input
               size={"lg"}
-              placeholder="What do you wanna play"
+              placeholder="What do you wanna play?"
               borderRadius={"3xl"}
               variant={"subtle"}
               focusRing={"none"}
@@ -76,11 +76,21 @@ export function TopMenu() {
           typeof currentUser.profileInfo === "string") && (
           <HStack gap={4}>
             <Link to={"/login"}>
-              <Button variant={"ghost"} rounded={"full"} colorPalette={"gray"}>
+              <Button
+                variant={"ghost"}
+                rounded={"full"}
+                color={"white"}
+                _hover={{ bg: "none" }}
+              >
                 Start Listening
               </Button>
             </Link>
-            <Separator orientation={"vertical"} height={"4"} mr={2} />
+            <Separator
+              orientation={"vertical"}
+              colorPalette={"gray"}
+              height={"4"}
+              mr={2}
+            />
             <Link to={"/artist/login"}>
               <Button rounded={"full"} color={"gray.950"} bg={"white"}>
                 Become an Artist

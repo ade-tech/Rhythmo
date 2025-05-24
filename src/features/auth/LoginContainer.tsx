@@ -115,7 +115,8 @@ export function LoginContainer({
       bgPos={"center"}
       bgSize={"cover"}
       backdropBlur={"20px"}
-      bg={"blackAlpha.500"}
+      bg={"gray.950"}
+      color={"white"}
       pos={"relative"}
     >
       <Image
@@ -188,6 +189,7 @@ export function LoginContainer({
                   <Input
                     placeholder="name@domain.com"
                     size={"lg"}
+                    borderColor={"gray.800"}
                     w={"2/3"}
                     color={"gray.400"}
                     {...register("email", {
@@ -240,7 +242,7 @@ export function LoginContainer({
                   )}
                 </Button>
                 <HStack display={"flex"} w={"2/3"}>
-                  <Separator variant={"solid"} flex={1} bg={"gray.900"} />
+                  <Separator variant={"solid"} flex={1} colorPalette={"gray"} />
                   <Text>or</Text>
                   <Separator variant={"solid"} flex={1} bg={"gray.900"} />
                 </HStack>
@@ -250,6 +252,11 @@ export function LoginContainer({
                   pos={"relative"}
                   rounded={"full"}
                   variant={"outline"}
+                  borderColor={"gray.800"}
+                  _hover={{
+                    color: "black",
+                  }}
+                  color={"white"}
                 >
                   <Box as={FcGoogle} pos={"absolute"} left={3} />
                   Google
@@ -263,6 +270,7 @@ export function LoginContainer({
                   rounded={"full"}
                   color={"white"}
                   boxSize={8}
+                  borderColor={"gray.800"}
                   p={1.5}
                   pos={"absolute"}
                   top={5}
@@ -303,14 +311,35 @@ export function LoginContainer({
                           onValueComplete={() => handleSubmit(submitFn)()}
                         >
                           <PinInput.HiddenInput />
-                          <PinInput.Control alignItems={"center"}>
-                            <PinInput.Input index={0} />
-                            <PinInput.Input index={1} />
-                            <PinInput.Input index={2} />
+                          <PinInput.Control
+                            alignItems={"center"}
+                            borderColor={"gray.800"}
+                          >
+                            <PinInput.Input
+                              index={0}
+                              borderColor={"gray.800"}
+                            />
+                            <PinInput.Input
+                              index={1}
+                              borderColor={"gray.800"}
+                            />
+                            <PinInput.Input
+                              index={2}
+                              borderColor={"gray.800"}
+                            />
                             <Separator w={5} />
-                            <PinInput.Input index={3} />
-                            <PinInput.Input index={4} />
-                            <PinInput.Input index={5} />
+                            <PinInput.Input
+                              index={3}
+                              borderColor={"gray.800"}
+                            />
+                            <PinInput.Input
+                              index={4}
+                              borderColor={"gray.800"}
+                            />
+                            <PinInput.Input
+                              index={5}
+                              borderColor={"gray.800"}
+                            />
                           </PinInput.Control>
                         </PinInput.Root>
                       );
@@ -365,7 +394,10 @@ export function LoginContainer({
             bottom={4}
             color={"gray.500"}
           >
-            We won't share your details <Link href="#">Our Privacy policy</Link>
+            We won't share your details{" "}
+            <Link color={"gray.200"} href="#">
+              Our Privacy policy
+            </Link>
           </Text>
         </Box>
       </Box>

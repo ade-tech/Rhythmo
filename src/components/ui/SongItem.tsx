@@ -22,6 +22,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
       px={3}
       transition={"background 0.2s ease-in"}
       _hover={{ bg: "gray.800" }}
+      color={"white"}
       py={3}
       borderRadius={"md"}
     >

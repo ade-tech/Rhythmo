@@ -151,10 +151,16 @@ const ProfileContainer = () => {
         <Table.Root size="lg" stickyHeader={true}>
           <Table.Header>
             <Table.Row bg={"transparent"}>
-              <Table.ColumnHeader color={"gray.400"}>#</Table.ColumnHeader>
-              <Table.ColumnHeader color={"gray.400"}>Title</Table.ColumnHeader>
-              <Table.ColumnHeader color={"gray.400"}>Plays</Table.ColumnHeader>
-              <Table.ColumnHeader color={"gray.400"}>
+              <Table.ColumnHeader color={"gray.400"} borderColor={"gray.800"}>
+                #
+              </Table.ColumnHeader>
+              <Table.ColumnHeader color={"gray.400"} borderColor={"gray.800"}>
+                Title
+              </Table.ColumnHeader>
+              <Table.ColumnHeader color={"gray.400"} borderColor={"gray.800"}>
+                Plays
+              </Table.ColumnHeader>
+              <Table.ColumnHeader color={"gray.400"} borderColor={"gray.800"}>
                 <RxTimer size={15} />
               </Table.ColumnHeader>
             </Table.Row>

@@ -111,7 +111,7 @@ export function TrendingSection({
       scrollbar={"hidden"}
       className="rhythmo-section-trending"
     >
-      <Text textStyle={"2xl"} fontWeight={"semibold"}>
+      <Text textStyle={"2xl"} color={"white"} fontWeight={"semibold"}>
         {title}
       </Text>
       {canScrollLeft && !isLoading && (
