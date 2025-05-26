@@ -18,6 +18,7 @@ export function QueueContainer() {
   return (
     <Stack
       ref={ref}
+      color={"white"}
       w={"1/4"}
       className="bg-darker-overlay"
       h={"75dvh"}

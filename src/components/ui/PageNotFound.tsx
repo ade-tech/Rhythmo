@@ -14,6 +14,7 @@ export function PageNotFound() {
       bg={"gray.900"}
       justifyContent={"center"}
       flexDir={"column"}
+      color={"white"}
     >
       <Link to={"/"} className="absolute top-6 left-6">
         <Image src="/Asset 4.png" width={130} mr={14} />

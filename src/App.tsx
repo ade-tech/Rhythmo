@@ -1,7 +1,7 @@
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./components/ui/Home";
 import TrackContainer from "./features/tracks/TrackContainer";
 import AlbumContainer from "./features/albums/AlbumContainer";
@@ -25,6 +25,12 @@ import ArtistLayout from "./components/ui/ArtistLayout";
 import ArtistDashboard from "./features/artist/ArtistDashboard";
 import { CurrentArtistProvider } from "./contexts/currentArtistContext";
 import ArtistHome from "./features/artist/ArtistHome";
+import ArtistStat from "./features/artist/ArtistStat";
+import CreateMusic from "./features/artist/CreateMusic";
+import ArtistProfile from "./features/artist/ArtistProfile";
+import ArtistSongs from "./features/artist/ArtistSongs";
+import ArtistRevenue from "./features/artist/ArtistRevenue";
+import ArtistSettings from "./features/artist/ArtistSettings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,7 +55,7 @@ function App() {
                   <Route path="track/:id" element={<TrackContainer />} />
                   <Route path="album/:id" element={<AlbumContainer />} />
                   <Route path="playlist/:id" element={<PlaylistContainer />} />
-                  <Route path="artist/:id" element={<ArtistContainer />} />
+                  <Route path="artists/:id" element={<ArtistContainer />} />
                   <Route path="search" element={<GenreContainer />} />
                   <Route path="genre/:id" element={<GenreContainer />} />
                   <Route path="/profile" element={<ProfileContainer />} />
@@ -66,7 +72,24 @@ function App() {
                       </ArtistProtectedRoute>
                     }
                   >
-                    <Route index element={<ArtistDashboard />} />
+                    <Route
+                      index
+                      element={<Navigate to={"/artist/dashboard"} />}
+                    />
+                    <Route
+                      path="/artist/dashboard"
+                      element={<ArtistDashboard />}
+                    />
+                    <Route path="/artist/statistics" element={<ArtistStat />} />
+                    <Route path="/artist/create" element={<CreateMusic />} />
+                    <Route path="/artist/profile" element={<ArtistProfile />} />
+                    <Route path="/artist/*" element={<PageNotFound />} />
+                    <Route path="/artist/tracks" element={<ArtistSongs />} />
+                    <Route path="/artist/revenue" element={<ArtistRevenue />} />
+                    <Route
+                      path="/artist/settings"
+                      element={<ArtistSettings />}
+                    />
                   </Route>
                   <Route path="login" element={<ArtistLoginContainer />} />
                   <Route path="onboard" element={<ArtistOnboarding />} />

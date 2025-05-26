@@ -2,7 +2,7 @@ import { Box, Grid, GridItem, HStack, Image, Text } from "@chakra-ui/react";
 
 export function GenreContainer() {
   return (
-    <Box w={"full"} h={"full"} pt={10} px={6}>
+    <Box w={"full"} h={"full"} pt={10} px={6} color={"white"}>
       <Text textStyle={"3xl"} fontWeight={"bold"}>
         Browse all
       </Text>

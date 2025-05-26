@@ -105,7 +105,7 @@ const ActivelyPlayinTack = () => {
           <Avatar.Image src={activeSong.cover_url} />
         </Avatar.Root>
         <Stack gap={0}>
-          <Link to="sada">
+          <Link to={`track/${activeSong.id}`}>
             <Text
               textStyle={"md"}
               color={"white"}

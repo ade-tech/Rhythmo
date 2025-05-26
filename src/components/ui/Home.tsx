@@ -6,10 +6,15 @@ import ActivelyPlayinTack from "@/features/tracks/ActivelyPlayinTack";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import SignUpCTA from "./SignUpCTA";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useCurrentArtist } from "@/contexts/currentArtistContext";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
   const { state } = useCurrentMusic();
   const { currentUser } = useCurrentUser();
+  const { currentArtist } = useCurrentArtist();
+
+  if (currentArtist?.profileInfo) return <Navigate to={"/artist"} />;
 
   return (
     <Box bg="black" w="100vw" h="100dvh">

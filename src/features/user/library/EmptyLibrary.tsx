@@ -24,6 +24,7 @@ const EmptyLibrary = () => {
       rounded={"lg"}
       gap={3}
       display={"flex"}
+      color={"white"}
       flexDir={"column"}
     >
       <Text textStyle={"lg"} fontWeight={"extrabold"}>
@@ -38,6 +39,8 @@ const EmptyLibrary = () => {
           rounded={"full"}
           w={"full"}
           size={"sm"}
+          color={"gray.950"}
+          bg={"white"}
           onClick={() =>
             createPlaylist(
               {
@@ -61,14 +64,20 @@ const EmptyLibrary = () => {
       >
         {!currentUser?.data && (
           <Popover.Trigger asChild>
-            <Button rounded={"full"} w={"full"} size={"sm"}>
+            <Button
+              rounded={"full"}
+              color={"gray.950"}
+              bg={"white"}
+              w={"full"}
+              size={"sm"}
+            >
               Create Playlist
             </Button>
           </Popover.Trigger>
         )}
         <Portal>
           <Popover.Positioner>
-            <Popover.Content>
+            <Popover.Content color={"white"}>
               <Popover.Body bg={"green.600"} rounded={"lg"} h={"12"}>
                 <Stack display={"flex"} flexDir={"column"}>
                   <Popover.Title
@@ -98,7 +107,8 @@ const EmptyLibrary = () => {
                       size={"xs"}
                       rounded={"full"}
                       variant={"solid"}
-                      colorPalette={"white"}
+                      color={"black"}
+                      bg={"white"}
                       onClick={() => navigate("/login")}
                     >
                       Sign In
