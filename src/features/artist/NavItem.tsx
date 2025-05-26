@@ -24,7 +24,9 @@ const NavItem = ({ to, icon, inActiveIcon, text }: NavItemProps) => {
             alignItems={"center"}
             gap={2}
             color={"green.500"}
-            bg={"gray.900"}
+            bgGradient={"to-l"}
+            gradientFrom={"gray.950"}
+            gradientTo={"green.900"}
             transition={"all 200ms ease-in-out"}
           >
             {icon}

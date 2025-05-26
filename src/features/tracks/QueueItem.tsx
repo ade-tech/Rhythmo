@@ -42,7 +42,7 @@ const QueueItem = ({
             {song.title}
           </Text>
         </Link>
-        <Link to={`/artist/${song.artist_id}`}>
+        <Link to={`/artists/${song.artist_id}`}>
           <Text
             textStyle={"sm"}
             color={"gray.400"}

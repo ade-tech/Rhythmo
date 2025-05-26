@@ -32,7 +32,7 @@ const OtherSongs = () => {
         </Text>
       </Stack>
       <Spacer />
-      <Text textStyle={"2xl"} fontWeight={"bold"}>
+      <Text textStyle={"xl"} fontWeight={"bold"} color={"green.500"}>
         #2
       </Text>
     </Box>

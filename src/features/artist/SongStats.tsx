@@ -15,6 +15,7 @@ const SongStats = () => {
         bg={"gray.950"}
         pt={4}
         pb={3}
+        color={"white"}
         zIndex={100}
       >
         <Text

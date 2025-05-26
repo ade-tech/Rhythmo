@@ -46,6 +46,7 @@ const TrendingContainer = () => {
           filterState={filterState}
           filterUpdate={setFilterState}
           filterValues={["all", "quran", "islamic music"]}
+          defaultValue={"all"}
         />
       </HStack>
       <TrendingTopItems data={data} isLoading={isLoading} />

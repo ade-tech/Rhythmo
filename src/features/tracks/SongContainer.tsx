@@ -405,7 +405,7 @@ export function SongContainer() {
                     {activeQueue[1]?.title.toUpperCase()}
                   </Text>
                 </Link>
-                <Link to={`/artist/${activeQueue[1]?.artist_id}`}>
+                <Link to={`/artists/${activeQueue[1]?.artist_id}`}>
                   <Text
                     textStyle={"sm"}
                     color={"gray.400"}

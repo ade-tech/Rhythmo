@@ -6,7 +6,13 @@ import SongStats from "./SongStats";
 
 const ArtistHome = () => {
   return (
-    <Box w={"full"} h={"100dvh"} display={"flex"} flexDir={"column"}>
+    <Box
+      w={"full"}
+      h={"100dvh"}
+      bg={"black"}
+      display={"flex"}
+      flexDir={"column"}
+    >
       <ArtistTopMenu />
       <Box
         flex={1}

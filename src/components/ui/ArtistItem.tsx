@@ -32,7 +32,7 @@ export function ArtistItem({ isOpen, data }: ArtistItemProps) {
         <PlayPause data={songs!} />
       </Stack>
       <Stack gap={0} flexShrink={0}>
-        <Link to={`/artist/${data.user_id}`}>
+        <Link to={`/artists/${data.user_id}`}>
           <Text
             fontWeight={"bold"}
             textAlign={"center"}

@@ -10,6 +10,7 @@ const TopSong = () => {
         objectFit={"cover"}
         objectPosition={"center"}
         rounded={"lg"}
+        color={"white"}
       />
       <Box
         w={"full"}
@@ -40,7 +41,7 @@ const TopSong = () => {
           </Text>
         </Stack>
         <Spacer />
-        <Text textStyle={"2xl"} fontWeight={"bold"}>
+        <Text textStyle={"2xl"} fontWeight={"bold"} color={"green.500"}>
           #1
         </Text>
       </Box>
