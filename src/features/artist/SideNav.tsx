@@ -15,8 +15,19 @@ import {
   RiSettings3Fill,
   RiSettings3Line,
 } from "react-icons/ri";
+import { useLogout } from "./useArtist";
+import { toaster } from "@/components/ui/toaster";
+import { useEffect } from "react";
 
 const SideNav = () => {
+  const { signOut, isPending, error } = useLogout();
+  useEffect(() => {
+    if (error) {
+      toaster.create({
+        title: "We could not sign you out",
+      });
+    }
+  }, [error]);
   return (
     <Box
       w={"full"}
@@ -73,6 +84,8 @@ const SideNav = () => {
           bg: "red.950",
         }}
         rounded={"lg"}
+        disabled={isPending}
+        onClick={() => signOut()}
       >
         <HiOutlineLogout /> Sign Out
       </Button>

@@ -1,6 +1,8 @@
 import { fetchArtist, fetchArtists } from "@/services/artistApi";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Artist } from "./artistTypes";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "@/services/onboardingApi";
 
 interface ArtistQuery {
   data: Artist | undefined;
@@ -28,4 +30,26 @@ export function useFetchArtists(): ArtistsQuery {
   });
 
   return { data: data || undefined, isLoading };
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const {
+    mutate: signOut,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: logOut,
+    onSuccess: () => {
+      queryClient.setQueryData(["rhythmo-Artist"], {
+        data: null,
+        profileInfo: null,
+      });
+      queryClient.invalidateQueries({ queryKey: ["rhythmo-currentArtist"] });
+      navigate("/");
+    },
+  });
+
+  return { signOut, isPending, error };
 }
