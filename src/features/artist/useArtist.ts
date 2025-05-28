@@ -1,6 +1,8 @@
 import { fetchArtist, fetchArtists } from "@/services/artistApi";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Artist } from "./artistTypes";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "@/services/onboardingApi";
 
 interface ArtistQuery {
   data: Artist | undefined;
@@ -21,6 +23,11 @@ export function useFetchArtist(userID: string): ArtistQuery {
   return { data, isLoading };
 }
 
+/**
+ * Fetches a list of artists for onboarding using a React Query hook.
+ *
+ * @returns An object containing the fetched array of artists (or undefined) and the loading state.
+ */
 export function useFetchArtists(): ArtistsQuery {
   const { data, isLoading } = useQuery({
     queryKey: [`onboarding-artist`],
@@ -28,4 +35,31 @@ export function useFetchArtists(): ArtistsQuery {
   });
 
   return { data: data || undefined, isLoading };
+}
+
+/**
+ * Provides a hook to handle user logout, clearing artist-related data and redirecting to the home page.
+ *
+ * @returns An object containing the `signOut` function to trigger logout, a boolean `isPending` indicating if logout is in progress, and any `error` encountered during logout.
+ */
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const {
+    mutate: signOut,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: logOut,
+    onSuccess: () => {
+      queryClient.setQueryData(["rhythmo-Artist"], {
+        data: null,
+        profileInfo: null,
+      });
+      queryClient.invalidateQueries({ queryKey: ["rhythmo-currentArtist"] });
+      navigate("/");
+    },
+  });
+
+  return { signOut, isPending, error };
 }

@@ -181,7 +181,7 @@ export async function createArtistProfile(
     {
       ...(artistData.at(0) as ArtistQuery),
       profiles: {
-        fullname: (profileData.at(0) as Profile).full_name,
+        full_name: (profileData.at(0) as Profile).full_name,
         nickname: (profileData.at(0) as Profile).nickname,
         avatar_url: (profileData.at(0) as Profile).avatar_url || "",
       },

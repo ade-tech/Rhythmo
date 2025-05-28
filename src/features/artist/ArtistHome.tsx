@@ -9,9 +9,12 @@ const ArtistHome = () => {
     <Box
       w={"full"}
       h={"100dvh"}
+      maxW={"8xl"}
+      mx={"auto"}
       bg={"black"}
       display={"flex"}
       flexDir={"column"}
+      overflow={"hidden"}
     >
       <ArtistTopMenu />
       <Box

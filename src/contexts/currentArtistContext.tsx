@@ -14,6 +14,7 @@ interface UserContextValues {
   setCurrentArtist: React.Dispatch<
     React.SetStateAction<RhythmoArtist | undefined>
   >;
+  error: Error | null;
 }
 
 const currentArtistContext = createContext<UserContextValues | undefined>(
@@ -28,7 +29,7 @@ export function CurrentArtistProvider({
   const [currentArtist, setCurrentArtist] = useState<RhythmoArtist | undefined>(
     undefined
   );
-  const { data, profileInfo, isLoading } = useGetCurrentArtist();
+  const { data, profileInfo, isLoading, error } = useGetCurrentArtist();
 
   useEffect(() => {
     if (!isLoading && (data || profileInfo)) {
@@ -40,7 +41,7 @@ export function CurrentArtistProvider({
   }, [data, profileInfo?.at(0)]);
   return (
     <currentArtistContext.Provider
-      value={{ currentArtist, setCurrentArtist, isLoading }}
+      value={{ currentArtist, setCurrentArtist, isLoading, error }}
     >
       {children}
     </currentArtistContext.Provider>

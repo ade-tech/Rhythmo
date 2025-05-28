@@ -66,12 +66,12 @@ export function useGetCurrentUser() {
 }
 
 export function useGetCurrentArtist() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["rhythmo-currentArtist"],
     queryFn: getCurrentArtist,
     retry: false,
   });
-  return { data: data?.data, profileInfo: data?.profileInfo, isLoading };
+  return { data: data?.data, profileInfo: data?.profileInfo, isLoading, error };
 }
 
 export function useLogout() {
