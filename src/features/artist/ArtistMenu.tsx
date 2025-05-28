@@ -71,7 +71,7 @@ export function ArtistTopMenu() {
               mx={2}
               colorPalette={"gray"}
             />
-            <Link to={"/artist/profile"}>
+            <Link to={"/artist/settings"}>
               <Avatar.Root colorPalette={"green"}>
                 <Avatar.Image
                   src={currentArtist.profileInfo.profiles.avatar_url}

@@ -52,7 +52,7 @@ export function ArtistDashboard() {
         <OtherStat title="Total Likes" curFilter={filterValue} />
         <OtherStat title="Total Followers" curFilter={filterValue} />
         <OtherStat
-          title="Streaming Locations"
+          title="Fan Demographics"
           curFilter={filterValue}
           type="chart"
         />

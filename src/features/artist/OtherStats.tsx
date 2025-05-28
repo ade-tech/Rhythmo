@@ -115,7 +115,7 @@ const OtherStat = ({ title, curFilter, type = "normal" }: StatItemProp) => {
         gap={1}
       >
         <Box display={"flex"} h={"full"} w={"full"}>
-          <Stack flexBasis={"1/2"} gap={0} mt={5} ml={2}>
+          <Stack flexBasis={"1/2"} gap={0} mt={5} ml={1}>
             <Text
               lineHeight={1}
               textStyle={"md"}

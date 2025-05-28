@@ -61,7 +61,7 @@ const SideNav = () => {
       <NavItem
         to="/artist/tracks"
         icon={<IoAlbums size={24} />}
-        text="My Songs"
+        text="My Music"
         inActiveIcon={<IoAlbumsOutline size={24} />}
       />
       <NavItem

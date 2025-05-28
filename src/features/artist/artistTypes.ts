@@ -5,10 +5,11 @@ export type Artist = {
   songs: object;
   songs_count: number;
   followers_count: number;
+  cover_url: string;
   monthly_plays: number;
   about: string;
   profiles: {
-    fullname: string;
+    full_name: string;
     nickname: string;
     avatar_url: string;
   };
@@ -20,6 +21,7 @@ export type ArtistQuery = {
   user_id: string;
   songs: object;
   songs_count: number;
+  cover_url: string;
   followers_count: number;
   monthly_plays: number;
   about: string;

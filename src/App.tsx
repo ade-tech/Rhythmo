@@ -27,7 +27,6 @@ import { CurrentArtistProvider } from "./contexts/currentArtistContext";
 import ArtistHome from "./features/artist/ArtistHome";
 import ArtistStat from "./features/artist/ArtistStat";
 import CreateMusic from "./features/artist/CreateMusic";
-import ArtistProfile from "./features/artist/ArtistProfile";
 import ArtistSongs from "./features/artist/ArtistSongs";
 import ArtistRevenue from "./features/artist/ArtistRevenue";
 import ArtistSettings from "./features/artist/ArtistSettings";
@@ -82,7 +81,7 @@ function App() {
                     />
                     <Route path="/artist/statistics" element={<ArtistStat />} />
                     <Route path="/artist/create" element={<CreateMusic />} />
-                    <Route path="/artist/profile" element={<ArtistProfile />} />
+
                     <Route path="/artist/*" element={<PageNotFound />} />
                     <Route path="/artist/tracks" element={<ArtistSongs />} />
                     <Route path="/artist/revenue" element={<ArtistRevenue />} />

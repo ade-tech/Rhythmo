@@ -17,7 +17,7 @@ const CreateMusic = () => {
         w={"full"}
         h={48}
         bgSize={"cover"}
-        bgPos={"bottom"}
+        bgPos={"center"}
         rounded={"lg"}
         bgImage={"url('/bgNoise.jpg ')"}
         display={"flex"}
@@ -43,8 +43,16 @@ const CreateMusic = () => {
         pl={1}
         justifyContent={"space-between"}
       >
-        <CreateButton title="Upload a song" icon={PiMusicNotesPlus} />
-        <CreateButton title="Create an ablum" icon={BiAlbum} />
+        <CreateButton
+          title="Upload a song"
+          icon={PiMusicNotesPlus}
+          description="Add your latest track to Rhythmo so listeners can enjoy it instantly."
+        />
+        <CreateButton
+          title="Create an ablum"
+          icon={BiAlbum}
+          description="Group multiple songs together into a themed collection or project."
+        />
       </Box>
     </Box>
   );
@@ -52,9 +60,10 @@ const CreateMusic = () => {
 
 interface createButtonProps {
   title: string;
+  description: string;
   icon: React.ElementType;
 }
-const CreateButton = ({ title, icon }: createButtonProps) => {
+const CreateButton = ({ title, icon, description }: createButtonProps) => {
   return (
     <Button
       flexBasis={"1/2"}
@@ -64,7 +73,7 @@ const CreateButton = ({ title, icon }: createButtonProps) => {
       rounded={"lg"}
       variant={"outline"}
       textStyle={"4xl"}
-      color={"gray.600"}
+      color={"gray.400"}
       borderColor={"gray.800"}
       _hover={{
         borderColor: "green.800",
@@ -79,6 +88,9 @@ const CreateButton = ({ title, icon }: createButtonProps) => {
     >
       <Box as={icon} boxSize={14} />
       <Text>{title}</Text>
+      <Text textStyle={"sm"} w={"3/4"} textWrap={"wrap"} color={"gray.600"}>
+        {description}
+      </Text>
     </Button>
   );
 };

@@ -2,6 +2,8 @@ import { useCurrentArtist } from "@/contexts/currentArtistContext";
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import ReloadButton from "./ReloadButton";
+import { GoHomeFill } from "react-icons/go";
 
 /**
  * Protects artist-specific routes by ensuring the current artist is loaded and valid before rendering children.
@@ -17,7 +19,7 @@ export function ArtistProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const { currentArtist, isLoading } = useCurrentArtist();
+  const { currentArtist, isLoading, error } = useCurrentArtist();
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
@@ -32,18 +34,47 @@ export function ArtistProtectedRoute({
         h={"100dvh"}
         display={"flex"}
         alignItems={"center"}
+        flexDir={"column"}
         justifyContent={"center"}
         className="bg-darker-overlay"
         rounded={"lg"}
       >
         <Image src="/Rhythmo.svg" w={"4rem"} animation={"bounce"} />
         {showMessage && (
-          <Stack>
-            <Text>
-              This is taking longer than expected , check your internet
-              connection
-            </Text>
-          </Stack>
+          <>
+            <Stack mt={4}>
+              {error ? (
+                <Text
+                  textStyle={"2xl"}
+                  lineHeight={1.2}
+                  color={"gray.500"}
+                  textAlign={"center"}
+                >
+                  It seems there was an error,
+                  <br />
+                  kindly use the button below to go back.
+                </Text>
+              ) : (
+                <Text
+                  textStyle={"2xl"}
+                  lineHeight={1.2}
+                  color={"gray.500"}
+                  textAlign={"center"}
+                >
+                  This is taking longer than expected,
+                  <br />
+                  kindly reload this tab.
+                </Text>
+              )}
+            </Stack>
+            {error && (
+              <ReloadButton
+                type="home"
+                title="Back to Home"
+                icon={<GoHomeFill />}
+              />
+            )}
+          </>
         )}
       </Box>
     );
