@@ -23,6 +23,11 @@ export function useFetchArtist(userID: string): ArtistQuery {
   return { data, isLoading };
 }
 
+/**
+ * Fetches a list of artists for onboarding using a React Query hook.
+ *
+ * @returns An object containing the fetched array of artists (or undefined) and the loading state.
+ */
 export function useFetchArtists(): ArtistsQuery {
   const { data, isLoading } = useQuery({
     queryKey: [`onboarding-artist`],
@@ -32,6 +37,11 @@ export function useFetchArtists(): ArtistsQuery {
   return { data: data || undefined, isLoading };
 }
 
+/**
+ * Provides a hook to handle user logout, clearing artist-related data and redirecting to the home page.
+ *
+ * @returns An object containing the `signOut` function to trigger logout, a boolean `isPending` indicating if logout is in progress, and any `error` encountered during logout.
+ */
 export function useLogout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
