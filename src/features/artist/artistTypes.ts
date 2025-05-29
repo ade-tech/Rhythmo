@@ -1,3 +1,16 @@
+/**
+ * artistTypes module
+ *
+ * Contains TypeScript types for representing artist data and artist queries.
+ *
+ * Types:
+ * - Artist: Represents a full artist profile with nested profile info.
+ * - ArtistQuery: Represents a query result for an artist, with basic info.
+ *
+ * Usage:
+ * - Used throughout the app for type safety when handling artist data.
+ */
+
 export type Artist = {
   id: number;
   created_at: string;

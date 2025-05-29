@@ -1,3 +1,18 @@
+/**
+ * playlistType module
+ *
+ * Contains TypeScript types for representing playlists and playlist queries.
+ *
+ * Types:
+ * - Playlist: Represents a playlist entity.
+ * - PlaylistQuery: Represents a query result for a single playlist.
+ * - PlaylistsQuery: Represents a query result for multiple playlists.
+ * - PlaylistSong: Represents a song within a playlist.
+ *
+ * Usage:
+ * - Used throughout the app for type safety when handling playlist data.
+ */
+
 import { Song } from "../tracks/songType";
 
 export type Playlist = {

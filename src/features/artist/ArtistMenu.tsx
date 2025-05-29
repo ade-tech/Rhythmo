@@ -1,3 +1,12 @@
+/**
+ * ArtistMenu Component
+ *
+ * Renders a menu or dropdown for artist-specific actions and navigation.
+ *
+ * Usage:
+ * - Used in the artist dashboard for quick access to profile, settings, and other actions.
+ */
+
 import {
   Avatar,
   Box,

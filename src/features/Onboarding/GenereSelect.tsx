@@ -1,3 +1,12 @@
+/**
+ * @file src/features/Onboarding/GenereSelect.tsx
+ * @description Renders a genre selection step for the artist onboarding flow. Integrates with react-hook-form Controller for form state management.
+ *
+ * @component
+ * @param {GenreSelectProps} props - Props for GenereSelect component.
+ * @returns {JSX.Element} The rendered genre selection step for onboarding.
+ */
+
 import { Box, CheckboxCard, CheckboxGroup, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import DualButtonFooter from "./DualButtonFooter";
@@ -14,6 +23,14 @@ type GenreSelectProps = {
   errors: FieldErrors<ArtistOnboardingFormInputs>;
   control: Control<ArtistOnboardingFormInputs>;
 };
+/**
+ * GenereSelect React component
+ *
+ * Renders a genre selection step for the artist onboarding flow.
+ *
+ * @param {GenreSelectProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered genre selection step.
+ */
 const GenereSelect = ({
   Increamental,
   errors,

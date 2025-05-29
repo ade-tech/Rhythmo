@@ -1,3 +1,12 @@
+/**
+ * SongStats Component
+ *
+ * Displays statistics and analytics for an artist's songs, such as play counts and trends.
+ *
+ * Usage:
+ * - Used in the artist dashboard to provide insights into song performance.
+ */
+
 import { Box, HStack, Spacer, Stack, Text } from "@chakra-ui/react";
 import TopSong from "./TopSong";
 import OtherSongs from "./OtherSongs";

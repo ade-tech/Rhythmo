@@ -1,5 +1,14 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 
+/**
+ * TotalEmpty Component
+ *
+ * Displays a placeholder message and illustration when there are no songs or content to show.
+ *
+ * Usage:
+ * - Used in library, playlist, and trending views when the data set is empty.
+ */
+
 const TotalEmpty = () => {
   return (
     <Box

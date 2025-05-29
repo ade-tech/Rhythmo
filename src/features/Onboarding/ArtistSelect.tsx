@@ -1,5 +1,15 @@
 import { Avatar, Box, CheckboxCard, Text } from "@chakra-ui/react";
 
+/**
+ * ArtistSelect Component
+ *
+ * Allows users to select their favorite artists during onboarding.
+ * Displays a list/grid of artists with selection controls.
+ *
+ * Usage:
+ * - Used in the onboarding flow to collect user preferences.
+ */
+
 interface ArtistSelectProps {
   value: string;
   image: string;

@@ -2,6 +2,20 @@ import { Box, Button, Spacer } from "@chakra-ui/react";
 import React from "react";
 import { MdOutlineArrowBack } from "react-icons/md";
 
+/**
+ * DualButtonFooter Component
+ *
+ * Renders a footer with two buttons: a back button and a next/proceed button.
+ * Used for navigation in multi-step onboarding flows.
+ *
+ * Props:
+ * - action: Function to call when the next/proceed button is clicked.
+ * - backAction: Function to call when the back button is clicked.
+ * - buttonTitle: Text or node for the next/proceed button.
+ * - colorPallete: Color scheme for the next/proceed button.
+ * - nextDisabled: Whether the next/proceed button is disabled.
+ */
+
 type DualButtonProps = {
   action?: () => void;
   backAction?: () => void;

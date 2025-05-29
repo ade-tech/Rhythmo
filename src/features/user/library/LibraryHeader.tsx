@@ -1,6 +1,22 @@
+/**
+ * @file src/features/user/library/LibraryHeader.tsx
+ * @description Contains the LibraryHeader component, which displays the header section for the user's library view, including title and controls.
+ * This component is responsible for rendering the library title, filter options, and any relevant actions for the user's library.
+ */
+
 import { Button, HStack, Spacer, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { LuLibrary } from "react-icons/lu";
+
+/**
+ * LibraryHeader Component
+ *
+ * Renders the header section for the user's music library.
+ * Includes navigation, search, and filter controls for the library view.
+ *
+ * Usage:
+ * - Used at the top of the LibraryContainer to provide context and controls.
+ */
 
 export function LibraryHeader() {
   return (

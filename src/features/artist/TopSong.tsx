@@ -1,3 +1,12 @@
+/**
+ * TopSong Component
+ *
+ * Displays a visual card for an artist's top song, including cover art, title, and ranking.
+ *
+ * Usage:
+ * - Used in artist dashboards or profile pages to highlight the most popular track.
+ */
+
 import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
 
 const TopSong = () => {

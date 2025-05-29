@@ -9,6 +9,16 @@ type ArtistItemProps = {
   data: Artist;
 };
 
+/**
+ * ArtistItem Component
+ *
+ * Represents a single artist in a list or grid.
+ * Displays artist avatar, name, and quick actions.
+ *
+ * Usage:
+ * - Used in artist lists, search results, or recommendations.
+ */
+
 export function ArtistItem({ isOpen, data }: ArtistItemProps) {
   const { data: songs } = useFetchSong(data.user_id);
   return (

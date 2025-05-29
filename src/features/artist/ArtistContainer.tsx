@@ -1,3 +1,13 @@
+/**
+ * ArtistContainer Component
+ *
+ * Main container for displaying an artist's profile and music.
+ * Shows artist details, stats, and music content (songs, albums, etc.).
+ *
+ * Usage:
+ * - Used as the main view for an artist's public profile or dashboard.
+ */
+
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 
 import {

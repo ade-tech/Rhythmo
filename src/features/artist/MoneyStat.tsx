@@ -1,3 +1,12 @@
+/**
+ * MoneyStat Component
+ *
+ * Displays financial statistics for the artist, such as revenue, payouts, or earnings breakdowns.
+ *
+ * Usage:
+ * - Used in the artist revenue dashboard to show monetary stats.
+ */
+
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 
 interface StatItemProp {

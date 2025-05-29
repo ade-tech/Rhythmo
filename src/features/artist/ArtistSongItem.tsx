@@ -1,5 +1,15 @@
 import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
 
+/**
+ * ArtistSongItem Component
+ *
+ * Represents a single song in the artist's song list.
+ * Displays song title, cover art, and controls for editing or removing the song.
+ *
+ * Usage:
+ * - Used within ArtistSongs to show each song in the Singles or Featured tabs.
+ */
+
 const ArtistSongItem = () => {
   return (
     <Box pos={"relative"} w={"full"} h={"12rem"}>

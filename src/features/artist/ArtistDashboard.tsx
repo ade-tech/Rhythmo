@@ -1,3 +1,12 @@
+/**
+ * ArtistDashboard Component
+ *
+ * Main dashboard view for artists, summarizing stats, music, and recent activity.
+ *
+ * Usage:
+ * - Used as the landing page for the artist dashboard route.
+ */
+
 import { Box, HStack, Spacer, Text } from "@chakra-ui/react";
 import MoneyStat from "./MoneyStat";
 import OtherStat from "./OtherStats";

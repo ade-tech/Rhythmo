@@ -1,3 +1,13 @@
+/**
+ * SongItem Component
+ *
+ * Renders a card or row for a song, showing cover art, title, and play controls.
+ * Handles play/pause actions and sign-in prompts for unauthenticated users.
+ *
+ * Usage:
+ * - Used in trending, playlist, and album song lists.
+ */
+
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import { Song } from "@/features/tracks/songType";
 import { Link } from "react-router-dom";

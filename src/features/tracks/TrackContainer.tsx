@@ -1,3 +1,13 @@
+/**
+ * TrackContainer Component
+ *
+ * Displays detailed information about a specific track/song.
+ * Handles playback controls, song metadata, and related actions.
+ *
+ * Usage:
+ * - Used for the main track detail view, accessible from song lists or search.
+ */
+
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import {
   Avatar,
@@ -18,7 +28,7 @@ import { useFetchSong } from "./useSong";
 import {
   getSingMusicDuration,
   getSingMusicDurationString,
-} from "@/utils/useMusicDuration";
+} from "@/utils/MusicDuration";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import TotalEmpty from "@/components/ui/TotalEmpty";

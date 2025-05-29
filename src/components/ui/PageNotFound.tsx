@@ -4,6 +4,16 @@ import ReloadButton from "./ReloadButton";
 import { GoHomeFill } from "react-icons/go";
 import { Link } from "react-router-dom";
 
+/**
+ * PageNotFound Component
+ *
+ * Displays a 404 error message or illustration when a user navigates to a non-existent route.
+ * Provides a link or button to return to the home page or main dashboard.
+ *
+ * Usage:
+ * - Used as the fallback route in the app's router configuration.
+ */
+
 export function PageNotFound() {
   return (
     <Box

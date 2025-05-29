@@ -1,4 +1,4 @@
-import { Capitalize } from "@/utils/useCaptialize";
+import { Capitalize } from "@/utils/Captialize";
 import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
 import { HiX } from "react-icons/hi";
 
@@ -8,6 +8,16 @@ type filterProps<T extends string[]> = {
   filterUpdate: React.Dispatch<React.SetStateAction<string | null>>;
   defaultValue?: T[number] | null;
 };
+
+/**
+ * Filter Component
+ *
+ * Provides filtering controls for lists or grids (e.g., songs, albums).
+ * Allows users to select filter criteria and updates the parent state.
+ *
+ * Usage:
+ * - Used in list or grid views to filter displayed items.
+ */
 
 const Filter = ({
   filterValues,

@@ -1,3 +1,12 @@
+/**
+ * useOnboarding module
+ *
+ * Contains custom React hooks for managing onboarding state and logic.
+ *
+ * Usage:
+ * - Used in onboarding flows for both users and artists.
+ */
+
 import {
   verifyWithOTP,
   sendOTP as SendOTPApi,

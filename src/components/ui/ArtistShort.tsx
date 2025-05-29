@@ -2,6 +2,16 @@ import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { JSX } from "@emotion/react/jsx-runtime";
 import { Link } from "react-router-dom";
 
+/**
+ * ArtistShort Component
+ *
+ * Displays a compact summary of an artist, including avatar and name.
+ * Used for recommendations, related artists, or compact lists.
+ *
+ * Usage:
+ * - Used in sidebars, recommendations, or compact artist lists.
+ */
+
 type artistProps = {
   avatar?: string;
   artistName?: string;

@@ -6,9 +6,14 @@ import ReloadButton from "./ReloadButton";
 import { GoHomeFill } from "react-icons/go";
 
 /**
- * Protects artist-specific routes by ensuring the current artist is loaded and valid before rendering children.
+ * ArtistProtectedRoute Component
  *
- * Displays a loading indicator while artist data is being fetched, and shows a message if loading takes longer than expected. Redirects to the home page if the artist data is incomplete or missing.
+ * Protects artist-specific routes by ensuring the current artist is loaded and valid before rendering children.
+ * Displays a loading indicator while artist data is being fetched, and shows a message if loading takes longer than expected.
+ * Redirects to the home page if the artist data is incomplete or missing.
+ *
+ * Usage:
+ * - Wrap artist dashboard and profile routes with this component to require authentication.
  *
  * @param children - The content to render if access is permitted.
  *

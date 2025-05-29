@@ -1,3 +1,12 @@
+/**
+ * SignUpCTA Component
+ *
+ * Renders a call-to-action banner encouraging users to sign up for Rhythmo.
+ *
+ * Usage:
+ * - Used on the home page for unauthenticated users to prompt sign-up.
+ */
+
 import { Box, Button, Spacer, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 

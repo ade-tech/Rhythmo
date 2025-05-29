@@ -1,3 +1,14 @@
+/**
+ * App Component
+ *
+ * The root component of the application, responsible for setting up global providers and routing.
+ * Integrates React Query, authentication/user context, and main app routes.
+ *
+ * Usage:
+ * - Used as the entry point in main.tsx.
+ * - Wraps all routes and providers for the app.
+ */
+
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

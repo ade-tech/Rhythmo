@@ -35,6 +35,16 @@ import {
 import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
+/**
+ * ActivelyPlayinTack Component
+ *
+ * Displays the currently playing track with playback controls and metadata.
+ * Shows progress, album art, and allows user interaction (pause, skip, etc.).
+ *
+ * Usage:
+ * - Rendered at the bottom of the main layout to show active playback.
+ */
+
 const ActivelyPlayinTack = () => {
   const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const { isOpen, setIsOpen } = useIsSongOpen();

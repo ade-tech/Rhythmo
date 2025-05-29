@@ -1,3 +1,15 @@
+/**
+ * ArtistSongs Component
+ *
+ * Provides a tabbed interface for artists to manage their music content.
+ * Tabs include Singles, Albums, and Featured tracks, each displaying a grid of items.
+ * Integrates with ArtistSongItem and ArtistAlbumItem for content display.
+ * Supports animated tab transitions and scrollable content areas.
+ *
+ * Usage:
+ * - Used in the artist dashboard for managing and viewing artist's music.
+ */
+
 import { Box, Stack, Tabs, Text } from "@chakra-ui/react";
 import ArtistSongItem from "./ArtistSongItem";
 import ArtistAlbumItem from "./ArtistAlbumItem";

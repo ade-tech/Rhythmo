@@ -1,3 +1,12 @@
+/**
+ * TrendingSection Component
+ *
+ * Displays a horizontally scrollable section of trending songs or artists, with navigation arrows and loading states.
+ *
+ * Usage:
+ * - Used on the home page and trending views to showcase popular content.
+ */
+
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SongItem, { SongItemPreLoader } from "./SongItem";

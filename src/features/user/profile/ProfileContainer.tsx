@@ -1,3 +1,18 @@
+/**
+ * @file src/features/user/profile/ProfileContainer.tsx
+ * @description Contains the ProfileContainer component, which manages and displays the user's profile information and related UI.
+ * This component is responsible for rendering the user's profile details, handling profile updates, and integrating with user context or state management.
+ *
+ * ProfileContainer Component
+ *
+ * Displays the user's profile information, including avatar, name, and social links.
+ * Fetches and manages user profile data from the backend.
+ * Allows editing of profile details and updating the profile picture.
+ *
+ * Usage:
+ * - Used as the main profile view for authenticated users.
+ */
+
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useLogout } from "@/features/auth/useOnboarding";

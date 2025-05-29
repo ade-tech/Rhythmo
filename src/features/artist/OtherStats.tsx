@@ -1,3 +1,12 @@
+/**
+ * OtherStats Component
+ *
+ * Displays additional statistics for an artist, such as followers, streams, or custom metrics.
+ *
+ * Usage:
+ * - Used in the artist dashboard to show supplementary stats.
+ */
+
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";

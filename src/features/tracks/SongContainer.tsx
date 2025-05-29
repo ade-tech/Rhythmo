@@ -1,3 +1,13 @@
+/**
+ * SongContainer Component
+ *
+ * Renders a list or grid of songs for a given context (album, playlist, etc.).
+ * Handles song selection, playback, and display of song metadata.
+ *
+ * Usage:
+ * - Used to display a collection of songs in various parts of the app.
+ */
+
 import { useRef } from "react";
 import {
   Avatar,

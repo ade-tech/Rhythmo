@@ -1,3 +1,13 @@
+/**
+ * CreateMusic Component
+ *
+ * Provides UI for artists to create and upload new music or albums.
+ * Includes form controls and visual feedback for the creation process.
+ *
+ * Usage:
+ * - Used in the artist dashboard for music creation workflows.
+ */
+
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { BiAlbum } from "react-icons/bi";

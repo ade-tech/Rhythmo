@@ -1,3 +1,12 @@
+/**
+ * TopMenu Component
+ *
+ * Renders the top navigation menu for the app, including logo, navigation links, and user actions.
+ *
+ * Usage:
+ * - Used as the main header for navigation and quick access to key features.
+ */
+
 import {
   Avatar,
   Box,

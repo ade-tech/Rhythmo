@@ -1,3 +1,13 @@
+/**
+ * NavItem Component
+ *
+ * Represents a single navigation item in the artist dashboard sidebar.
+ * Handles navigation, icon display, and active state styling.
+ *
+ * Usage:
+ * - Used within SideNav to render each navigation link.
+ */
+
 import { Box, Spacer, Text } from "@chakra-ui/react";
 import React from "react";
 import { GoDotFill } from "react-icons/go";

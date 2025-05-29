@@ -3,6 +3,16 @@ import { HiOutlineStatusOffline } from "react-icons/hi";
 import ReloadButton from "./ReloadButton";
 import { IoReload } from "react-icons/io5";
 
+/**
+ * ErrorComp Component
+ *
+ * Displays a generic error message or illustration.
+ * Used to indicate that something went wrong in the UI.
+ *
+ * Usage:
+ * - Rendered when an error occurs in data fetching or UI logic.
+ */
+
 const ErrorComp = () => {
   return (
     <Box

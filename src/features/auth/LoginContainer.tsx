@@ -1,3 +1,13 @@
+/**
+ * LoginContainer Component
+ *
+ * Handles the login UI and logic for both users and artists, depending on props.
+ * Provides form controls, validation, and authentication actions.
+ *
+ * Usage:
+ * - Used as a shared login page for user and artist accounts.
+ */
+
 import {
   Box,
   Button,
