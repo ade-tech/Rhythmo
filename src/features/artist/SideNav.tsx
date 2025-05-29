@@ -1,3 +1,13 @@
+/**
+ * SideNav Component
+ *
+ * Renders the side navigation menu for the artist dashboard.
+ * Provides navigation links to dashboard sections such as analytics, create, tracks, etc.
+ *
+ * Usage:
+ * - Used as the main sidebar in the artist dashboard layout.
+ */
+
 import { Box, Button, Spacer } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { MdOutlineSpaceDashboard, MdSpaceDashboard } from "react-icons/md";

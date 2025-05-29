@@ -1,3 +1,12 @@
+/**
+ * TrendingContainer Component
+ *
+ * Main container for the trending page, handling song fetching, filtering, and conditional rendering.
+ *
+ * Usage:
+ * - Used as the main view for trending songs and recommendations.
+ */
+
 import { Box, HStack } from "@chakra-ui/react";
 import Filter from "./Filter";
 import TrendingSection from "./TrendingSection";

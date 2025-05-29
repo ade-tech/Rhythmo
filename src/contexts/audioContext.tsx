@@ -1,3 +1,40 @@
+/**
+ * @file src/contexts/audioContext.tsx
+ * @description Provides global state and actions for music playback, including current song, Howl instance, queue, playback status, looping, shuffling, and volume.
+ *
+ * Usage:
+ * - Wrap your app in <AudioContextProvider>.
+ * - Use useCurrentMusic() to access and control playback state anywhere in the app.
+ */
+
+/**
+ * AudioReducerTypes defines the actions and state for the audio context reducer.
+ * @typedef {Object} AudioReducerTypes
+ * @property {AudioContextType} state - The current audio context state.
+ * @property {Function} setAudioStatus - Sets the audio status (idle, playing, loading).
+ * @property {Function} setCurrentHowl - Sets the current Howl instance.
+ * @property {Function} setCurrentSong - Sets the current song.
+ * @property {Function} setCurrentQueue - Sets the current playback queue.
+ * @property {Function} loopSong - Loops the current song.
+ * @property {Function} loopQueue - Loops the current queue.
+ * @property {Function} shuffleQueue - Shuffles the playback queue.
+ * @property {Function} resetApp - Resets the audio context state.
+ * @property {Function} setVolume - Sets the playback volume.
+ */
+
+/**
+ * AudioContextType defines the shape of the audio context state.
+ * @typedef {Object} AudioContextType
+ * @property {Song | null} activeSong - The currently active song.
+ * @property {Howl | null} currentHowl - The current Howl instance.
+ * @property {"idle" | "playing" | "loading"} audioStatus - The current playback status.
+ * @property {boolean} isLoopingSong - Whether the current song is looping.
+ * @property {boolean} isShufflingQueue - Whether the queue is shuffled.
+ * @property {Song[] | undefined} activeQueue - The current playback queue.
+ * @property {boolean} isLoopingQueue - Whether the queue is looping.
+ * @property {number} volume - The playback volume.
+ */
+
 import { Song } from "@/features/tracks/songType";
 import { JSX } from "@emotion/react/jsx-runtime";
 import React, { createContext, useContext, useReducer } from "react";
@@ -83,6 +120,12 @@ function reducer(
   }
 }
 
+/**
+ * Provides the AudioContext to child components.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components.
+ * @returns {JSX.Element} The provider component.
+ */
 export function AudioContextProvider({
   children,
 }: {

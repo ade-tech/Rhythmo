@@ -1,3 +1,12 @@
+/**
+ * useArtist module
+ *
+ * Contains custom React hooks for fetching and managing artist data from the API.
+ *
+ * Usage:
+ * - Provides hooks such as useFetchArtist for use in artist-related components.
+ */
+
 import { fetchArtist, fetchArtists } from "@/services/artistApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Artist } from "./artistTypes";

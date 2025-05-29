@@ -1,3 +1,17 @@
+/**
+ * songType module
+ *
+ * Contains TypeScript types for representing songs and song queries.
+ *
+ * Types:
+ * - Song: Represents a song entity.
+ * - SongsQuery: Represents a query result for multiple songs.
+ * - SongQuery: Represents a query result for a single song.
+ *
+ * Usage:
+ * - Used throughout the app for type safety when handling song data.
+ */
+
 import { SongQueryType } from "@/services/songsApi";
 
 export type Song = {

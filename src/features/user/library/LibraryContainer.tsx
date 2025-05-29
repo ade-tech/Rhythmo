@@ -1,3 +1,18 @@
+/**
+ * @file src/features/user/library/LibraryContainer.tsx
+ * @description Contains the LibraryContainer component, which manages and displays the user's music library.
+ * This component is responsible for rendering the user's saved tracks, albums, and playlists, and handling library interactions.
+ *
+ * LibraryContainer Component
+ *
+ * Main container for the user's music library.
+ * Displays a list of songs, albums, or playlists based on user selection.
+ * Integrates LibraryHeader and LibraryFilter for navigation and filtering.
+ *
+ * Usage:
+ * - Used as the sidebar or main section for the user's library in the app layout.
+ */
+
 import { Box, Image, Text } from "@chakra-ui/react";
 import LibraryHeader from "./LibraryHeader";
 import PlaylistShort from "@/components/ui/PlaylistShort";

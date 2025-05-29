@@ -1,3 +1,17 @@
+/**
+ * @file src/features/user/library/EmptyLibrary.tsx
+ * @description Contains the EmptyLibrary component, which displays a message or UI when the user's library is empty.
+ * This component provides feedback and suggestions to users who have not yet added any content to their library.
+ *
+ * EmptyLibrary Component
+ *
+ * Displays a message or illustration when the user's library is empty.
+ * Encourages users to add songs, albums, or playlists to their library.
+ *
+ * Usage:
+ * - Rendered when there are no items in the user's library.
+ */
+
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useCreatePlaylist } from "@/features/playlist/usePlaylist";
 import {

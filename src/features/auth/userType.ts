@@ -1,3 +1,12 @@
+/**
+ * userType module
+ *
+ * Contains TypeScript types for representing user roles and authentication types.
+ *
+ * Usage:
+ * - Used throughout the authentication flow for type safety.
+ */
+
 export interface Profile {
   user_id: string;
   join_date?: string;

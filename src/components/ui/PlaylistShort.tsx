@@ -1,3 +1,12 @@
+/**
+ * PlaylistShort Component
+ *
+ * Renders a compact card for a playlist or album, showing cover art, title, and type.
+ *
+ * Usage:
+ * - Used in library and playlist lists to display a summary of each playlist or album.
+ */
+
 import { useFetchSongsInPlaylist } from "@/features/playlist/usePlaylist";
 import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { JSX } from "@emotion/react/jsx-runtime";

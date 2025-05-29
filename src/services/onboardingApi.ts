@@ -1,7 +1,20 @@
+/**
+ * @file src/services/onboardingApi.ts
+ * @description Provides API functions for managing onboarding flows and data.
+ *
+ * Usage:
+ * - Used in onboarding-related hooks and components to interact with onboarding endpoints.
+ */
+
 import { Artist, ArtistQuery } from "@/features/artist/artistTypes";
 import { supabase, supabaseUrl } from "./supabase";
 import { ArtistSignUpData, Profile } from "@/features/auth/userType";
 
+/**
+ * Sends a one-time password (OTP) to the specified email address for authentication.
+ * @param {string} email - The email address to send the OTP to.
+ * @throws {Error} If the OTP could not be sent.
+ */
 export async function sendOTP(email: string) {
   let { error } = await supabase.auth.signInWithOtp({
     email,
@@ -9,6 +22,13 @@ export async function sendOTP(email: string) {
   if (error) throw new Error("OTP was not sent");
 }
 
+/**
+ * Verifies a user with an OTP and checks user type.
+ * @param {string} email - The email address to verify.
+ * @param {string} token - The OTP token to verify.
+ * @param {"artist" | "user"} userType - The type of user to verify.
+ * @throws {Error} If verification fails or user type does not match.
+ */
 export async function verifyWithOTP(
   email: string,
   token: string,
@@ -54,6 +74,19 @@ export async function verifyWithOTP(
     };
   }
 }
+
+/**
+ * Creates a new user profile.
+ * @param {Object} profileData - The profile data to create the user profile.
+ * @param {string} profileData.full_name - The full name of the user.
+ * @param {string} profileData.nickname - The nickname of the user.
+ * @param {string} profileData.user_email - The email of the user.
+ * @param {string} profileData.user_id - The user ID.
+ * @param {string} profileData.user_type - The type of the user.
+ * @param {string} profileData.avatar_url - The avatar URL of the user.
+ * @param {Array<string>} profileData.fav_artist - The favorite artists of the user.
+ * @throws {Error} If the profile could not be created.
+ */
 export async function createUserProfile({
   full_name,
   nickname,
@@ -82,6 +115,11 @@ export async function createUserProfile({
   return data as Profile[];
 }
 
+/**
+ * Retrieves the current logged-in user's information.
+ * @returns {Object} The current user and profile information.
+ * @throws {Error} If the current user could not be fetched.
+ */
 export async function getCurrentUser() {
   const {
     data: { user },
@@ -98,6 +136,11 @@ export async function getCurrentUser() {
   };
 }
 
+/**
+ * Retrieves the current artist's information.
+ * @returns {Object} The current artist and profile information.
+ * @throws {Error} If the current artist could not be fetched.
+ */
 export async function getCurrentArtist() {
   const {
     data: { user },
@@ -115,11 +158,29 @@ export async function getCurrentArtist() {
   };
 }
 
+/**
+ * Logs out the current user.
+ * @throws {Error} If the user could not be logged out.
+ */
 export async function logOut() {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error("we could not log you out");
 }
 
+/**
+ * Creates a new artist profile.
+ * @param {ArtistSignUpData} input - The artist sign-up data.
+ * @param {File} input.profile_image - The profile image file.
+ * @param {File} [input.cover_image] - The cover image file (optional).
+ * @param {string} input.user_id - The user ID.
+ * @param {Object} input.profileDetails - The profile details.
+ * @param {string} input.profileDetails.full_name - The full name of the artist.
+ * @param {string} input.profileDetails.nickname - The nickname of the artist.
+ * @param {string} input.profileDetails.user_email - The email of the artist.
+ * @param {string} input.location - The location of the artist.
+ * @param {string} input.about - The about information of the artist.
+ * @throws {Error} If the artist profile could not be created.
+ */
 export async function createArtistProfile(
   input: ArtistSignUpData
 ): Promise<Artist[]> {

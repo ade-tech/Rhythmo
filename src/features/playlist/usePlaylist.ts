@@ -1,3 +1,12 @@
+/**
+ * usePlaylist module
+ *
+ * Contains custom React hooks for fetching and managing playlist data from the API.
+ *
+ * Usage:
+ * - Provides hooks such as useFetchPlaylist and useFetchSongsInPlaylist for playlist-related components.
+ */
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Playlist, PlaylistQuery, PlaylistsQuery } from "./playlistType";
 import {

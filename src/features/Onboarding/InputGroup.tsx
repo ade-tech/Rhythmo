@@ -1,8 +1,27 @@
+/**
+ * @file src/features/Onboarding/InputGroup.tsx
+ * @description Custom input group for onboarding forms, handling label, input, and error display. Used in onboarding flows for user and artist registration.
+ *
+ * @component
+ * @param {InputGroupProps} props - Props for InputGroup component.
+ * @returns {JSX.Element} The rendered input group for onboarding forms.
+ */
+
 import { Box, Button, Field, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import DualButtonFooter from "./DualButtonFooter";
 import { FieldErrors, UseFormRegister, UseFormTrigger } from "react-hook-form";
 import { OnboardingFormInputs } from "./UserOnboarding";
+
+/**
+ * InputGroup React component
+ *
+ * Custom input group for onboarding forms, handling label, input, and error display.
+ *
+ * @param {InputGroupProps} obj - The props for the component.
+ * @returns {JSX.Element} The rendered input group.
+ */
+
 type InputGroupProps = {
   title: string;
   InputType: string;

@@ -1,5 +1,14 @@
 import { Tooltip } from "./tooltip";
 
+/**
+ * IconWithTooltip Component
+ *
+ * Wraps an icon with a tooltip for better accessibility and UX.
+ *
+ * Usage:
+ * - Used to provide tooltips for icons in navigation, actions, or lists.
+ */
+
 type propTypes = {
   children: React.ReactNode;
   tooltipText: string;

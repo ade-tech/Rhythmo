@@ -1,3 +1,12 @@
+/**
+ * TrendingTopItems Component
+ *
+ * Displays a grid of trending songs at the top of the trending section, with loading skeletons.
+ *
+ * Usage:
+ * - Used on the home and trending pages to highlight top songs.
+ */
+
 import { Grid } from "@chakra-ui/react";
 import MiniSongCard, { MiniSongCardPreLoader } from "./MiniSongCard";
 import { useIsSongOpen } from "@/contexts/songContext";

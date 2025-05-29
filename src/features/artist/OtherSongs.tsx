@@ -1,3 +1,12 @@
+/**
+ * OtherSongs Component
+ *
+ * Renders a compact card for an artist's other songs, typically used in a list of top or recent tracks.
+ *
+ * Usage:
+ * - Used in the artist dashboard or stats section to display additional songs.
+ */
+
 import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
 
 const OtherSongs = () => {

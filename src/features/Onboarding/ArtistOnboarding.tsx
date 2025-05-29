@@ -1,3 +1,15 @@
+/**
+ * ArtistOnboarding Component
+ *
+ * Handles the multi-step onboarding flow for new artists.
+ * Collects artist information such as name, nickname, location, date of birth, genre, and bio.
+ * Manages step navigation and form state for onboarding.
+ * Integrates with react-hook-form for form management and validation.
+ *
+ * Usage:
+ * - Used as the main onboarding flow for new artists.
+ */
+
 import { Box, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,7 +18,7 @@ import ArtistInputGroup from "./ArtistInputGroup";
 import LocationSelect from "./LocationSelect";
 import GenereSelect from "./GenereSelect";
 import BioUpdate from "./BioUpdate";
-import { getTimeDifference } from "@/utils/useTimeDifference";
+import { getTimeDifference } from "@/utils/TimeDifference";
 export type ArtistOnboardingFormInputs = {
   Name: string;
   Nickname: string;

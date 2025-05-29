@@ -4,6 +4,15 @@ import ArtistTopMenu from "./ArtistMenu";
 import SideNav from "./SideNav";
 import SongStats from "./SongStats";
 
+/**
+ * ArtistHome Component
+ *
+ * Layout wrapper for the artist dashboard, providing structure and context for nested routes.
+ *
+ * Usage:
+ * - Used as the main layout for artist dashboard pages.
+ */
+
 const ArtistHome = () => {
   return (
     <Box

@@ -1,3 +1,12 @@
+/**
+ * GenreContainer Component
+ *
+ * Displays a grid of music genres and categories for users to browse and select.
+ *
+ * Usage:
+ * - Used as the main genre browsing/search page in the app.
+ */
+
 import { Box, Grid, GridItem, HStack, Image, Text } from "@chakra-ui/react";
 
 export function GenreContainer() {

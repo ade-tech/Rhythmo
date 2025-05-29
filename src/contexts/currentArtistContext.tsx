@@ -1,7 +1,23 @@
+/**
+ * @file src/contexts/currentArtistContext.tsx
+ * @description Provides authentication and profile state for the current artist.
+ *
+ * Usage:
+ * - Wrap your app in <CurrentArtistProvider>.
+ * - Use useCurrentArtist() to access or update artist state anywhere in the app.
+ */
+
 import { Artist } from "@/features/artist/artistTypes";
 import { useGetCurrentArtist } from "@/features/auth/useOnboarding";
 import { User } from "@supabase/supabase-js";
 import React, { createContext, useContext, useEffect, useState } from "react";
+
+/**
+ * RhythmoArtist type contains Supabase user data and artist profile info.
+ * @typedef {Object} RhythmoArtist
+ * @property {User | null} data - The Supabase user data.
+ * @property {Artist | null} profileInfo - The artist profile information.
+ */
 
 export interface RhythmoArtist {
   data: User | null;
@@ -21,6 +37,12 @@ const currentArtistContext = createContext<UserContextValues | undefined>(
   undefined
 );
 
+/**
+ * Provides the current artist context to child components.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components.
+ * @returns {JSX.Element} The provider component.
+ */
 export function CurrentArtistProvider({
   children,
 }: {

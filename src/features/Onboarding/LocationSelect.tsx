@@ -1,3 +1,12 @@
+/**
+ * @file src/features/Onboarding/LocationSelect.tsx
+ * @description Provides a country/location selector for onboarding forms, used in onboarding flows to select user or artist location.
+ *
+ * @component
+ * @param {LocationSelectProps} props - Props for LocationSelect component.
+ * @returns {JSX.Element} The rendered location selector for onboarding.
+ */
+
 import {
   Box,
   Button,
@@ -21,6 +30,22 @@ import {
 import { ArtistOnboardingFormInputs } from "./ArtistOnboarding";
 import { toaster } from "@/components/ui/toaster";
 import { LocationType } from "../auth/userType";
+/**
+ * LocationSelect Component
+ *
+ * Provides a country/location selector for onboarding forms.
+ *
+ * Usage:
+ * - Used in onboarding flows to select user or artist location.
+ *
+ * Props:
+ * - title: The prompt/question for the user.
+ * - Increamental: Function to increment/decrement onboarding step.
+ * - trigger: react-hook-form trigger for validation.
+ * - errors: react-hook-form errors object.
+ * - control: react-hook-form control object.
+ * - setValue: react-hook-form setValue function for updating form state.
+ */
 type LocationSelectProps = {
   title: string;
   Increamental?: React.Dispatch<React.SetStateAction<number>>;
@@ -29,6 +54,14 @@ type LocationSelectProps = {
   control: Control<ArtistOnboardingFormInputs>;
   setValue: UseFormSetValue<ArtistOnboardingFormInputs>;
 };
+/**
+ * LocationSelect React component
+ *
+ * Renders a country/location selector for onboarding forms.
+ *
+ * @param {LocationSelectProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered location selector.
+ */
 const LocationSelect = ({
   title,
   errors,

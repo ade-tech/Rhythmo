@@ -1,3 +1,11 @@
+/**
+ * @file src/components/ui/PlayPause.tsx
+ * @description Provides Play/Pause button components for controlling audio playback in the UI.
+ *
+ * Usage:
+ * - Used in song, album, and player components to control playback state.
+ */
+
 import { Box, Stack } from "@chakra-ui/react";
 import IconWithTooltip from "./IconWithTooltip";
 import { HiPlay } from "react-icons/hi";
@@ -8,6 +16,16 @@ import { IoMdPlay } from "react-icons/io";
 import { SongQueryType } from "@/services/songsApi";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 
+/**
+ * PlayPauseMini Component
+ *
+ * Renders a small play/pause button for quick playback control.
+ * Integrates with global audio state and user authentication.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.color="white"] - The color of the icon
+ * @returns {JSX.Element} The rendered mini play/pause button
+ */
 export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   const {
     state: { activeQueue, activeSong, audioStatus },
@@ -36,6 +54,18 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
   );
 };
 
+/**
+ * PlayPause Component
+ *
+ * Renders a play/pause button for a specific song or queue, with optional relative/absolute positioning and custom size.
+ * Integrates with global audio state and user authentication.
+ *
+ * @param {Object} props - Component props
+ * @param {SongQueryType | undefined} props.data - The song and queue data to control
+ * @param {boolean} [props.isRelative=false] - Whether the button is positioned relatively
+ * @param {number} [props.boxSize=6] - The size of the icon
+ * @returns {JSX.Element} The rendered play/pause button
+ */
 export const PlayPause = ({
   data: songs,
   boxSize = 6,

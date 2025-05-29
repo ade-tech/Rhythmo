@@ -1,3 +1,13 @@
+/**
+ * SongDialog Component
+ *
+ * Renders a modal dialog for prompting users to sign in or take action before playing a song.
+ *
+ * Usage:
+ * - Used as a triggerable dialog from play buttons for unauthenticated users.
+ * - Accepts a custom trigger button, song image, and color for theming.
+ */
+
 import {
   Box,
   Button,

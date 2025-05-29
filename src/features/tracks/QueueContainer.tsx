@@ -6,6 +6,16 @@ import { useCurrentMusic } from "@/contexts/audioContext";
 import { HiX } from "react-icons/hi";
 import QueueItem from "./QueueItem";
 
+/**
+ * QueueContainer Component
+ *
+ * Displays the current playback queue for the user.
+ * Allows reordering, removing, or playing songs from the queue.
+ *
+ * Usage:
+ * - Used as a modal or sidebar to manage the playback queue.
+ */
+
 export function QueueContainer() {
   const { isOpen, isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const {

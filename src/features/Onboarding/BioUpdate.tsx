@@ -1,3 +1,19 @@
+/**
+ * BioUpdate Component
+ *
+ * Handles the final step of artist onboarding: profile completion.
+ * Allows uploading a profile image and cover image, entering a bio, and submitting the artist profile.
+ * Integrates with react-hook-form for form state management and validation.
+ * Uses Chakra UI for layout and feedback.
+ *
+ * Props:
+ * - Increamental: Function to increment/decrement onboarding step.
+ * - register: react-hook-form register function for form fields.
+ * - errors: react-hook-form errors object.
+ * - control: react-hook-form control object.
+ * - watch: react-hook-form watch function for form fields.
+ * - handleSubmit: react-hook-form handleSubmit function for form submission.
+ */
 import {
   Box,
   Field,

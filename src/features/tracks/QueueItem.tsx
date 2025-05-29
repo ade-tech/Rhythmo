@@ -4,6 +4,16 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { Song } from "./songType";
 
+/**
+ * QueueItem Component
+ *
+ * Represents a single song/item in the playback queue.
+ * Displays song details and provides controls for queue management.
+ *
+ * Usage:
+ * - Used within QueueContainer to show each queued song.
+ */
+
 const QueueItem = ({
   song,
   textColor = "white",

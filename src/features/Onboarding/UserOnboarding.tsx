@@ -1,3 +1,21 @@
+/**
+ * @file src/features/Onboarding/UserOnboarding.tsx
+ * @description Handles the onboarding flow for new users (non-artists), collecting user information and managing step navigation and form state.
+ *
+ * @component
+ * @example
+ * <UserOnboarding />
+ */
+
+/**
+ * UserOnboarding React component
+ *
+ * Collects user information such as name, date of birth, and favorite artists.
+ * Manages step navigation and form state for onboarding.
+ *
+ * @returns {JSX.Element} The rendered onboarding flow for users.
+ */
+
 import {
   Avatar,
   AvatarGroup,
@@ -21,7 +39,7 @@ import { MdError } from "react-icons/md";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { useCreateProfile } from "../auth/useOnboarding";
 import { useNavigate } from "react-router-dom";
-import { getTimeDifference } from "@/utils/useTimeDifference";
+import { getTimeDifference } from "@/utils/TimeDifference";
 import { toaster } from "@/components/ui/toaster";
 
 export type OnboardingFormInputs = {

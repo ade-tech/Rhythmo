@@ -5,6 +5,16 @@ import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { Box, Card, GridItem, Image, Spacer, Text } from "@chakra-ui/react";
 import { IoMdPlay } from "react-icons/io";
 import { IoPause } from "react-icons/io5";
+
+/**
+ * MiniArtistCard Component
+ *
+ * Displays a compact card for an artist, including avatar and name.
+ * Used for recommendations, related artists, or compact lists.
+ *
+ * Usage:
+ * - Used in sidebars, recommendations, or compact artist lists.
+ */
 export function MiniSongCard({ song }: { song: Song }) {
   const { data: songs } = useFetchSong(song.id);
   const {

@@ -1,5 +1,14 @@
 import { Box, HStack, Image, Stack, Text } from "@chakra-ui/react";
 
+/**
+ * ArtistAlbumItem Component
+ *
+ * Renders a card or row for an album in the artist's album list, showing album details and stats.
+ *
+ * Usage:
+ * - Used in the artist dashboard or music management views to display each album.
+ */
+
 const ArtistAlbumItem = () => {
   return (
     <Box pos={"relative"} w={"full"} h={"12rem"}>

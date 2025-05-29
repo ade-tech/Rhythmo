@@ -1,3 +1,14 @@
+/**
+ * @file src/features/albums/AlbumContainer.tsx
+ * @description AlbumContainer component displays details and songs for a specific album or playlist.
+ * Handles album/playlist metadata, song listing, and playback controls. Used for the main album or playlist detail view, accessible from library or search.
+ *
+ * @component
+ * @example
+ * // Used in route: /albums/:id or /playlists/:id
+ * <AlbumContainer />
+ */
+
 import IconWithTooltip from "@/components/ui/IconWithTooltip";
 import {
   Avatar,
@@ -23,6 +34,14 @@ import { useIsSongOpen } from "@/contexts/songContext";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import { BiSolidAlbum } from "react-icons/bi";
 
+/**
+ * AlbumContainer React component
+ *
+ * Fetches and displays album or playlist details, including cover art, metadata, and a list of songs.
+ * Handles loading, error, and empty states. Integrates with playback and playlist context.
+ *
+ * @returns {JSX.Element} The rendered album or playlist detail view.
+ */
 export function AlbumContainer() {
   const { id } = useParams();
   const { data, isLoading } = useFetchPlaylist(id!);

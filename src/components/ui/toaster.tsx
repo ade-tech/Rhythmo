@@ -1,3 +1,13 @@
+/**
+ * Toaster Utility Component
+ *
+ * Provides a global toast notification system using Chakra UI's toaster and portal components.
+ *
+ * Usage:
+ * - Import and render <Toaster /> at the root of the app to enable toast notifications.
+ * - Use the exported `toaster` instance to trigger toasts from anywhere in the app.
+ */
+
 "use client";
 
 import {

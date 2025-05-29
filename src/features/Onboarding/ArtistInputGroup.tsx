@@ -31,6 +31,28 @@ type ArtistInputGroupProps = {
   ) => boolean | string;
 };
 
+/**
+ * ArtistInputGroup Component
+ *
+ * Custom input group for artist onboarding forms, handling label, input, and error display.
+ *
+ * Usage:
+ * - Used in artist onboarding flows for registration and profile setup.
+ *
+ * Props:
+ * - title: The label/question for the input.
+ * - InputType: The type of input (e.g., text, date).
+ * - buttonLabel: The text for the next/proceed button.
+ * - onboardState: The current onboarding step.
+ * - Increamental: Function to increment/decrement onboarding step.
+ * - placeholder: Placeholder text for the input.
+ * - register: react-hook-form register function for the field.
+ * - fieldName: The name of the field in the form.
+ * - trigger: react-hook-form trigger for validation.
+ * - errors: react-hook-form errors object.
+ * - validateFn: Optional custom validation function for the field.
+ */
+
 const ArtistInputGroup = (obj: ArtistInputGroupProps) => {
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);

@@ -1,3 +1,13 @@
+/**
+ * ArtistLoginContainer Component
+ *
+ * Handles the login UI and logic for artist accounts.
+ * Provides form controls, validation, and authentication actions specific to artists.
+ *
+ * Usage:
+ * - Used as the main login page for artist accounts.
+ */
+
 import LoginContainer from "./LoginContainer";
 
 export function ArtistLoginContainer() {

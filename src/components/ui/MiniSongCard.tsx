@@ -1,3 +1,13 @@
+/**
+ * MiniSongCard Component
+ *
+ * Displays a compact card for a song, including cover art and title.
+ * Used for recommendations, related songs, or compact lists.
+ *
+ * Usage:
+ * - Used in sidebars, recommendations, or compact song lists.
+ */
+
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { Song } from "@/features/tracks/songType";
 import { useFetchSong } from "@/features/tracks/useSong";
