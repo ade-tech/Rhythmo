@@ -22,11 +22,11 @@ type filterProps<T extends string[]> = {
 const Filter = ({
   filterValues,
   filterState,
-  defaultValue,
+  defaultValue = null,
   filterUpdate,
 }: filterProps<string[]>) => {
   return (
-    <HStack w={"full"} gap={2} mb={3} zIndex={20}>
+    <HStack w={"fit"} gap={2} mb={3} zIndex={20}>
       <ButtonGroup size={"sm"} variant={"subtle"} color={"white"}>
         {filterState !== defaultValue && (
           <Button

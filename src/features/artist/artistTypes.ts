@@ -20,6 +20,7 @@ export type Artist = {
   followers_count: number;
   cover_url: string;
   monthly_plays: number;
+  location: string;
   about: string;
   profiles: {
     full_name: string;
