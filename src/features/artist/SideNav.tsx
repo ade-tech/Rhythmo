@@ -11,12 +11,7 @@
 import { Box, Button, Spacer } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { MdOutlineSpaceDashboard, MdSpaceDashboard } from "react-icons/md";
-import {
-  IoAlbums,
-  IoAlbumsOutline,
-  IoStatsChart,
-  IoStatsChartOutline,
-} from "react-icons/io5";
+import { IoAlbums, IoAlbumsOutline } from "react-icons/io5";
 import { PiMusicNotesPlusBold, PiMusicNotesPlusFill } from "react-icons/pi";
 import { HiOutlineLogout } from "react-icons/hi";
 import {
@@ -56,12 +51,7 @@ const SideNav = () => {
         text="Dashboard"
         inActiveIcon={<MdOutlineSpaceDashboard size={24} />}
       />
-      <NavItem
-        to="/artist/statistics"
-        icon={<IoStatsChart size={24} />}
-        text="Analytics"
-        inActiveIcon={<IoStatsChartOutline size={24} />}
-      />
+
       <NavItem
         to="/artist/create"
         icon={<PiMusicNotesPlusFill size={24} />}

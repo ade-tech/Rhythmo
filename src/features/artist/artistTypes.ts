@@ -30,6 +30,7 @@ export type Artist = {
 };
 
 export type ArtistQuery = {
+  location: string;
   id: number;
   created_at: string;
   user_id: string;

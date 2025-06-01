@@ -8,10 +8,10 @@
  * - Used in the artist dashboard for music creation workflows.
  */
 
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import { BiAlbum } from "react-icons/bi";
 import { PiMusicNotesPlus } from "react-icons/pi";
+import CreateMusicDialog from "./CreateMusicDialog";
 
 const CreateMusic = () => {
   return (
@@ -53,55 +53,18 @@ const CreateMusic = () => {
         pl={1}
         justifyContent={"space-between"}
       >
-        <CreateButton
+        <CreateMusicDialog
           title="Upload a song"
           icon={PiMusicNotesPlus}
           description="Add your latest track to Rhythmo so listeners can enjoy it instantly."
         />
-        <CreateButton
+        <CreateMusicDialog
           title="Create an ablum"
           icon={BiAlbum}
           description="Group multiple songs together into a themed collection or project."
         />
       </Box>
     </Box>
-  );
-};
-
-interface createButtonProps {
-  title: string;
-  description: string;
-  icon: React.ElementType;
-}
-const CreateButton = ({ title, icon, description }: createButtonProps) => {
-  return (
-    <Button
-      flexBasis={"1/2"}
-      m={0}
-      w={"full"}
-      h={"full"}
-      rounded={"lg"}
-      variant={"outline"}
-      textStyle={"4xl"}
-      color={"gray.400"}
-      borderColor={"gray.800"}
-      _hover={{
-        borderColor: "green.800",
-        bg: "green.800/10",
-        color: "green.50",
-      }}
-      display={"flex"}
-      flexDir={"column"}
-      alignItems={"center"}
-      pb={4}
-      justifyContent={"center"}
-    >
-      <Box as={icon} boxSize={14} />
-      <Text>{title}</Text>
-      <Text textStyle={"sm"} w={"3/4"} textWrap={"wrap"} color={"gray.600"}>
-        {description}
-      </Text>
-    </Button>
   );
 };
 

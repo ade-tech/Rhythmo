@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Artist } from "./artistTypes";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "@/services/onboardingApi";
+import { useCurrentArtist } from "@/contexts/currentArtistContext";
 
 interface ArtistQuery {
   data: Artist | undefined;
@@ -53,6 +54,7 @@ export function useFetchArtists(): ArtistsQuery {
  */
 export function useLogout() {
   const queryClient = useQueryClient();
+  const { setCurrentArtist } = useCurrentArtist();
   const navigate = useNavigate();
   const {
     mutate: signOut,
@@ -61,10 +63,15 @@ export function useLogout() {
   } = useMutation({
     mutationFn: logOut,
     onSuccess: () => {
-      queryClient.setQueryData(["rhythmo-Artist"], {
+      queryClient.setQueryData(["rhythmo-currentArtist"], {
         data: null,
         profileInfo: null,
       });
+      setCurrentArtist({
+        data: null,
+        profileInfo: null,
+      });
+
       queryClient.invalidateQueries({ queryKey: ["rhythmo-currentArtist"] });
       navigate("/");
     },
