@@ -20,9 +20,12 @@
 
 import { useCurrentArtist } from "@/contexts/currentArtistContext";
 import { formatNumbers } from "@/utils/FormatNumbers";
-import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
-import { MdEdit } from "react-icons/md";
+import { Box, Button, HStack, Image, Spacer, Text } from "@chakra-ui/react";
+import { IoLocationOutline } from "react-icons/io5";
+import { MdEdit, MdMusicNote, MdVerified } from "react-icons/md";
 import { PiCameraFill } from "react-icons/pi";
+
+import SettingsItem from "./SettingsItem";
 
 export function ArtistSettings() {
   const { currentArtist } = useCurrentArtist();
@@ -34,6 +37,9 @@ export function ArtistSettings() {
       w={"full"}
       h={"full"}
       display={"flex"}
+      maxH={"82vh"}
+      overflow={"hidden"}
+      overflowY={"auto"}
       flexDir={"column"}
       color={"white"}
       gap={3}
@@ -100,45 +106,244 @@ export function ArtistSettings() {
           </Button>
         </Box>
         <Box
+          mb={4}
           flex={1}
           display={"flex"}
           flexDir={"column"}
           justifyContent={"flex-end"}
+          gap={0.5}
         >
           <HStack gap={0.5} alignItems={"flex-end"}>
             <Text textStyle={"3xl"} fontWeight={"bold"} lineHeight={1}>
               {profile?.profiles.nickname}
             </Text>
-            <Text color={"gray.400"}>({profile?.profiles.full_name})</Text>
+            <Text color={"gray.500"}>({profile?.profiles.full_name})</Text>
+            <Box as={MdVerified} ml={1} color={"green.500"} boxSize={6} />
+            <Button
+              bg={"transparent"}
+              color={"gray.300"}
+              rounded={"full"}
+              size={"2xs"}
+              borderColor={"gray.600"}
+              borderWidth={"1px"}
+              px={3}
+              ml={4}
+            >
+              <MdEdit /> Edit
+            </Button>
           </HStack>
           <HStack gap={2} mt={1}>
             <Text display={"inline"} fontWeight={"bold"}>
               {formatNumbers(profile?.followers_count!)}{" "}
-              <Text textStyle={"sm"} color={"gray.400"} display={"inline"}>
+              <Text
+                textStyle={"sm"}
+                fontWeight={"medium"}
+                color={"gray.500"}
+                display={"inline"}
+              >
                 Followers
               </Text>
             </Text>
             <Text display={"inline"} fontWeight={"bold"}>
-              {formatNumbers(124506943)}{" "}
-              <Text textStyle={"sm"} color={"gray.400"} display={"inline"}>
-                Followers
+              {formatNumbers(profile?.monthly_plays ?? 0)}{" "}
+              <Text
+                textStyle={"sm"}
+                fontWeight={"medium"}
+                color={"gray.500"}
+                display={"inline"}
+              >
+                Monthly Listeners
               </Text>
             </Text>
           </HStack>
+          <HStack>
+            <HStack color={"gray.500"} gap={0.5}>
+              <IoLocationOutline />
+              <Text display={"inline"} textStyle={"sm"} color={"white"}>
+                {profile?.location}
+              </Text>
+            </HStack>
+            <HStack color={"gray.500"} gap={0.5}>
+              <MdMusicNote />
+              <Text display={"inline"} textStyle={"sm"} color={"white"}>
+                {profile?.songs_count}
+              </Text>
+            </HStack>
+          </HStack>
         </Box>
       </Box>
-      <Box pl={3} mt={2} className="group">
-        <Button
-          bg={"transparent"}
-          color={"gray.300"}
-          rounded={"full"}
-          size={"2xs"}
-          borderColor={"gray.600"}
-          borderWidth={"1px"}
+      <Box ml={3} w={"97%"} mt={2}>
+        <Text fontWeight={"bold"} textStyle={"2xl"} color={"white"}>
+          Notification Prefrence
+        </Text>
+        <Text color={"gray.500"} textStyle={"sm"} mb={2}>
+          Customize what kind of notifications you get and where you get them.
+        </Text>
+        <Box
+          w={"full"}
+          bg={"gray.800/50"}
+          py={3}
           px={3}
+          gap={3}
+          display={"flex"}
+          flexDir={"column"}
+          mt={2}
+          rounded={"lg"}
         >
-          <MdEdit /> Edit
-        </Button>
+          <SettingsItem title={"New Follower"} />
+          <SettingsItem title={"New Video Like"} />
+          <SettingsItem title={"New comments"} />
+          <SettingsItem title={"Collaboration Invite"} />
+        </Box>
+      </Box>
+      <Box ml={3} w={"97%"} mt={2}>
+        <Text fontWeight={"bold"} textStyle={"2xl"} color={"white"}>
+          Payout & Account
+        </Text>
+        <Text color={"gray.500"} textStyle={"sm"} mb={2}>
+          Set up payment info and manage your account. No passwords needed.
+        </Text>
+        <Box
+          w={"full"}
+          bg={"gray.800/50"}
+          py={3}
+          px={3}
+          gap={3}
+          display={"flex"}
+          flexDir={"column"}
+          mt={2}
+          rounded={"lg"}
+        >
+          <HStack px={2} h={10}>
+            <Text>Payout Account Details</Text>
+            <Spacer />
+
+            <Box display={"flex"} gap={2} alignItems={"center"}>
+              <Text textStyle={"sm"} color={"gray.400"}>
+                224*****32
+              </Text>
+              <Box>
+                <Button
+                  variant={"ghost"}
+                  size={"sm"}
+                  p={0}
+                  _hover={{
+                    bg: "none",
+                  }}
+                  color={"gray.50"}
+                  mx={2}
+                >
+                  View
+                </Button>
+                <Button
+                  variant={"ghost"}
+                  size={"sm"}
+                  p={0}
+                  _hover={{
+                    bg: "none",
+                  }}
+                  color={"green.500"}
+                >
+                  Edit
+                </Button>
+              </Box>
+            </Box>
+          </HStack>
+
+          <HStack px={2} h={10}>
+            <Text>Account Email</Text>
+            <Spacer />
+
+            <Box display={"flex"} gap={2} alignItems={"center"}>
+              <Text textStyle={"sm"} color={"gray.400"}>
+                adelopo****@gmail.com
+              </Text>
+              <Button
+                variant={"ghost"}
+                size={"sm"}
+                p={0}
+                _hover={{
+                  bg: "none",
+                }}
+                color={"green.500"}
+              >
+                Change
+              </Button>
+            </Box>
+          </HStack>
+          <HStack px={2} h={10}>
+            <Text>Recovery Email</Text>
+            <Spacer />
+
+            <Box display={"flex"} gap={2} alignItems={"center"}>
+              <Text textStyle={"sm"} color={"gray.400"}>
+                loverboy****@reactdev.com
+              </Text>
+              <Button
+                variant={"ghost"}
+                size={"sm"}
+                p={0}
+                _hover={{
+                  bg: "none",
+                }}
+                color={"green.500"}
+              >
+                Change
+              </Button>
+            </Box>
+          </HStack>
+        </Box>
+      </Box>
+
+      <Box ml={3} w={"97%"} mt={2}>
+        <Text fontWeight={"bold"} textStyle={"2xl"} color={"white"}>
+          Advanced
+        </Text>
+        <Text color={"gray.500"} textStyle={"sm"} mb={2}>
+          Advanced Rhythmo settings, don't do these unless you are sure.
+        </Text>
+        <Box
+          w={"full"}
+          bg={"gray.800/50"}
+          py={3}
+          px={3}
+          gap={3}
+          display={"flex"}
+          flexDir={"column"}
+          mt={2}
+          rounded={"lg"}
+        >
+          <HStack px={2} h={10}>
+            <Text>Hirbernate My Account</Text>
+            <Spacer />
+            <Button
+              variant={"ghost"}
+              size={"sm"}
+              p={0}
+              _hover={{
+                bg: "none",
+              }}
+              color={"red.500"}
+            >
+              Hibernate
+            </Button>
+          </HStack>
+          <HStack px={2} h={10}>
+            <Text>Delete My Account</Text>
+            <Spacer />
+            <Button
+              variant={"ghost"}
+              size={"sm"}
+              p={0}
+              _hover={{
+                bg: "none",
+              }}
+              color={"red.500"}
+            >
+              Delete
+            </Button>
+          </HStack>
+        </Box>
       </Box>
     </Box>
   );

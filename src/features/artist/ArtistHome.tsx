@@ -24,6 +24,7 @@ const ArtistHome = () => {
       display={"flex"}
       flexDir={"column"}
       overflow={"hidden"}
+      color={"white"}
     >
       <ArtistTopMenu />
       <Box

@@ -36,7 +36,6 @@ import ArtistLayout from "./components/ui/ArtistLayout";
 import ArtistDashboard from "./features/artist/ArtistDashboard";
 import { CurrentArtistProvider } from "./contexts/currentArtistContext";
 import ArtistHome from "./features/artist/ArtistHome";
-import ArtistStat from "./features/artist/ArtistStat";
 import CreateMusic from "./features/artist/CreateMusic";
 import ArtistSongs from "./features/artist/ArtistSongs";
 import ArtistRevenue from "./features/artist/ArtistRevenue";
@@ -90,7 +89,7 @@ function App() {
                       path="/artist/dashboard"
                       element={<ArtistDashboard />}
                     />
-                    <Route path="/artist/statistics" element={<ArtistStat />} />
+
                     <Route path="/artist/create" element={<CreateMusic />} />
 
                     <Route path="/artist/*" element={<PageNotFound />} />
