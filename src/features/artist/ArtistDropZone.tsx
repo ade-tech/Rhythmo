@@ -1,5 +1,5 @@
 import { toaster } from "@/components/ui/toaster";
-import { Box, Button, Input, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Input, Link, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import {
   Control,
@@ -11,12 +11,13 @@ import {
 import { HiOutlineUpload, HiX } from "react-icons/hi";
 import { CreateMusicProps } from "./CreateMusicDialog";
 interface ArtistDropZoneProps {
-  name: "title" | "description" | "audio" | "coverImage";
+  name: "title" | "album" | "audio" | "coverImage";
   acceptedFiles: string[];
   icon: React.ReactNode;
   caption: string;
   setValue: UseFormSetValue<CreateMusicProps>;
   preview: File;
+  previewUrl?: string;
   reset: UseFormResetField<CreateMusicProps>;
   errors: FieldErrors<CreateMusicProps>;
   control: Control<CreateMusicProps>;
@@ -28,6 +29,7 @@ export function ArtistDropZone({
   setValue,
   reset,
   errors,
+  previewUrl,
   control,
   icon,
   caption,
@@ -56,11 +58,10 @@ export function ArtistDropZone({
     }
   };
   return (
-    <Box display={"flex"} flexDir={"column"} w={"full"}>
+    <Box display={"flex"} h={"95%"} flexDir={"column"} w={"full"}>
       <Box
-        mt={5}
         w={"full"}
-        h={"10.5rem"}
+        h={"full"}
         borderWidth={"1px"}
         borderColor={errors[name]?.message ? "red.500" : "gray.600"}
         borderStyle={"dashed"}
@@ -89,7 +90,7 @@ export function ArtistDropZone({
                 }`,
                 validate: (value) => {
                   if (typeof value === "string") return false;
-                  if (acceptedFiles.find((cur) => cur === value.type)) {
+                  if (acceptedFiles.find((cur) => cur === value?.type)) {
                     return true;
                   } else {
                     return "Wrong File Type";
@@ -136,7 +137,18 @@ export function ArtistDropZone({
         {preview && (
           <>
             <Box display={"flex"} gap={3} alignItems={"center"}>
-              {icon}
+              {name === "coverImage" ? (
+                <Image
+                  w={"6rem"}
+                  h={"6rem"}
+                  src={previewUrl}
+                  objectFit={"cover"}
+                  objectPosition={"center"}
+                  rounded={"lg"}
+                />
+              ) : (
+                icon
+              )}
               <Box>
                 <Text>{preview.name}</Text>
                 <Text>

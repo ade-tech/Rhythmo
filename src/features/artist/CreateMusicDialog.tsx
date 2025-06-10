@@ -2,21 +2,27 @@ import {
   Box,
   Button,
   ButtonGroup,
+  CheckboxCard,
+  CheckboxGroup,
+  ColorPicker,
   Dialog,
   Field,
   Image,
   Input,
+  InputGroup,
+  parseColor,
   Portal,
+  Span,
   Steps,
   Text,
-  Textarea,
 } from "@chakra-ui/react";
 import ArtistDropZone from "./ArtistDropZone";
 import { PiFileImage } from "react-icons/pi";
 import { LuFileAudio } from "react-icons/lu";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useCurrentArtist } from "@/contexts/currentArtistContext";
+import { GENRES } from "@/helpers/constants";
 
 interface createButtonProps {
   title: string;
@@ -26,9 +32,12 @@ interface createButtonProps {
 
 export interface CreateMusicProps {
   title: string;
-  description: string;
+  album?: string;
   audio: File;
   coverImage: File;
+  producer: string;
+  composer: string;
+  genre: string[];
 }
 const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   const { currentArtist } = useCurrentArtist();
@@ -45,10 +54,10 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   });
   const audioFile = watch("audio");
   const imageFile = watch("coverImage");
-  const stringsInputs = watch(["title", "description"]);
+  const stringsInputs = watch(["title", "album"]);
 
   const [stepIndex, setStepIndex] = useState<number>(0);
-  const [imageURL, setImageURL] = useState<string>("");
+  const [imageURL, setImageURL] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!imageFile) return;
@@ -66,8 +75,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   async function handleStepsAction() {
     console.log(stepIndex);
     if (stepIndex === 0) {
-      const isValid = await trigger(["title", "description"]);
-
+      const isValid = await trigger(["title", "genre"]);
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
@@ -78,6 +86,11 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
     }
     if (stepIndex === 2) {
       const isValid = await trigger(["coverImage"]);
+      if (isValid) setStepIndex((cur) => cur + 1);
+      return;
+    }
+    if (stepIndex === 3) {
+      const isValid = await trigger(["album", "producer", "composer"]);
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
@@ -123,8 +136,8 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
         <Portal>
           <Dialog.Backdrop bg={"black/60"} />
           <Dialog.Positioner display={"flex"} alignItems={"center"}>
-            <Dialog.Content bg={"gray.950"} color={"white"}>
-              <Dialog.Header display={"flex"} flexDir={"column"} gap={0}>
+            <Dialog.Content bg={"gray.950"} h={"9/12"} color={"white"}>
+              <Dialog.Header mb={3} display={"flex"} flexDir={"column"} gap={0}>
                 <Dialog.Title>Let's Add Some Music.</Dialog.Title>
                 <Text textStyle={"xs"} fontWeight={"normal"} color={"gray.400"}>
                   Share your latest track with the world—add your song details,
@@ -132,20 +145,23 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                 </Text>
               </Dialog.Header>
               <Steps.Root
+                size={"xs"}
                 step={stepIndex}
                 bg={"gray.950"}
-                count={3}
+                count={4}
                 variant={"subtle"}
               >
-                <Dialog.Body>
-                  <Steps.List>
+                <Dialog.Body display={"flex"} flexDir={"column"}>
+                  <Steps.List mb={2}>
                     <Steps.Item index={0} title="Upload Song">
                       <Steps.Indicator
                         color={"white"}
                         _complete={{ bg: "gray.800" }}
                         bg={"gray.900"}
                       />
-                      <Steps.Title color={"white"}>Song Info</Steps.Title>
+                      <Steps.Title textStyle={"2xs"} color={"white"}>
+                        Song Info
+                      </Steps.Title>
                       <Steps.Separator bg={"gray.800"} />
                     </Steps.Item>
                     <Steps.Item index={1} title="Upload Song">
@@ -154,7 +170,9 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         _incomplete={{ bg: "gray.700" }}
                         bg={"gray.900"}
                       />
-                      <Steps.Title color={"white"}>Audio Details</Steps.Title>
+                      <Steps.Title textStyle={"2xs"} color={"white"}>
+                        Audio Details
+                      </Steps.Title>
                       <Steps.Separator bg={"gray.800"} />
                     </Steps.Item>
 
@@ -164,7 +182,9 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         _incomplete={{ bg: "gray.700" }}
                         bg={"gray.900"}
                       />
-                      <Steps.Title color={"white"}>Cover Image</Steps.Title>
+                      <Steps.Title textStyle={"2xs"} color={"white"}>
+                        Cover Image
+                      </Steps.Title>
                       <Steps.Separator bg={"gray.800"} />
                     </Steps.Item>
                     <Steps.Item index={3} title="Upload Song">
@@ -173,7 +193,20 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         _incomplete={{ bg: "gray.700" }}
                         bg={"gray.900"}
                       />
-                      <Steps.Title color={"white"}>Finish</Steps.Title>
+                      <Steps.Title textStyle={"2xs"} color={"white"}>
+                        Credits
+                      </Steps.Title>
+                      <Steps.Separator bg={"gray.800"} />
+                    </Steps.Item>
+                    <Steps.Item index={4} title="Upload Song">
+                      <Steps.Indicator
+                        color={"white"}
+                        _incomplete={{ bg: "gray.700" }}
+                        bg={"gray.900"}
+                      />
+                      <Steps.Title textStyle={"2xs"} color={"white"}>
+                        Finish
+                      </Steps.Title>
                       <Steps.Separator bg={"gray.800"} />
                     </Steps.Item>
                   </Steps.List>
@@ -183,7 +216,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                     display={"flex"}
                     flexDir={"column"}
                     gap={3}
-                    h={"12rem"}
+                    minH={"15rem"}
                   >
                     <Field.Root invalid={!!errors.title}>
                       <Field.Label>Song Title</Field.Label>
@@ -199,29 +232,64 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                       />
                       <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
                     </Field.Root>
-                    <Field.Root invalid={!!errors.description}>
-                      <Field.Label>Song Description</Field.Label>
-                      <Textarea
-                        {...register("description", {
-                          required: "You have to include a description",
-                        })}
-                        resize={"none"}
-                        bg={"none"}
-                        borderColor={"gray.800"}
-                        focusRing={"none"}
-                        placeholder="Enter a short description about the song."
+                    <Box mt={4}>
+                      <Text>What type of song is it</Text>
+                      <Controller
+                        control={control}
+                        name={"genre"}
+                        rules={{
+                          required: "You have to select at least one Genre!",
+                        }}
+                        render={({ field }) => (
+                          <CheckboxGroup
+                            w={"full"}
+                            gap={3}
+                            display={"grid"}
+                            gridTemplateColumns={"repeat(5  , 1fr)"}
+                            mt={2}
+                            value={
+                              Array.isArray(field.value)
+                                ? field.value
+                                : undefined
+                            }
+                            onValueChange={field.onChange}
+                          >
+                            {GENRES.map((curGenre) => (
+                              <CheckboxCard.Root
+                                key={curGenre}
+                                colorPalette={"green"}
+                                bg={"gray.950"}
+                                value={curGenre}
+                                rounded={"full"}
+                                display={"flex"}
+                                alignItems={"center"}
+                              >
+                                <CheckboxCard.HiddenInput />
+                                <CheckboxCard.Content px={4} py={2}>
+                                  <CheckboxCard.Label
+                                    textStyle={"sm"}
+                                    textAlign={"center"}
+                                  >
+                                    {curGenre}
+                                  </CheckboxCard.Label>
+                                </CheckboxCard.Content>
+                              </CheckboxCard.Root>
+                            ))}
+                          </CheckboxGroup>
+                        )}
                       />
-                      <Field.ErrorText>
-                        {errors.description?.message}
-                      </Field.ErrorText>
-                    </Field.Root>
+                    </Box>
+                    {errors.genre && (
+                      <Text color="red.500">{errors.genre?.message}</Text>
+                    )}
                   </Steps.Content>
                   <Steps.Content
+                    flex={1}
                     index={1}
                     pt={5}
                     display={"flex"}
                     alignItems={"center"}
-                    h={"12rem"}
+                    minH={"15rem"}
                   >
                     <ArtistDropZone
                       control={control}
@@ -252,10 +320,10 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                   </Steps.Content>
                   <Steps.Content
                     index={2}
-                    pt={5}
+                    pt={3}
                     display={"flex"}
-                    alignItems={"center"}
-                    h={"12rem"}
+                    flexDir={"column"}
+                    minH={"15rem"}
                   >
                     <ArtistDropZone
                       errors={errors}
@@ -282,19 +350,107 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         "image/bmp",
                         "image/tiff",
                       ]}
+                      previewUrl={imageURL}
                     />
+                    <ColorPicker.Root
+                      w={"1/2"}
+                      size={"sm"}
+                      pt={5}
+                      defaultValue={parseColor("#eb5e41")}
+                    >
+                      <ColorPicker.HiddenInput />
+                      <ColorPicker.Label>
+                        Promienent Color
+                        <Span color="gray.500">(From the Cover Image)</Span>
+                      </ColorPicker.Label>
+                      <ColorPicker.Control>
+                        <InputGroup
+                          startElement={
+                            <ColorPicker.ValueSwatch boxSize="4.5" />
+                          }
+                          endElementProps={{ px: "1" }}
+                          endElement={
+                            <ColorPicker.EyeDropper size="xs" variant="ghost" />
+                          }
+                        >
+                          <ColorPicker.Input />
+                        </InputGroup>
+                      </ColorPicker.Control>
+                    </ColorPicker.Root>
                   </Steps.Content>
-
+                  <Steps.Content
+                    index={3}
+                    pt={5}
+                    display={"flex"}
+                    flexDir={"column"}
+                    gap={3}
+                    minH={"15rem"}
+                  >
+                    <Field.Root invalid={!!errors.album}>
+                      <Field.Label>Song Album</Field.Label>
+                      <Input
+                        focusRing={"none"}
+                        size={"lg"}
+                        {...register("album", {
+                          validate: (value) => {
+                            console.log(value);
+                            if (value && value.length < 3)
+                              return "Enter a correct Album name!";
+                            else {
+                              return true;
+                            }
+                          },
+                        })}
+                        resize={"none"}
+                        bg={"none"}
+                        borderColor={"gray.800"}
+                        placeholder="Enter a short description about the song."
+                      />
+                      <Field.ErrorText>{errors.album?.message}</Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root invalid={!!errors.producer}>
+                      <Field.Label>Song Producer</Field.Label>
+                      <Input
+                        {...register("producer", {
+                          required: "You have to include a Producer",
+                        })}
+                        placeholder="Who produced the song?"
+                        size={"lg"}
+                        bg={"none"}
+                        borderColor={"gray.800"}
+                        focusRing={"none"}
+                      />
+                      <Field.ErrorText>
+                        {errors.producer?.message}
+                      </Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root invalid={!!errors.composer}>
+                      <Field.Label>Song Composer</Field.Label>
+                      <Input
+                        {...register("composer", {
+                          required: "You have to include a Composer",
+                        })}
+                        placeholder="Who composed the song?"
+                        size={"lg"}
+                        bg={"none"}
+                        borderColor={"gray.800"}
+                        focusRing={"none"}
+                      />
+                      <Field.ErrorText>
+                        {errors.composer?.message}
+                      </Field.ErrorText>
+                    </Field.Root>
+                  </Steps.Content>
                   <Steps.Content
                     pt={5}
-                    index={3}
+                    index={4}
                     display={"flex"}
                     flexDir={"column"}
                     alignItems={"center"}
-                    h={"12rem"}
                     justifyContent={"center"}
                     gap={5}
                     color={"white"}
+                    minH={"15rem"}
                   >
                     <Box textAlign={"center"} mb={2}>
                       <Text textStyle={"2xl"} fontWeight={"bold"}>
