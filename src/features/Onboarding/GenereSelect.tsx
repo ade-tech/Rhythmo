@@ -17,6 +17,7 @@ import {
   UseFormTrigger,
 } from "react-hook-form";
 import { ArtistOnboardingFormInputs } from "./ArtistOnboarding";
+import { GENRES } from "@/helpers/constants";
 type GenreSelectProps = {
   Increamental?: React.Dispatch<React.SetStateAction<number>>;
   trigger: UseFormTrigger<ArtistOnboardingFormInputs>;
@@ -51,20 +52,6 @@ const GenereSelect = ({
       }
     }, 350);
   };
-  const genres = [
-    "Afrobeats",
-    "Highlife",
-    "Soukous",
-    "Kwaito",
-    "Mbalax",
-    "Gnawa",
-    "Amapiano",
-    "Benga",
-    "Zouk",
-    "Jùjú",
-    "Gqom",
-    "Desert Blues",
-  ];
   return (
     <Box
       w={"1/3"}
@@ -103,7 +90,7 @@ const GenereSelect = ({
             value={Array.isArray(field.value) ? field.value : undefined}
             onValueChange={field.onChange}
           >
-            {genres.map((curGenre) => (
+            {GENRES.map((curGenre) => (
               <CheckboxCard.Root
                 key={curGenre}
                 colorPalette={"green"}

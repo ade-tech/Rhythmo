@@ -113,7 +113,7 @@ export function LoginContainer({
     }
     timeoutID.current = window.setTimeout(() => {
       setCanResendOTP(true);
-    }, 300000);
+    }, 100000);
   }
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -375,7 +375,6 @@ export function LoginContainer({
                     color={`${colorPallete}.500`}
                     disabled={!canResendOTP}
                     onClick={() => {
-                      setCanResendOTP(false);
                       sendOTP(emailString, {
                         onSuccess: () => {
                           toaster.create({
@@ -388,6 +387,7 @@ export function LoginContainer({
                             title: "❌ We could not resend the Code",
                           }),
                       });
+                      setCanResendOTP(false);
                       resendTimeout();
                     }}
                   >
