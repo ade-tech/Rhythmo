@@ -7,9 +7,10 @@
  * - Provides hooks such as useFetchSongs and useFetchSong for song-related components.
  */
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { SongQuery, SongsQuery } from "./songType";
-import { fetchSong, fetchSongs } from "@/services/songsApi";
+import { fetchSong, fetchSongs, uploadSong } from "@/services/songsApi";
+import { CreateMusicProps } from "../artist/CreateMusicDialog";
 
 export function useFetchSongs(): SongsQuery {
   const { data, isLoading, error } = useQuery({
@@ -27,4 +28,13 @@ export function useFetchSong(id: string): SongQuery {
     enabled: !!id,
   });
   return { data: data, isLoading, error };
+}
+
+export function useUploadSong() {
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: ({ data, id }: { data: CreateMusicProps; id: string }) =>
+      uploadSong({ data, id }),
+  });
+
+  return { mutate, isPending, error };
 }

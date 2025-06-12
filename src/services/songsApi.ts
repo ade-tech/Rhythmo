@@ -7,7 +7,8 @@
  */
 
 import { type Song } from "@/features/tracks/songType";
-import { supabase } from "./supabase";
+import { supabase, supabaseUrl } from "./supabase";
+import { CreateMusicProps } from "@/features/artist/CreateMusicDialog";
 
 /**
  * Type for the result of a song query, including the main song and an optional queue.
@@ -46,7 +47,7 @@ export async function fetchSong(id: string): Promise<SongQueryType> {
   const { data: queueData, error: queueError } = await supabase
     .from("songs")
     .select("*")
-    .eq("genre", (data as Song).genre)
+    .in("genre", (data as Song).genre)
     .limit(20);
 
   const firstItem = (queueData as Song[])?.filter(
@@ -61,4 +62,54 @@ export async function fetchSong(id: string): Promise<SongQueryType> {
   if (queueError) throw new Error(queueError.message);
   if (error) throw new Error(error.message);
   return { data, queue };
+}
+
+export async function uploadSong({
+  data,
+  id,
+}: {
+  data: CreateMusicProps;
+  id: string;
+}) {
+  console.log(data, id);
+  if (!id) return;
+  const audioPath = `${crypto.randomUUID()}-${data.audio.name}`;
+  const coverImagePath = `${crypto.randomUUID()}-${data.coverImage.name}`;
+
+  const audioUrl = `${supabaseUrl}/storage/v1/object/public/songs/${audioPath}`;
+
+  const coverImageUrl = `${supabaseUrl}/storage/v1/object/public/songcover/${coverImagePath}`;
+
+  const { error: audioUploadError } = await supabase.storage
+    .from("songs")
+    .upload(audioPath, data.audio);
+
+  if (audioUploadError) throw new Error("We could not upload your music");
+
+  const { error: imageUploadError } = await supabase.storage
+    .from("songcover")
+    .upload(coverImagePath, data.audio);
+
+  if (imageUploadError) throw new Error("We could not upload your image cover");
+
+  const { data: songDetails, error } = await supabase
+    .from("songs")
+    .insert([
+      {
+        title: data.title,
+        album: data.album,
+        producer: data.producer,
+        composer: data.composer,
+        prominent_color: data.prominent_color,
+        genre: data.genre,
+        audio_url: audioUrl,
+        cover_url: coverImageUrl,
+      },
+    ])
+    .select();
+
+  if (error) throw new Error("We could not complete the song upload");
+  console.log(songDetails);
+
+  return songDetails as Song[];
 }

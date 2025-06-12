@@ -19,10 +19,12 @@ import {
 import ArtistDropZone from "./ArtistDropZone";
 import { PiFileImage } from "react-icons/pi";
 import { LuFileAudio } from "react-icons/lu";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useCurrentArtist } from "@/contexts/currentArtistContext";
 import { GENRES } from "@/helpers/constants";
+import { useUploadSong } from "../tracks/useSong";
+import { toaster } from "@/components/ui/toaster";
 
 interface createButtonProps {
   title: string;
@@ -38,14 +40,20 @@ export interface CreateMusicProps {
   producer: string;
   composer: string;
   genre: string[];
+  prominent_color: string;
+  duration: number;
+  artist: string;
+  artist_id: string;
 }
 const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   const { currentArtist } = useCurrentArtist();
+  const [duration, setDuration] = useState<number>(0);
   const {
     register,
     formState: { errors },
     trigger,
     resetField,
+    handleSubmit,
     watch,
     control,
     setValue,
@@ -58,6 +66,17 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
 
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [imageURL, setImageURL] = useState<string | undefined>(undefined);
+  const { mutate, isPending } = useUploadSong();
+
+  useEffect(() => {
+    if (!audioFile) return;
+    const audioUrl = new Audio(URL.createObjectURL(audioFile));
+    const handleMetadata = () => setDuration(audioUrl.duration);
+
+    audioUrl.addEventListener("loadedmetadata", handleMetadata);
+
+    return () => audioUrl.removeEventListener("loadedmetadata", handleMetadata);
+  }, [audioFile]);
 
   useEffect(() => {
     if (!imageFile) return;
@@ -73,7 +92,6 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   }, [imageFile]);
 
   async function handleStepsAction() {
-    console.log(stepIndex);
     if (stepIndex === 0) {
       const isValid = await trigger(["title", "genre"]);
       if (isValid) setStepIndex((cur) => cur + 1);
@@ -81,11 +99,12 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
     }
     if (stepIndex === 1) {
       const isValid = await trigger(["audio"]);
+      setValue("duration", duration);
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
     if (stepIndex === 2) {
-      const isValid = await trigger(["coverImage"]);
+      const isValid = await trigger(["coverImage", "prominent_color"]);
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
@@ -94,7 +113,33 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
+    if (stepIndex > 3) {
+      handleSubmit(submitFn)();
+    }
   }
+  const submitFn: SubmitHandler<CreateMusicProps> = (data) => {
+    if (!currentArtist || !currentArtist.data || !currentArtist.profileInfo)
+      return;
+    const allData = {
+      ...data,
+      artist_id: currentArtist.data.id,
+      artist: currentArtist.profileInfo.profiles.nickname,
+    };
+    mutate(
+      { data: allData, id: currentArtist.data.id },
+      {
+        onSuccess: () =>
+          toaster.create({
+            title: "🥳 Your Song is now live",
+          }),
+
+        onError: () =>
+          toaster.create({
+            title: "We could not upload the song",
+          }),
+      }
+    );
+  };
 
   return (
     <Dialog.Root size={"lg"}>
@@ -148,7 +193,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                 size={"xs"}
                 step={stepIndex}
                 bg={"gray.950"}
-                count={4}
+                count={5}
                 variant={"subtle"}
               >
                 <Dialog.Body display={"flex"} flexDir={"column"}>
@@ -358,7 +403,11 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                       pt={5}
                       defaultValue={parseColor("#eb5e41")}
                     >
-                      <ColorPicker.HiddenInput />
+                      <ColorPicker.HiddenInput
+                        {...register("prominent_color", {
+                          required: "You have to select a Color",
+                        })}
+                      />
                       <ColorPicker.Label>
                         Promienent Color
                         <Span color="gray.500">(From the Cover Image)</Span>
@@ -393,7 +442,6 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         size={"lg"}
                         {...register("album", {
                           validate: (value) => {
-                            console.log(value);
                             if (value && value.length < 3)
                               return "Enter a correct Album name!";
                             else {
@@ -522,6 +570,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         _hover={{
                           bg: "blackAlpha.300",
                         }}
+                        disabled={isPending}
                       >
                         Next
                       </Button>
