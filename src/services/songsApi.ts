@@ -47,7 +47,7 @@ export async function fetchSong(id: string): Promise<SongQueryType> {
   const { data: queueData, error: queueError } = await supabase
     .from("songs")
     .select("*")
-    .in("genre", (data as Song).genre)
+    .contains("genre", (data as Song).genre)
     .limit(20);
 
   const firstItem = (queueData as Song[])?.filter(
@@ -88,9 +88,13 @@ export async function uploadSong({
 
   const { error: imageUploadError } = await supabase.storage
     .from("songcover")
-    .upload(coverImagePath, data.audio);
+    .upload(coverImagePath, data.coverImage);
 
-  if (imageUploadError) throw new Error("We could not upload your image cover");
+  if (imageUploadError) {
+    const { error } = await supabase.storage.from("songs").remove([audioPath]);
+    if (error) throw new Error("An error occured!");
+    throw new Error("We could not upload your image cover");
+  }
 
   const { data: songDetails, error } = await supabase
     .from("songs")
@@ -104,12 +108,22 @@ export async function uploadSong({
         genre: data.genre,
         audio_url: audioUrl,
         cover_url: coverImageUrl,
+        artist: data.artist,
+        artist_id: data.artist_id,
+        duration: Math.floor(data.duration),
+        album_id: null,
       },
     ])
-    .select();
+    .select("*");
 
-  if (error) throw new Error("We could not complete the song upload");
-  console.log(songDetails);
+  if (error) {
+    const { error } = await supabase.storage.from("songs").remove([audioPath]);
+    const { error: deleteImageError } = await supabase.storage
+      .from("songcover")
+      .remove([coverImagePath]);
+    if (error || deleteImageError) throw new Error("An error occured!");
+    throw new Error("We could not complete the song upload");
+  }
 
   return songDetails as Song[];
 }

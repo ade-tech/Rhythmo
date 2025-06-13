@@ -31,6 +31,7 @@ export type Song = {
   genre: string[];
   artist_id: string;
   prominent_color: string;
+  composer: string;
 };
 
 export type SongsQuery = {

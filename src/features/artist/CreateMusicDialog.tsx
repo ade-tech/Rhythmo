@@ -1,3 +1,4 @@
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
   parseColor,
   Portal,
   Span,
+  Spinner,
   Steps,
   Text,
 } from "@chakra-ui/react";
@@ -66,7 +68,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
 
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [imageURL, setImageURL] = useState<string | undefined>(undefined);
-  const { mutate, isPending } = useUploadSong();
+  const { mutate, isPending, error } = useUploadSong();
 
   useEffect(() => {
     if (!audioFile) return;
@@ -113,7 +115,8 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
-    if (stepIndex > 3) {
+    if (stepIndex === 4) {
+      setStepIndex((cur) => cur + 1);
       handleSubmit(submitFn)();
     }
   }
@@ -545,35 +548,89 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                       </Box>
                     </Box>
                   </Steps.Content>
+                  <Steps.CompletedContent
+                    pt={5}
+                    display={"flex"}
+                    flexDir={"column"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    gap={5}
+                    color={"white"}
+                    minH={"15rem"}
+                  >
+                    {isPending ? (
+                      <Box display={"flex"} gap={3}>
+                        <Spinner color={"green.500"} />
+                        <Text textStyle={"lg"} fontWeight={"bold"}>
+                          {" "}
+                          Uploading Song ....
+                        </Text>
+                      </Box>
+                    ) : error ? (
+                      <Text textStyle={"lg"} fontWeight={"bold"}>
+                        An Error Occured
+                      </Text>
+                    ) : (
+                      <Box>
+                        <DotLottieReact
+                          src="https://lottie.host/92e3061b-c98d-4727-92db-c5c1c1323269/SOKXhqcn3O.lottie"
+                          loop
+                          autoplay
+                          width={"150px"}
+                          height={"150px"}
+                        />
+                        <Text textStyle={"lg"} fontWeight={"bold"}>
+                          You song is now Live!
+                        </Text>
+                      </Box>
+                    )}
+                  </Steps.CompletedContent>
                 </Dialog.Body>
                 <Dialog.Footer>
                   <ButtonGroup size="sm" variant="outline">
-                    <Steps.PrevTrigger asChild>
-                      <Button
-                        rounded={"full"}
-                        borderColor={"gray.800"}
-                        color={"white"}
-                        _hover={{
-                          bg: "blackAlpha.300",
-                        }}
-                        onClick={() => setStepIndex((cur) => cur - 1)}
-                      >
-                        Prev
-                      </Button>
-                    </Steps.PrevTrigger>
                     <Steps.NextTrigger asChild>
-                      <Button
-                        onClick={handleStepsAction}
-                        rounded={"full"}
-                        borderColor={"gray.800"}
-                        color={"white"}
-                        _hover={{
-                          bg: "blackAlpha.300",
-                        }}
-                        disabled={isPending}
-                      >
-                        Next
-                      </Button>
+                      {stepIndex <= 4 ? (
+                        <>
+                          <Button
+                            rounded={"full"}
+                            borderColor={"gray.800"}
+                            color={"white"}
+                            _hover={{
+                              bg: "blackAlpha.300",
+                            }}
+                            onClick={() => setStepIndex((cur) => cur - 1)}
+                          >
+                            Prev
+                          </Button>
+                          <Button
+                            onClick={handleStepsAction}
+                            rounded={"full"}
+                            borderColor={"gray.800"}
+                            color={"white"}
+                            _hover={{
+                              bg: "blackAlpha.300",
+                            }}
+                            disabled={isPending}
+                          >
+                            {stepIndex === 4 ? "Publish" : "Next"}
+                          </Button>
+                        </>
+                      ) : (
+                        <Dialog.CloseTrigger
+                          borderWidth={"1px"}
+                          borderColor={"gray.800"}
+                          px={3}
+                          py={2}
+                          rounded={"full"}
+                          disabled={isPending}
+                          color={"white"}
+                          _hover={{
+                            bg: "blackAlpha.300",
+                          }}
+                        >
+                          Close
+                        </Dialog.CloseTrigger>
+                      )}
                     </Steps.NextTrigger>
                   </ButtonGroup>
                 </Dialog.Footer>
