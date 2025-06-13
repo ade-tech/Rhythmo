@@ -28,9 +28,10 @@ export type Song = {
   audio_url: string;
   cover_url: string;
   featured_artist?: string[];
-  genre: string;
+  genre: string[];
   artist_id: string;
   prominent_color: string;
+  composer: string;
 };
 
 export type SongsQuery = {
