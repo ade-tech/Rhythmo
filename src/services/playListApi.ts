@@ -8,6 +8,7 @@
 
 import { Playlist, PlaylistSong } from "@/features/playlist/playlistType";
 import { supabase } from "./supabase";
+import { likeSong } from "./likeApi";
 
 /**
  * Creates a new playlist in the backend.
@@ -73,10 +74,86 @@ export async function fetchSongsInPlaylist(
   playlistID: string
 ): Promise<PlaylistSong[]> {
   const { data, error } = await supabase
-    .from("playlistSongs")
+    .from("playlist_songs")
     .select("*, song:songs(*)")
     .eq("playlist_id", playlistID);
 
   if (error) throw new Error("could not get the songs");
   return data as PlaylistSong[];
+}
+
+export async function addSongToPlaylist({
+  song_id,
+  playlist_id,
+}: {
+  song_id: string;
+  playlist_id: string;
+}) {
+  const { error } = await supabase.from("playlist_songs").insert([
+    {
+      song_id,
+      playlist_id,
+    },
+  ]);
+
+  if (error) throw new Error("We could not add song to playlist");
+}
+const likedSongCover =
+  "https://zgfhsczbfiisjubssmfb.supabase.co/storage/v1/object/public/profile//artworks-4Lu85Xrs7UjJ4wVq-vuI2zg-t500x500.jpg";
+
+export type createPlaylistFromLikeProps = {
+  song_id: string;
+  is_public?: boolean;
+  name?: string;
+  created_by: string;
+  cover_url?: string;
+};
+export async function createPlaylistFromLike({
+  song_id,
+  is_public = false,
+  name = "Liked Song",
+  created_by,
+  cover_url = likedSongCover,
+}: createPlaylistFromLikeProps) {
+  let playlistData: Playlist;
+  const {
+    data: playlist,
+    count,
+    error: artistCheckError,
+  } = await supabase
+    .from("playlist")
+    .select("*", { count: "exact" })
+    .match({ name, created_by });
+
+  if (artistCheckError) throw new Error(" ❌ We could not make that happen");
+  playlistData = playlist[0] as Playlist;
+  if (!count) {
+    const { data, error: createPlaylistError } = await supabase
+      .from("playlist")
+      .insert([
+        {
+          is_public,
+          name,
+          created_by,
+          cover_url,
+        },
+      ])
+      .select("*")
+      .single();
+
+    if (createPlaylistError)
+      throw new Error(" ❌ We could not make that happen");
+
+    playlistData = data as Playlist;
+  }
+
+  await likeSong({
+    song_id,
+    liker_id: created_by,
+  });
+
+  await addSongToPlaylist({
+    song_id,
+    playlist_id: playlistData.playlist_id!,
+  });
 }

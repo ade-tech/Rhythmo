@@ -28,7 +28,7 @@ export function PlaylistShort(obj: playlistProps): JSX.Element {
         <HStack gap="4">
           <Avatar.Root shape={"rounded"} size={"xl"}>
             <Avatar.Fallback name={"Abdone"} />
-            <Avatar.Image src={data?.at(0)?.song.cover_url} />
+            <Avatar.Image src={obj.avatar || data?.at(0)?.song.cover_url} />
           </Avatar.Root>
           <Stack gap="0">
             <Text fontWeight="medium" textStyle={"lg"} color={"white"}>

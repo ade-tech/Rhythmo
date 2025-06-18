@@ -88,6 +88,7 @@ export function LibraryContainer() {
           title={curPlaylist.name}
           link={`/album/${curPlaylist.playlist_id}`}
           playlistID={curPlaylist.playlist_id!}
+          avatar={curPlaylist.cover_url}
         />
       ))}
     </Box>

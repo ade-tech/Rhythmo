@@ -13,6 +13,7 @@ import {
 import {
   Avatar,
   Box,
+  Button,
   HStack,
   Image,
   Slider,
@@ -34,6 +35,10 @@ import {
 } from "react-icons/pi";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { Link } from "react-router-dom";
+import { usecreatePlaylistFromLike, useHasLikedSong } from "../likes/useLikes";
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { toaster } from "@/components/ui/toaster";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
 /**
  * ActivelyPlayinTack Component
@@ -47,6 +52,7 @@ import { Link } from "react-router-dom";
 
 const ActivelyPlayinTack = () => {
   const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
+  const { currentUser } = useCurrentUser();
   const { isOpen, setIsOpen } = useIsSongOpen();
   const {
     state: { activeSong, isLoopingSong, currentHowl, volume },
@@ -57,6 +63,14 @@ const ActivelyPlayinTack = () => {
   const volumeFn = useVolume();
   const next = useNextSong();
   const previous = usePrevSong();
+  const { likeSong } = usecreatePlaylistFromLike();
+  const { data } = useHasLikedSong({
+    song_id: activeSong?.id!,
+    liker_id: currentUser?.data?.id!,
+  });
+
+  console.log(data);
+
   if (!activeSong) return null;
 
   function handleValueChange({ value }: { value: number[] }) {
@@ -71,7 +85,7 @@ const ActivelyPlayinTack = () => {
 
   return (
     <HStack
-      h={"fit"}
+      h={"full"}
       flex={1}
       px={5}
       bg={"black"}
@@ -79,6 +93,7 @@ const ActivelyPlayinTack = () => {
       color={"white"}
       zIndex={1000}
       alignItems={"center"}
+      pt={4}
     >
       <HStack gap={4} align={"center"}>
         <Avatar.Root
@@ -146,7 +161,43 @@ const ActivelyPlayinTack = () => {
           </Text>
         </Stack>
         <IconWithTooltip tooltipText="Add to Fav.">
-          <GoPlusCircle size={20} className="text-gray-400" />
+          <Button
+            size={"xl"}
+            bg={"none"}
+            textStyle={"2xl"}
+            cursor={"pointer"}
+            p={0}
+            rounded={"full"}
+            color={data === 1 ? "green.500" : "gray.400"}
+            onClick={
+              data === 1
+                ? undefined
+                : () => {
+                    likeSong(
+                      {
+                        song_id: activeSong?.id!,
+                        created_by: currentUser?.data?.id!,
+                      },
+                      {
+                        onError: () =>
+                          toaster.create({
+                            title: "❌ We could not make that happen",
+                          }),
+                        onSuccess: () =>
+                          toaster.create({
+                            title: "You like the song 💖",
+                          }),
+                      }
+                    );
+                  }
+            }
+          >
+            {data === 1 ? (
+              <IoCheckmarkCircleSharp size="2rem" />
+            ) : (
+              <GoPlusCircle size="2rem" />
+            )}
+          </Button>
         </IconWithTooltip>
       </HStack>
       <Spacer />
