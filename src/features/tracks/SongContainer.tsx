@@ -277,36 +277,7 @@ export function SongContainer() {
               lineHeight={1.3}
               color={"white"}
             >
-              Central Cee
-            </Text>
-            <Text
-              textStyle={"sm"}
-              fontWeight={"medium"}
-              lineHeight={1.3}
-              color={"gray.400"}
-            >
-              Main Artist, Composer
-            </Text>
-          </Stack>
-          <Spacer />
-          <Button
-            rounded={"full"}
-            variant={"subtle"}
-            color={"white"}
-            bg={"green.600"}
-          >
-            Follow
-          </Button>
-        </HStack>
-        <HStack mt={4} px={4}>
-          <Stack gap={0}>
-            <Text
-              textStyle={"md"}
-              fontWeight={"semibold"}
-              lineHeight={1.3}
-              color={"white"}
-            >
-              21 Savage
+              {activeSong.artist}
             </Text>
             <Text
               textStyle={"sm"}
@@ -327,6 +298,35 @@ export function SongContainer() {
             Follow
           </Button>
         </HStack>
+        <HStack mt={4} px={4}>
+          <Stack gap={0}>
+            <Text
+              textStyle={"md"}
+              fontWeight={"semibold"}
+              lineHeight={1.3}
+              color={"white"}
+            >
+              {activeSong.producer}
+            </Text>
+            <Text
+              textStyle={"sm"}
+              fontWeight={"medium"}
+              lineHeight={1.3}
+              color={"gray.400"}
+            >
+              Producer
+            </Text>
+          </Stack>
+          <Spacer />
+          <Button
+            rounded={"full"}
+            variant={"subtle"}
+            color={"white"}
+            bg={"green.600"}
+          >
+            Follow
+          </Button>
+        </HStack>
         <HStack mt={3} px={4}>
           <Stack gap={0}>
             <Text
@@ -335,7 +335,7 @@ export function SongContainer() {
               lineHeight={1.3}
               color={"white"}
             >
-              Young John
+              {activeSong.composer}
             </Text>
             <Text
               textStyle={"sm"}
@@ -343,7 +343,7 @@ export function SongContainer() {
               lineHeight={1.3}
               color={"gray.400"}
             >
-              Producer, Manager
+              Composer
             </Text>
           </Stack>
         </HStack>

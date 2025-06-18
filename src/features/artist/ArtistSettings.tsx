@@ -174,7 +174,7 @@ export function ArtistSettings() {
       </Box>
       <Box ml={3} w={"97%"} mt={2}>
         <Text fontWeight={"bold"} textStyle={"2xl"} color={"white"}>
-          Notification Prefrence
+          Notification Preference
         </Text>
         <Text color={"gray.500"} textStyle={"sm"} mb={2}>
           Customize what kind of notifications you get and where you get them.

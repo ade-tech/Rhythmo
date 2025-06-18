@@ -56,6 +56,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
     trigger,
     resetField,
     handleSubmit,
+    reset,
     watch,
     control,
     setValue,
@@ -69,6 +70,12 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [imageURL, setImageURL] = useState<string | undefined>(undefined);
   const { mutate, isPending, error } = useUploadSong();
+
+  function resetForm() {
+    setStepIndex(0);
+    reset();
+    setImageURL(undefined);
+  }
 
   useEffect(() => {
     if (!audioFile) return;
@@ -560,8 +567,8 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                   >
                     {isPending ? (
                       <Box display={"flex"} gap={3}>
-                        <Spinner color={"green.500"} />
-                        <Text textStyle={"lg"} fontWeight={"bold"}>
+                        <Spinner color={"green.500"} size={"xl"} />
+                        <Text textStyle={"2xl"} fontWeight={"bold"}>
                           {" "}
                           Uploading Song ....
                         </Text>
@@ -571,15 +578,24 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                         An Error Occured
                       </Text>
                     ) : (
-                      <Box>
+                      <Box
+                        w={"full"}
+                        h={"full"}
+                        flexDir={"column"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
                         <DotLottieReact
                           src="https://lottie.host/92e3061b-c98d-4727-92db-c5c1c1323269/SOKXhqcn3O.lottie"
-                          loop
+                          style={{
+                            width: "9rem",
+                            height: "8rem",
+                            margin: "0,auto",
+                          }}
                           autoplay
-                          width={"150px"}
-                          height={"150px"}
                         />
-                        <Text textStyle={"lg"} fontWeight={"bold"}>
+                        <Text textStyle={"2xl"} fontWeight={"bold"}>
                           You song is now Live!
                         </Text>
                       </Box>
@@ -622,6 +638,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                           px={3}
                           py={2}
                           rounded={"full"}
+                          onClick={resetForm}
                           disabled={isPending}
                           color={"white"}
                           _hover={{
