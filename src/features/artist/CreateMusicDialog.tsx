@@ -191,7 +191,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
         <Portal>
           <Dialog.Backdrop bg={"black/60"} />
           <Dialog.Positioner display={"flex"} alignItems={"center"}>
-            <Dialog.Content bg={"gray.950"} h={"9/12"} color={"white"}>
+            <Dialog.Content bg={"gray.950"} color={"white"}>
               <Dialog.Header mb={3} display={"flex"} flexDir={"column"} gap={0}>
                 <Dialog.Title>Let's Add Some Music.</Dialog.Title>
                 <Text textStyle={"xs"} fontWeight={"normal"} color={"gray.400"}>
@@ -338,14 +338,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                       <Text color="red.500">{errors.genre?.message}</Text>
                     )}
                   </Steps.Content>
-                  <Steps.Content
-                    flex={1}
-                    index={1}
-                    pt={5}
-                    display={"flex"}
-                    alignItems={"center"}
-                    minH={"15rem"}
-                  >
+                  <Steps.Content flex={1} index={1} minH={"15rem"}>
                     <ArtistDropZone
                       control={control}
                       reset={resetField}
@@ -606,8 +599,9 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                   <ButtonGroup size="sm" variant="outline">
                     <Steps.NextTrigger asChild>
                       {stepIndex <= 4 ? (
-                        <>
+                        <Box display="flex" gap={2}>
                           <Button
+                            disabled={stepIndex === 0}
                             rounded={"full"}
                             borderColor={"gray.800"}
                             color={"white"}
@@ -630,7 +624,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                           >
                             {stepIndex === 4 ? "Publish" : "Next"}
                           </Button>
-                        </>
+                        </Box>
                       ) : (
                         <Dialog.CloseTrigger
                           borderWidth={"1px"}

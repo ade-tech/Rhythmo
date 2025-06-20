@@ -72,7 +72,7 @@ export function usePlayMusic() {
       setAudioStatus
     );
     howlObject.on("end", () => {
-      setNextMusic(activeQueueRef.current!);
+      if (!howlObject.loop()) setNextMusic(activeQueueRef.current!);
     });
   }
 

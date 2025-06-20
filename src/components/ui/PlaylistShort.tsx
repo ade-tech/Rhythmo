@@ -31,7 +31,7 @@ export function PlaylistShort(obj: playlistProps): JSX.Element {
             <Avatar.Image src={obj.avatar || data?.at(0)?.song.cover_url} />
           </Avatar.Root>
           <Stack gap="0">
-            <Text fontWeight="medium" textStyle={"lg"} color={"white"}>
+            <Text fontWeight="bold" textStyle={"lg"} color={"white"}>
               {obj.title}
             </Text>
             <Text color="gray.400" textStyle="xs">

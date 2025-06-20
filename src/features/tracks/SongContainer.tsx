@@ -23,19 +23,31 @@ import {
 } from "@chakra-ui/react";
 import { GoPlusCircle } from "react-icons/go";
 import { HiOutlineUpload, HiX } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useFetchArtist } from "../artist/useArtist";
 import { Song } from "./songType";
+import IconWithTooltip from "@/components/ui/IconWithTooltip";
+import { usecreatePlaylistFromLike, useHasLikedSong } from "../likes/useLikes";
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { toaster } from "@/components/ui/toaster";
 
 export function SongContainer() {
+  const naviagte = useNavigate();
+  const { currentUser } = useCurrentUser();
   const { isOpen, setIsOpen, setIsShowingQueue } = useIsSongOpen();
   const {
     state: { activeSong, activeQueue },
   } = useCurrentMusic();
   const ref = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useFetchArtist(activeSong?.artist_id ?? "");
+  const { likeSong } = usecreatePlaylistFromLike();
+  const { data: check } = useHasLikedSong({
+    song_id: activeSong?.id!,
+    liker_id: currentUser?.data?.id!,
+  });
   if (!isOpen) return null;
   if (!activeSong) return null;
 
@@ -127,9 +139,52 @@ export function SongContainer() {
               </Link>
             </Stack>
             <Spacer />
-            <HStack mr={1}>
+            <HStack>
               <HiOutlineUpload size={20} className="text-gray-400" />
-              <GoPlusCircle size={20} className="text-gray-400" />
+              <IconWithTooltip tooltipText="Add to Fav.">
+                <Button
+                  size={"xl"}
+                  bg={"none"}
+                  textStyle={"2xl"}
+                  cursor={"pointer"}
+                  p={0}
+                  rounded={"full"}
+                  color={check === 1 ? "green.500" : "gray.400"}
+                  onClick={
+                    check === 1
+                      ? undefined
+                      : () => {
+                          likeSong(
+                            {
+                              song_id: activeSong?.id!,
+                              created_by: currentUser?.data?.id!,
+                            },
+                            {
+                              onError: () =>
+                                toaster.create({
+                                  title: "❌ We could not make that happen",
+                                }),
+                              onSuccess: (data) =>
+                                toaster.create({
+                                  title: "You like the song 💖",
+                                  action: {
+                                    label: "View",
+                                    onClick: () =>
+                                      naviagte(`/album/${data?.playlist_id}`),
+                                  },
+                                }),
+                            }
+                          );
+                        }
+                  }
+                >
+                  {check === 1 ? (
+                    <IoCheckmarkCircleSharp size={20} />
+                  ) : (
+                    <GoPlusCircle size={20} />
+                  )}
+                </Button>
+              </IconWithTooltip>
             </HStack>
           </Flex>
         </Stack>

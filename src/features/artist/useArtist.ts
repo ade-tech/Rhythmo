@@ -7,7 +7,11 @@
  * - Provides hooks such as useFetchArtist for use in artist-related components.
  */
 
-import { fetchArtist, fetchArtists } from "@/services/artistApi";
+import {
+  fetchArtist,
+  fetchArtists,
+  fetchSongsByArtist,
+} from "@/services/artistApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Artist } from "./artistTypes";
 import { useNavigate } from "react-router-dom";
@@ -78,4 +82,18 @@ export function useLogout() {
   });
 
   return { signOut, isPending, error };
+}
+
+export function useFetchSongsByArtist() {
+  const { currentArtist } = useCurrentArtist();
+  const id = currentArtist?.data?.id;
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["songs", id],
+    queryFn: ({ queryKey }) => fetchSongsByArtist(queryKey[1]!),
+
+    enabled: !!id,
+  });
+
+  return { data, isLoading, error };
 }

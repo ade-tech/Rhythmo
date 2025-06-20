@@ -12,8 +12,11 @@ import { Box, Stack, Text } from "@chakra-ui/react";
 import { BiAlbum } from "react-icons/bi";
 import { PiMusicNotesPlus } from "react-icons/pi";
 import CreateMusicDialog from "./CreateMusicDialog";
+import { useCurrentArtist } from "@/contexts/currentArtistContext";
+import CreateAlbumDialog from "./CreateAlbumDialog";
 
 const CreateMusic = () => {
+  const { currentArtist } = useCurrentArtist();
   return (
     <Box
       w={"full"}
@@ -37,7 +40,7 @@ const CreateMusic = () => {
       >
         <Stack gap={0}>
           <Text textStyle={"5xl"} fontWeight={"extrabold"}>
-            Hello, Central Cee,
+            Hello, {currentArtist?.profileInfo?.profiles.nickname},
           </Text>
           <Text textStyle={"xl"} fontWeight={"semibold"}>
             What are you creating today?
@@ -58,7 +61,7 @@ const CreateMusic = () => {
           icon={PiMusicNotesPlus}
           description="Add your latest track to Rhythmo so listeners can enjoy it instantly."
         />
-        <CreateMusicDialog
+        <CreateAlbumDialog
           title="Create an ablum"
           icon={BiAlbum}
           description="Group multiple songs together into a themed collection or project."
