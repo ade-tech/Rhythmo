@@ -8,6 +8,7 @@
 
 import { Artist } from "@/features/artist/artistTypes";
 import { supabase } from "./supabase";
+import { Song } from "@/features/tracks/songType";
 
 /**
  * Fetches an artist by user ID.
@@ -40,4 +41,17 @@ export async function fetchArtists(): Promise<Artist[] | undefined> {
   if (!data) return undefined;
 
   return data as Artist[];
+}
+
+export async function fetchSongsByArtist(id: string) {
+  if (!id) return;
+
+  const { data, error } = await supabase
+    .from("songs")
+    .select("*")
+    .eq("artist_id", id);
+
+  if (error) throw new Error("We could not get your songs");
+
+  return data as Song[];
 }

@@ -34,7 +34,7 @@ import {
   PiSpeakerSlash,
 } from "react-icons/pi";
 import { SlSizeFullscreen } from "react-icons/sl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usecreatePlaylistFromLike, useHasLikedSong } from "../likes/useLikes";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { toaster } from "@/components/ui/toaster";
@@ -51,6 +51,7 @@ import { IoCheckmarkCircleSharp } from "react-icons/io5";
  */
 
 const ActivelyPlayinTack = () => {
+  const naviagte = useNavigate();
   const { isShowingQueue, setIsShowingQueue } = useIsSongOpen();
   const { currentUser } = useCurrentUser();
   const { isOpen, setIsOpen } = useIsSongOpen();
@@ -68,8 +69,6 @@ const ActivelyPlayinTack = () => {
     song_id: activeSong?.id!,
     liker_id: currentUser?.data?.id!,
   });
-
-  console.log(data);
 
   if (!activeSong) return null;
 
@@ -183,9 +182,14 @@ const ActivelyPlayinTack = () => {
                           toaster.create({
                             title: "❌ We could not make that happen",
                           }),
-                        onSuccess: () =>
+                        onSuccess: (data) =>
                           toaster.create({
                             title: "You like the song 💖",
+                            action: {
+                              label: "View",
+                              onClick: () =>
+                                naviagte(`/album/${data?.playlist_id}`),
+                            },
                           }),
                       }
                     );

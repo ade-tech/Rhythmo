@@ -24,7 +24,5 @@ export async function hasLikedSong({ song_id, liker_id }: LikeQuery) {
     .eq("song_id", song_id);
   if (error) throw new Error("Something went wrong 🥹");
 
-  console.log(count);
-
   return count;
 }

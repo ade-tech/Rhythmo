@@ -5,25 +5,28 @@ import {
   Control,
   Controller,
   FieldErrors,
+  Path,
+  PathValue,
   UseFormResetField,
   UseFormSetValue,
 } from "react-hook-form";
 import { HiOutlineUpload, HiX } from "react-icons/hi";
 import { CreateMusicProps } from "./CreateMusicDialog";
-interface ArtistDropZoneProps {
-  name: "title" | "album" | "audio" | "coverImage";
+import { CreateAlbumProps } from "./CreateAlbumDialog";
+interface ArtistDropZoneProps<T extends CreateMusicProps | CreateAlbumProps> {
+  name: Path<T>;
   acceptedFiles: string[];
   icon: React.ReactNode;
   caption: string;
-  setValue: UseFormSetValue<CreateMusicProps>;
+  setValue: UseFormSetValue<T>;
   preview: File;
   previewUrl?: string;
-  reset: UseFormResetField<CreateMusicProps>;
-  errors: FieldErrors<CreateMusicProps>;
-  control: Control<CreateMusicProps>;
+  reset: UseFormResetField<T>;
+  errors: FieldErrors<T>;
+  control: Control<T>;
 }
 
-export function ArtistDropZone({
+export function ArtistDropZone<T extends CreateMusicProps | CreateAlbumProps>({
   name,
   acceptedFiles,
   setValue,
@@ -34,9 +37,11 @@ export function ArtistDropZone({
   icon,
   caption,
   preview,
-}: ArtistDropZoneProps) {
+}: ArtistDropZoneProps<T>) {
   const fileUploadRef = useRef<HTMLInputElement | null>(null);
   const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
+
+  const fieldError = errors[name as keyof typeof errors];
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -48,7 +53,7 @@ export function ArtistDropZone({
     if (
       acceptedFiles.find((cur) => (cur === droppedfile[0].type ? true : false))
     ) {
-      setValue(name, droppedfile[0]);
+      setValue(name, droppedfile[0] as PathValue<T, Path<T>>);
     } else {
       reset(name);
       setIsDraggingOver(false);
@@ -58,14 +63,22 @@ export function ArtistDropZone({
     }
   };
   return (
-    <Box display={"flex"} h={"95%"} flexDir={"column"} w={"full"}>
+    <Box
+      display={"flex"}
+      h={"full"}
+      minH={"11rem"}
+      flexDir={"column"}
+      w={"full"}
+      mt={5}
+    >
       <Box
         w={"full"}
         h={"full"}
+        flex={1}
         borderWidth={"1px"}
-        borderColor={errors[name]?.message ? "red.500" : "gray.600"}
+        borderColor={fieldError?.message ? "red.500" : "gray.600"}
         borderStyle={"dashed"}
-        bg={errors[name]?.message ? "red.900" : "gray.900"}
+        bg={fieldError?.message ? "red.900" : "gray.900"}
         rounded={"sm"}
         display={"flex"}
         alignItems={"center"}
@@ -89,7 +102,8 @@ export function ArtistDropZone({
                     : "add a Cover Image. "
                 }`,
                 validate: (value) => {
-                  if (typeof value === "string") return false;
+                  if (!(value instanceof File)) return false;
+
                   if (acceptedFiles.find((cur) => cur === value?.type)) {
                     return true;
                   } else {
@@ -181,9 +195,11 @@ export function ArtistDropZone({
           </>
         )}
       </Box>
-      {errors[name] && (
+      {fieldError && (
         <Text color={"red.500"} mt={2} textStyle={"xs"}>
-          {errors[name]?.message}
+          {typeof fieldError.message === "string"
+            ? fieldError.message
+            : "Invalid input."}
         </Text>
       )}
     </Box>

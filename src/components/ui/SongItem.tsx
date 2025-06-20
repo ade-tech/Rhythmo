@@ -37,7 +37,14 @@ export function SongItem({ isOpen, data }: songItemProps) {
       borderRadius={"md"}
     >
       <Stack pos={"relative"} className="group">
-        <Image src={data.cover_url} borderRadius={"md"} />
+        <Image
+          src={data.cover_url}
+          borderRadius={"md"}
+          w={"full"}
+          objectFit={"cover"}
+          objectPosition={"top"}
+          h={"8rem"}
+        />
         {currentUser?.data && <PlayPause data={songs} />}
 
         {(currentUser?.data === null || currentUser?.data === undefined) && (

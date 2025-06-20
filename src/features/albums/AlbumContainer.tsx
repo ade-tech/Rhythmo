@@ -33,6 +33,7 @@ import {
 import { useIsSongOpen } from "@/contexts/songContext";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import { BiSolidAlbum } from "react-icons/bi";
+import { getSingMusicDuration } from "@/utils/MusicDuration";
 
 /**
  * AlbumContainer React component
@@ -223,7 +224,11 @@ export function AlbumContainer() {
               </Table.Header>
               <Table.Body>
                 {songs?.map((currSong, i) => (
-                  <Table.Row bg={"transparent"} _hover={{ bg: "gray.900" }}>
+                  <Table.Row
+                    key={currSong.id}
+                    bg={"transparent"}
+                    _hover={{ bg: "gray.900" }}
+                  >
                     <Table.Cell borderBottom={"none"}>{i + 1}</Table.Cell>
                     <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
                       <Avatar.Root shape={"rounded"} size={"sm"}>
@@ -250,7 +255,7 @@ export function AlbumContainer() {
                       {currSong.song.play_count.toLocaleString()}
                     </Table.Cell>
                     <Table.Cell borderBottom={"none"} color={"gray.400"}>
-                      0:00
+                      {getSingMusicDuration(currSong.song.duration)}
                     </Table.Cell>
                   </Table.Row>
                 ))}

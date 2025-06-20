@@ -47,7 +47,7 @@ export async function fetchSong(id: string): Promise<SongQueryType> {
   const { data: queueData, error: queueError } = await supabase
     .from("songs")
     .select("*")
-    .contains("genre", (data as Song).genre)
+    .overlaps("genre", (data as Song).genre)
     .limit(20);
 
   const firstItem = (queueData as Song[])?.filter(

@@ -31,18 +31,27 @@ export const Toaster = () => {
         {(toast) => (
           <Toast.Root width={"2xs"} rounded={"4xl"} textAlign={"center"}>
             {toast.type === "loading" ? (
-              <Spinner size="sm" color="blue.solid" />
+              <Spinner size="sm" color="green.solid" />
             ) : (
               <Toast.Indicator />
             )}
-            <Stack gap="1" flex="1" maxWidth="100%">
+            <Stack
+              gap="1"
+              flex="1"
+              maxWidth="100%"
+              display={"flex"}
+              alignItems={"center"}
+              pt={3}
+            >
               {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
               {toast.description && (
                 <Toast.Description>{toast.description}</Toast.Description>
               )}
             </Stack>
             {toast.action && (
-              <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
+              <Toast.ActionTrigger rounded={"full"} colorPalette={"green"}>
+                {toast.action.label}
+              </Toast.ActionTrigger>
             )}
             {toast.meta?.closable && <Toast.CloseTrigger />}
           </Toast.Root>

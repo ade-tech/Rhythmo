@@ -156,4 +156,6 @@ export async function createPlaylistFromLike({
     song_id,
     playlist_id: playlistData.playlist_id!,
   });
+
+  return playlistData;
 }
