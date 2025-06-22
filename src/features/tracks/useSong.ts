@@ -9,7 +9,13 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SongQuery, SongsQuery } from "./songType";
-import { fetchSong, fetchSongs, uploadSong } from "@/services/songsApi";
+import {
+  createAlbum,
+  fetchSong,
+  fetchSongs,
+  uploadSong,
+} from "@/services/songsApi";
+import { CreateAlbumProps } from "../artist/CreateAlbumDialog";
 import { CreateMusicProps } from "../artist/CreateMusicDialog";
 
 export function useFetchSongs(): SongsQuery {
@@ -23,8 +29,8 @@ export function useFetchSongs(): SongsQuery {
 
 export function useFetchSong(id: string): SongQuery {
   const { data, isLoading, error } = useQuery({
-    queryKey: [`Song--${id}`],
-    queryFn: ({ queryKey }) => fetchSong(queryKey[0].split("--")[1]),
+    queryKey: ["song", id],
+    queryFn: ({ queryKey }) => fetchSong(queryKey[1]),
     enabled: !!id,
   });
   return { data: data, isLoading, error };
@@ -36,5 +42,12 @@ export function useUploadSong() {
       uploadSong({ data, id }),
   });
 
+  return { mutate, isPending, error };
+}
+
+export function useCreateAlbum() {
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: (data: CreateAlbumProps) => createAlbum(data),
+  });
   return { mutate, isPending, error };
 }

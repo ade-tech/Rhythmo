@@ -7,6 +7,7 @@ import {
   Image,
   Input,
   Portal,
+  Spinner,
   Steps,
   Text,
 } from "@chakra-ui/react";
@@ -18,6 +19,8 @@ import { useCurrentArtist } from "@/contexts/currentArtistContext";
 import SelectSongs from "./SelectSongs";
 import ArtistDropZone from "./ArtistDropZone";
 import { PiFileImage } from "react-icons/pi";
+import { useCreateAlbum } from "../tracks/useSong";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 interface createButtonProps {
   title: string;
@@ -29,13 +32,10 @@ export interface CreateAlbumProps {
   title: string;
   albumSongs: string[];
   coverImage: File;
-  artist: string;
   artist_id: string;
-  duration: number;
 }
 const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
   const { currentArtist } = useCurrentArtist();
-  const [duration, setDuration] = useState<number>(0);
   const {
     register,
     formState: { errors },
@@ -54,6 +54,7 @@ const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
 
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [imageURL, setImageURL] = useState<string | undefined>(undefined);
+  const { mutate, isPending, error } = useCreateAlbum();
 
   function resetForm() {
     setStepIndex(0);
@@ -82,8 +83,6 @@ const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
     }
     if (stepIndex === 1) {
       const isValid = await trigger(["albumSongs"]);
-      setValue("duration", duration);
-      setDuration(1);
       if (isValid) setStepIndex((cur) => cur + 1);
       return;
     }
@@ -104,9 +103,8 @@ const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
     const allData = {
       ...data,
       artist_id: currentArtist.data.id,
-      artist: currentArtist.profileInfo.profiles.nickname,
     };
-    console.log(allData);
+    mutate(allData);
   };
 
   return (
@@ -346,7 +344,41 @@ const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
                     color={"white"}
                     minH={"15rem"}
                   >
-                    <Box>H</Box>
+                    {isPending ? (
+                      <Box display={"flex"} gap={3}>
+                        <Spinner color={"green.500"} size={"xl"} />
+                        <Text textStyle={"2xl"} fontWeight={"bold"}>
+                          {" "}
+                          Uploading Album ....
+                        </Text>
+                      </Box>
+                    ) : error ? (
+                      <Text textStyle={"lg"} fontWeight={"bold"}>
+                        An Error Occured
+                      </Text>
+                    ) : (
+                      <Box
+                        w={"full"}
+                        h={"full"}
+                        flexDir={"column"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        <DotLottieReact
+                          src="https://lottie.host/92e3061b-c98d-4727-92db-c5c1c1323269/SOKXhqcn3O.lottie"
+                          style={{
+                            width: "9rem",
+                            height: "8rem",
+                            margin: "0,auto",
+                          }}
+                          autoplay
+                        />
+                        <Text textStyle={"2xl"} fontWeight={"bold"}>
+                          You song is now Live!
+                        </Text>
+                      </Box>
+                    )}
                   </Steps.CompletedContent>
                 </Dialog.Body>
                 <Dialog.Footer>
