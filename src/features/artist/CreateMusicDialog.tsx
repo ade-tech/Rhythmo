@@ -589,7 +589,7 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
                           autoplay
                         />
                         <Text textStyle={"2xl"} fontWeight={"bold"}>
-                          You song is now Live!
+                          You album is now Live!
                         </Text>
                       </Box>
                     )}
