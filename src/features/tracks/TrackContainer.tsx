@@ -35,6 +35,7 @@ import TotalEmpty from "@/components/ui/TotalEmpty";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import SongDialog from "@/components/ui/SongDialog";
 import { PlayPause } from "@/components/ui/PlayPause";
+import AddToLikeSongButton from "@/components/ui/AddToLikeSongButton";
 
 export function TrackContainer() {
   const { id } = useParams();
@@ -179,6 +180,7 @@ export function TrackContainer() {
               />
             )}
           </IconWithTooltip>
+          <AddToLikeSongButton boxSize={16} song={data.data} />
           <Spacer />
           <IconWithTooltip tooltipText="view as">
             <Box

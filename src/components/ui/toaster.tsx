@@ -29,7 +29,7 @@ export const Toaster = () => {
     <Portal>
       <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
         {(toast) => (
-          <Toast.Root width={"2xs"} rounded={"4xl"} textAlign={"center"}>
+          <Toast.Root width={"2xs"} rounded={"4xl"} display={"flex"} alignItems={"center"} justifyContent={"space-around"} textAlign={"center"}>
             {toast.type === "loading" ? (
               <Spinner size="sm" color="green.solid" />
             ) : (
@@ -41,7 +41,6 @@ export const Toaster = () => {
               maxWidth="100%"
               display={"flex"}
               alignItems={"center"}
-              pt={3}
             >
               {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
               {toast.description && (
