@@ -65,10 +65,15 @@ export function SongItem({ isOpen, data }: songItemProps) {
             {data.title}
           </Text>
         </Link>
-
-        <Text color={"gray.400"} fontWeight={"semibold"}>
-          {data.artist}
-        </Text>
+        <Link to={`/artists/${data.artist_id}`}>
+          <Text
+            color={"gray.400"}
+            fontWeight={"semibold"}
+            _hover={{ textDecoration: "underline" }}
+          >
+            {data.artist}
+          </Text>
+        </Link>
       </Stack>
     </Stack>
   );

@@ -14,6 +14,7 @@ import {
   fetchPlaylist,
   fetchPlaylists,
   fetchSongsInPlaylist,
+  fetchSongsToPlayInPlaylist,
 } from "@/services/playListApi";
 
 export function useCreatePlaylist() {
@@ -54,6 +55,17 @@ export function useFetchSongsInPlaylist(playlistID: string) {
     queryKey: [`songs-In--${playlistID}`],
     queryFn: ({ queryKey }) =>
       fetchSongsInPlaylist(queryKey.at(0)?.split("--")[1]!),
+
+    enabled: !!playlistID,
+  });
+
+  return { data, error, isLoading };
+}
+
+export function useFetchSongsToPlayInPlaylist(playlistID: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["Playing from Playlist", playlistID],
+    queryFn: ({ queryKey }) => fetchSongsToPlayInPlaylist(queryKey[1]),
 
     enabled: !!playlistID,
   });
