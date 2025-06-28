@@ -33,6 +33,7 @@ import { usecreatePlaylistFromLike, useHasLikedSong } from "../likes/useLikes";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { toaster } from "@/components/ui/toaster";
+import FollowButton from "@/components/ui/FollowButton";
 
 export function SongContainer() {
   const naviagte = useNavigate();
@@ -101,8 +102,7 @@ export function SongContainer() {
           width={"300px"}
           height={"300px"}
           objectFit={"cover"}
-          ml={4}
-          mb={2}
+          mx={"auto"}
           src={activeSong.cover_url}
         />
         <Stack gap={0} px={5}>
@@ -122,7 +122,7 @@ export function SongContainer() {
                   {activeSong.title.toUpperCase()}
                 </Text>
               </Link>
-              <Link to={`track/${activeSong.id}`}>
+              <Link to={`artists/${activeSong.artist_id}`}>
                 <Text
                   textStyle={"md"}
                   color={"gray.400"}
@@ -258,7 +258,7 @@ export function SongContainer() {
               borderTopRadius={"xl"}
               src={activeSong.cover_url}
             />
-            <Link to={`artist/${data?.user_id!}`}>
+            <Link to={`artists/${data?.user_id!}`}>
               <Text
                 ml={4}
                 mt={4}
@@ -281,18 +281,8 @@ export function SongContainer() {
                 lineHeight={1.3}
                 color={"gray.400"}
               >
-                {data?.monthly_plays.toLocaleString()} <br />
-                Monthly Listeners
+                {data?.monthly_plays.toLocaleString()} Monthly Listeners
               </Text>
-              <Spacer />
-              <Button
-                rounded={"full"}
-                variant={"subtle"}
-                color={"white"}
-                bg={"green.600"}
-              >
-                Follow
-              </Button>
             </HStack>
             <Text textAlign={"left"} px={4} mt={2} color={"gray.400"}>
               {data?.about.slice(0, 100)}...
@@ -344,14 +334,10 @@ export function SongContainer() {
             </Text>
           </Stack>
           <Spacer />
-          <Button
-            rounded={"full"}
-            variant={"subtle"}
-            color={"white"}
-            bg={"green.600"}
-          >
-            Follow
-          </Button>
+          <FollowButton
+            artist_id={activeSong.artist_id}
+            currentUser={currentUser?.data?.id!}
+          />
         </HStack>
         <HStack mt={4} px={4}>
           <Stack gap={0}>
@@ -373,14 +359,6 @@ export function SongContainer() {
             </Text>
           </Stack>
           <Spacer />
-          <Button
-            rounded={"full"}
-            variant={"subtle"}
-            color={"white"}
-            bg={"green.600"}
-          >
-            Follow
-          </Button>
         </HStack>
         <HStack mt={3} px={4}>
           <Stack gap={0}>

@@ -29,12 +29,14 @@ import { useParams } from "react-router-dom";
 import { useFetchArtist } from "./useArtist";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import TotalEmpty from "@/components/ui/TotalEmpty";
+import FollowButton from "@/components/ui/FollowButton";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 
 export function AlbumContainer() {
   const { id } = useParams();
   const { data, isLoading } = useFetchArtist(id ?? "");
+  const { currentUser } = useCurrentUser();
 
-  console.log(data);
   if (isLoading)
     return (
       <Box
@@ -157,15 +159,10 @@ export function AlbumContainer() {
               color={"green.500"}
             />
           </IconWithTooltip>
-          <Button
-            variant={"outline"}
-            rounded={"full"}
-            borderColor={"white"}
-            color={"white"}
-            _hover={{ bg: "white", color: "black" }}
-          >
-            Follow
-          </Button>
+          <FollowButton
+            artist_id={data.user_id}
+            currentUser={currentUser?.data?.id!}
+          />
           <Spacer />
           <IconWithTooltip tooltipText="view as">
             <Box

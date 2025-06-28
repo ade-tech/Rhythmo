@@ -134,7 +134,7 @@ export function ArtistSettings() {
           </HStack>
           <HStack gap={2} mt={1}>
             <Text display={"inline"} fontWeight={"bold"}>
-              {formatNumbers(profile?.followers_count!)}{" "}
+              {formatNumbers(profile?.followers_count!)}
               <Text
                 textStyle={"sm"}
                 fontWeight={"medium"}

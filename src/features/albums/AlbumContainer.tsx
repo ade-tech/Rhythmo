@@ -22,18 +22,22 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { HiPlayCircle } from "react-icons/hi2";
 import { IoList, IoReload } from "react-icons/io5";
 import { RxTimer } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import {
   useFetchPlaylist,
   useFetchSongsInPlaylist,
+  useFetchSongsToPlayInPlaylist,
 } from "../playlist/usePlaylist";
 import { useIsSongOpen } from "@/contexts/songContext";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import { BiSolidAlbum } from "react-icons/bi";
 import { getSingMusicDuration } from "@/utils/MusicDuration";
+import { useCurrentMusic } from "@/contexts/audioContext";
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { PlayPause } from "@/components/ui/PlayPause";
+import SongDialog from "@/components/ui/SongDialog";
 
 /**
  * AlbumContainer React component
@@ -49,8 +53,14 @@ export function AlbumContainer() {
   const { data: songs, isLoading: isGettingSongs } = useFetchSongsInPlaylist(
     data?.playlist_id!
   );
+  const {
+    state: { activeSong, audioStatus },
+  } = useCurrentMusic();
+  const { currentUser } = useCurrentUser();
+  const { data: songsToPlay, isLoading: isGettingSongsToPlay } =
+    useFetchSongsToPlayInPlaylist(data?.playlist_id!);
   const { isOpen } = useIsSongOpen();
-  if (isLoading || isGettingSongs)
+  if (isLoading || isGettingSongs || isGettingSongsToPlay)
     return (
       <Box
         w={"full"}
@@ -163,13 +173,26 @@ export function AlbumContainer() {
         px={4}
       >
         <HStack gap={2} pr={4}>
-          <IconWithTooltip tooltipText="play">
-            <Box
-              as={HiPlayCircle}
-              boxSize={16}
-              cursor={"pointer"}
-              color={"green.500"}
-            />
+          <IconWithTooltip
+            tooltipText={
+              songsToPlay?.queue?.some(
+                (data) => data.id === activeSong?.title
+              ) && audioStatus === "playing"
+                ? "Pause"
+                : "play"
+            }
+          >
+            {currentUser?.data ? (
+              <PlayPause boxSize={8} data={songsToPlay} isRelative={true} />
+            ) : (
+              <SongDialog
+                triggerSongImage={songsToPlay?.data?.cover_url ?? ""}
+                triggerSongColor={songsToPlay?.data?.prominent_color ?? ""}
+                triggerButton={
+                  <PlayPause boxSize={8} data={songsToPlay} isRelative={true} />
+                }
+              />
+            )}
           </IconWithTooltip>
           <Spacer />
           <IconWithTooltip tooltipText="view as">

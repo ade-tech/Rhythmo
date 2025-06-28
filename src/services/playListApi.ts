@@ -9,6 +9,7 @@
 import { Playlist, PlaylistSong } from "@/features/playlist/playlistType";
 import { supabase } from "./supabase";
 import { likeSong } from "./likeApi";
+import { SongQueryType } from "./songsApi";
 
 /**
  * Creates a new playlist in the backend.
@@ -158,4 +159,17 @@ export async function createPlaylistFromLike({
   });
 
   return playlistData;
+}
+
+export async function fetchSongsToPlayInPlaylist(
+  playlistID: string
+): Promise<SongQueryType> {
+  const { data, error } = await supabase
+    .from("playlist_songs")
+    .select("songs(*)")
+    .eq("playlist_id", playlistID);
+
+  if (error) throw new Error("could not get the songs");
+  const songResult = data.map((cur) => cur.songs).flat();
+  return { data: songResult.at(0), queue: songResult };
 }
