@@ -8,6 +8,7 @@
  */
 
 import {
+  fetchAlbumsByArtist,
   fetchArtist,
   fetchArtists,
   fetchSongsByArtist,
@@ -91,6 +92,20 @@ export function useFetchSongsByArtist() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["songs", id],
     queryFn: ({ queryKey }) => fetchSongsByArtist(queryKey[1]!),
+
+    enabled: !!id,
+  });
+
+  return { data, isLoading, error };
+}
+
+export function useFetchAlbumsByArtist() {
+  const { currentArtist } = useCurrentArtist();
+  const id = currentArtist?.data?.id;
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["albums", id],
+    queryFn: ({ queryKey }) => fetchAlbumsByArtist(queryKey[1]!),
 
     enabled: !!id,
   });

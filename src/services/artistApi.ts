@@ -9,6 +9,7 @@
 import { Artist } from "@/features/artist/artistTypes";
 import { supabase } from "./supabase";
 import { Song } from "@/features/tracks/songType";
+import { Playlist } from "@/features/playlist/playlistType";
 
 /**
  * Fetches an artist by user ID.
@@ -54,4 +55,17 @@ export async function fetchSongsByArtist(id: string) {
   if (error) throw new Error("We could not get your songs");
 
   return data as Song[];
+}
+
+export async function fetchAlbumsByArtist(id: string) {
+  if (!id) return;
+
+  const { data, error } = await supabase
+    .from("playlist")
+    .select("*")
+    .eq("created_by", id);
+
+  if (error) throw new Error("We could not get your songs");
+
+  return data as Playlist[];
 }

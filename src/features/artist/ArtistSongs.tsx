@@ -10,11 +10,14 @@
  * - Used in the artist dashboard for managing and viewing artist's music.
  */
 
-import { Box, Stack, Tabs, Text } from "@chakra-ui/react";
+import { Box, Skeleton, Stack, Tabs, Text } from "@chakra-ui/react";
 import ArtistSongItem from "./ArtistSongItem";
 import ArtistAlbumItem from "./ArtistAlbumItem";
+import { useFetchAlbumsByArtist, useFetchSongsByArtist } from "./useArtist";
 
 const ArtistSongs = () => {
+  const { data, isLoading } = useFetchSongsByArtist();
+  const { data: albums, isLoading: isLoadingAlbums } = useFetchAlbumsByArtist();
   return (
     <Box
       w={"full"}
@@ -87,13 +90,10 @@ const ArtistSongs = () => {
             scrollbar: "hidden",
           }}
         >
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
+          <Preloader isLoading={isLoading} />
+          {data?.map((curSong) => (
+            <ArtistSongItem key={curSong.id} data={curSong} />
+          ))}
         </Tabs.Content>
         <Tabs.Content
           w={"full"}
@@ -110,15 +110,10 @@ const ArtistSongs = () => {
           }}
           flex={1}
         >
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
-          <ArtistAlbumItem />
+          <Preloader isLoading={isLoadingAlbums} />
+          {albums?.map((curALbum) => (
+            <ArtistAlbumItem key={curALbum.playlist_id} data={curALbum} />
+          ))}
         </Tabs.Content>
         <Tabs.Content
           value="tab-3"
@@ -134,18 +129,21 @@ const ArtistSongs = () => {
             animationDuration: "0.5s",
             scrollbar: "hidden",
           }}
-        >
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-          <ArtistSongItem />
-        </Tabs.Content>
+        ></Tabs.Content>
       </Tabs.Root>
     </Box>
   );
 };
+
+function Preloader({ isLoading }: { isLoading: boolean }) {
+  if (!isLoading) return null;
+  return (
+    <>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <Skeleton key={i} w={"full"} h={"12rem"} rounded={"lg"} />
+      ))}
+    </>
+  );
+}
 
 export default ArtistSongs;

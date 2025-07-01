@@ -1,4 +1,5 @@
 import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
+import { Song } from "../tracks/songType";
 
 /**
  * ArtistSongItem Component
@@ -10,11 +11,15 @@ import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
  * - Used within ArtistSongs to show each song in the Singles or Featured tabs.
  */
 
-const ArtistSongItem = () => {
+const ArtistSongItem = ({
+  data,
+}: {
+  data: Pick<Song, "cover_url" | "album" | "title" | "play_count">;
+}) => {
   return (
     <Box pos={"relative"} w={"full"} h={"12rem"}>
       <Image
-        src="/Asake-–-Mr-Money-With-The-Vibe-EP.webp"
+        src={data?.cover_url}
         w={"full"}
         h={"full"}
         objectFit={"cover"}
@@ -44,16 +49,16 @@ const ArtistSongItem = () => {
             fontWeight={"bold"}
             letterSpacing={0.8}
           >
-            Organise
+            {data.title}
           </Text>
           <Text textStyle={"xs"} color={"gray.300"} lineHeight={1}>
-            Vibes and Peace
+            {data.album}
           </Text>
         </Stack>
         <Spacer />
         <Stack gap={0} alignItems={"center"}>
           <Text textStyle={"md"} fontWeight={"bold"} color={"white"}>
-            125.3K
+            {data.play_count}
           </Text>
           <Text textStyle={"2xs"} color={"gray.300"} lineHeight={1}>
             Streams
