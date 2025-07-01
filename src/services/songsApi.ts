@@ -177,7 +177,7 @@ export async function createAlbum({
     throw new Error("We could not add the songs to the album");
   const { error } = await supabase
     .from("songs")
-    .update({ cover_url: coverImageUrl })
+    .update({ cover_url: coverImageUrl, album: title })
     .in("id", albumSongs);
 
   if (error) throw new Error("We could not finish that");
