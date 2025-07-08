@@ -43,7 +43,7 @@ export function SongItem({ isOpen, data }: songItemProps) {
           w={"full"}
           objectFit={"cover"}
           objectPosition={"top"}
-          h={"8rem"}
+          h={"9rem"}
         />
         {currentUser?.data && <PlayPause data={songs} />}
 

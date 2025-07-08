@@ -18,7 +18,7 @@ const ArtistHome = () => {
     <Box
       w={"full"}
       h={"100dvh"}
-      maxW={"8xl"}
+      maxW={"12xl"}
       mx={"auto"}
       bg={"black"}
       display={"flex"}

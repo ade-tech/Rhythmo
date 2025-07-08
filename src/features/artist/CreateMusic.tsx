@@ -47,15 +47,7 @@ const CreateMusic = () => {
           </Text>
         </Stack>
       </Box>
-      <Box
-        flex={1}
-        display={"flex"}
-        gap={2}
-        h={"full"}
-        pr={2}
-        pl={1}
-        justifyContent={"space-between"}
-      >
+      <Box flex={1} display={"flex"} gap={4} px={1}>
         <CreateMusicDialog
           title="Upload a song"
           icon={PiMusicNotesPlus}

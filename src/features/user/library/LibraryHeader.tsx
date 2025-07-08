@@ -4,9 +4,12 @@
  * This component is responsible for rendering the library title, filter options, and any relevant actions for the user's library.
  */
 
+import { useCurrentUser } from "@/contexts/currentUserContext";
+import { useCreatePlaylist } from "@/features/playlist/usePlaylist";
 import { Button, HStack, Spacer, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { LuLibrary } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 /**
  * LibraryHeader Component
@@ -19,6 +22,9 @@ import { LuLibrary } from "react-icons/lu";
  */
 
 export function LibraryHeader() {
+  const { currentUser } = useCurrentUser();
+  const { createPlaylist, isPending } = useCreatePlaylist();
+  const navigate = useNavigate();
   return (
     <HStack mb={6}>
       <Text
@@ -38,7 +44,21 @@ export function LibraryHeader() {
         rounded={"full"}
         variant={"subtle"}
         bg={"gray.900"}
+        disabled={isPending}
         color={"white"}
+        onClick={() =>
+          createPlaylist(
+            {
+              is_public: false,
+              name: "Playlist #1",
+              created_by: currentUser?.data?.id!,
+            },
+            {
+              onSuccess: (data) => navigate(`/album/${data.playlist_id}`),
+              onError: (error) => console.log(error),
+            }
+          )
+        }
       >
         <FiPlus className="text-gray-500" />
         Create Playlist

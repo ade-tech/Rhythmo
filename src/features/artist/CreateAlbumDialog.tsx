@@ -109,10 +109,9 @@ const CreateAlbumDialog = ({ title, icon, description }: createButtonProps) => {
 
   return (
     <Dialog.Root size={"lg"} placement={"center"}>
-      <form>
+      <form className="basis-1/2">
         <Dialog.Trigger asChild>
           <Button
-            flexBasis={"1/2"}
             m={0}
             w={"full"}
             h={"full"}
