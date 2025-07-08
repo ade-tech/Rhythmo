@@ -7,7 +7,7 @@
  * - Provides hooks such as useFetchPlaylist and useFetchSongsInPlaylist for playlist-related components.
  */
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Playlist, PlaylistQuery, PlaylistsQuery } from "./playlistType";
 import {
   createPlaylist as createPlaylistApi,
@@ -18,12 +18,17 @@ import {
 } from "@/services/playListApi";
 
 export function useCreatePlaylist() {
+  const queryClient = useQueryClient();
   const {
     mutate: createPlaylist,
     isPending,
     error,
   } = useMutation({
     mutationFn: (playlist: Playlist) => createPlaylistApi(playlist),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["playlist"],
+      }),
   });
 
   return { createPlaylist, isPending, error };
@@ -41,8 +46,8 @@ export function useFetchPlaylist(id: string): PlaylistQuery {
 
 export function useFetchPlaylists(userID: string): PlaylistsQuery {
   const { data, error, isLoading } = useQuery({
-    queryKey: [`playlist--${userID}`],
-    queryFn: ({ queryKey }) => fetchPlaylists(queryKey.at(0)?.split("--")[1]!),
+    queryKey: ["playlist", userID],
+    queryFn: ({ queryKey }) => fetchPlaylists(queryKey[1]!),
 
     enabled: !!userID,
   });

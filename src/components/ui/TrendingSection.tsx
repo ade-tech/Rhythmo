@@ -150,7 +150,7 @@ export function TrendingSection({
         </Stack>
       )}
       <HStack
-        w={isOpen ? "37rem" : "60rem"}
+        w={isOpen ? "45rem" : "60rem"}
         h={"fit"}
         overflowX={"scroll"}
         gap={1}

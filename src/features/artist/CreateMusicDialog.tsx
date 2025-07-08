@@ -153,13 +153,11 @@ const CreateMusicDialog = ({ title, icon, description }: createButtonProps) => {
 
   return (
     <Dialog.Root size={"lg"}>
-      <form>
+      <form className="basis-1/2">
         <Dialog.Trigger asChild>
           <Button
-            flexBasis={"1/2"}
-            m={0}
-            w={"full"}
             h={"full"}
+            w={"full"}
             rounded={"lg"}
             variant={"outline"}
             textStyle={"4xl"}
