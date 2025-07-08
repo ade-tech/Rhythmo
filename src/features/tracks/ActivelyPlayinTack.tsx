@@ -64,7 +64,7 @@ const ActivelyPlayinTack = () => {
   const volumeFn = useVolume();
   const next = useNextSong();
   const previous = usePrevSong();
-  const { likeSong } = usecreatePlaylistFromLike();
+  const { likeSong, isPending } = usecreatePlaylistFromLike();
   const { data } = useHasLikedSong({
     song_id: activeSong?.id!,
     liker_id: currentUser?.data?.id!,
@@ -165,6 +165,7 @@ const ActivelyPlayinTack = () => {
             bg={"none"}
             textStyle={"2xl"}
             cursor={"pointer"}
+            disabled={isPending}
             p={0}
             rounded={"full"}
             color={data === 1 ? "green.500" : "gray.400"}

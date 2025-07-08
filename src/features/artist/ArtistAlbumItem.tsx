@@ -55,7 +55,7 @@ const ArtistAlbumItem = ({ data }: { data: Playlist }) => {
           </Box>
           <Box gap={1} alignItems={"center"} display={"flex"}>
             <Text textStyle={"md"} fontWeight={"bold"} color={"white"}>
-              134.5K
+              {data.is_public}
             </Text>
             <Text textStyle={"2xs"} color={"gray.300"} lineHeight={1}>
               Streams
