@@ -33,11 +33,11 @@ import {
 import { useIsSongOpen } from "@/contexts/songContext";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import { BiSolidAlbum } from "react-icons/bi";
-import { getSingMusicDuration } from "@/utils/MusicDuration";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { PlayPause } from "@/components/ui/PlayPause";
 import SongDialog from "@/components/ui/SongDialog";
+import MusicRow from "@/components/ui/MusicRow";
 
 /**
  * AlbumContainer React component
@@ -243,44 +243,12 @@ export function AlbumContainer() {
                   <Table.ColumnHeader color={"gray.400"}>
                     <RxTimer size={15} />
                   </Table.ColumnHeader>
+                  <Table.ColumnHeader color={"gray.400"}></Table.ColumnHeader>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
                 {songs?.map((currSong, i) => (
-                  <Table.Row
-                    key={currSong.id}
-                    bg={"transparent"}
-                    _hover={{ bg: "gray.900" }}
-                  >
-                    <Table.Cell borderBottom={"none"}>{i + 1}</Table.Cell>
-                    <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
-                      <Avatar.Root shape={"rounded"} size={"sm"}>
-                        <Avatar.Image src={currSong.song.cover_url} />
-                      </Avatar.Root>
-                      <Stack gap={0}>
-                        <Text
-                          textStyle={"md"}
-                          fontWeight={"bold"}
-                          lineHeight={1.1}
-                        >
-                          {currSong.song.title}
-                        </Text>
-                        <Text
-                          textStyle={"sm"}
-                          fontWeight={"medium"}
-                          color={"gray.400"}
-                        >
-                          {currSong.song.artist}
-                        </Text>
-                      </Stack>
-                    </Table.Cell>
-                    <Table.Cell borderBottom={"none"} fontWeight={"bold"}>
-                      {currSong.song.play_count.toLocaleString()}
-                    </Table.Cell>
-                    <Table.Cell borderBottom={"none"} color={"gray.400"}>
-                      {getSingMusicDuration(currSong.song.duration)}
-                    </Table.Cell>
-                  </Table.Row>
+                  <MusicRow key={i} index={i} song={currSong.song} />
                 ))}
               </Table.Body>
             </Table.Root>

@@ -54,7 +54,7 @@ export function usecreatePlaylistFromLike() {
         queryKey: ["likeEvent", variables.song_id, variables.created_by],
       });
       queryClient.invalidateQueries({
-        queryKey: [`playlist--${variables.created_by}`],
+        queryKey: ["playlist", variables.created_by],
       });
     },
   });

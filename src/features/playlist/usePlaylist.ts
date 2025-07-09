@@ -10,11 +10,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Playlist, PlaylistQuery, PlaylistsQuery } from "./playlistType";
 import {
+  addSongToPlaylist,
   createPlaylist as createPlaylistApi,
   fetchPlaylist,
   fetchPlaylists,
   fetchSongsInPlaylist,
   fetchSongsToPlayInPlaylist,
+  removeSongFromPlaylist,
 } from "@/services/playListApi";
 
 export function useCreatePlaylist() {
@@ -25,9 +27,9 @@ export function useCreatePlaylist() {
     error,
   } = useMutation({
     mutationFn: (playlist: Playlist) => createPlaylistApi(playlist),
-    onSuccess: () =>
+    onSuccess: (_, variables) =>
       queryClient.invalidateQueries({
-        queryKey: ["playlist"],
+        queryKey: ["playlist", variables.playlist_id],
       }),
   });
 
@@ -35,8 +37,8 @@ export function useCreatePlaylist() {
 }
 export function useFetchPlaylist(id: string): PlaylistQuery {
   const { data, error, isLoading } = useQuery({
-    queryKey: [`playlist--${id}`],
-    queryFn: ({ queryKey }) => fetchPlaylist(queryKey.at(0)?.split("--")[1]!),
+    queryKey: ["playlist", id],
+    queryFn: ({ queryKey }) => fetchPlaylist(queryKey[1]!),
 
     enabled: !!id,
   });
@@ -57,9 +59,8 @@ export function useFetchPlaylists(userID: string): PlaylistsQuery {
 
 export function useFetchSongsInPlaylist(playlistID: string) {
   const { data, isLoading, error } = useQuery({
-    queryKey: [`songs-In--${playlistID}`],
-    queryFn: ({ queryKey }) =>
-      fetchSongsInPlaylist(queryKey.at(0)?.split("--")[1]!),
+    queryKey: ["songs-In", playlistID],
+    queryFn: ({ queryKey }) => fetchSongsInPlaylist(queryKey[1]!),
 
     enabled: !!playlistID,
   });
@@ -76,4 +77,44 @@ export function useFetchSongsToPlayInPlaylist(playlistID: string) {
   });
 
   return { data, error, isLoading };
+}
+
+export function useAddSongToPlaylist() {
+  const queryClient = useQueryClient();
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: ({
+      song_id,
+      playlist_id,
+    }: {
+      song_id: string;
+      playlist_id: string;
+    }) => addSongToPlaylist({ song_id, playlist_id }),
+    onSuccess: (_, { playlist_id }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["Songs-In", playlist_id],
+      });
+    },
+  });
+
+  return { mutate, isPending, error };
+}
+
+export function useRemoveSongFromPlaylist() {
+  const queryClient = useQueryClient();
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: ({
+      song_id,
+      playlist_id,
+    }: {
+      song_id: string;
+      playlist_id: string;
+    }) => removeSongFromPlaylist({ song_id, playlist_id }),
+    onSuccess: (_, { playlist_id }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["Songs-In", playlist_id],
+      });
+    },
+  });
+
+  return { mutate, isPending, error };
 }
