@@ -85,9 +85,9 @@ export function useLogout() {
   return { signOut, isPending, error };
 }
 
-export function useFetchSongsByArtist() {
+export function useFetchSongsByArtist(id?: string) {
   const { currentArtist } = useCurrentArtist();
-  const id = currentArtist?.data?.id;
+  id = id || currentArtist?.data?.id;
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["songs", id],

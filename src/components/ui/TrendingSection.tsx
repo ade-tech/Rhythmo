@@ -89,7 +89,7 @@ export function TrendingSection({
           rounded={"md"}
         />
         <HStack
-          w={isOpen ? "37rem" : "60rem"}
+          w={isOpen ? "45rem" : "60rem"}
           h={"fit"}
           overflowX={"auto"}
           gap={1}

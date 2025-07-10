@@ -9,12 +9,13 @@
 import { Box, Stack } from "@chakra-ui/react";
 import IconWithTooltip from "./IconWithTooltip";
 import { HiPlay } from "react-icons/hi";
-import { IoPause, IoPauseCircle } from "react-icons/io5";
+import { IoPause, IoPauseCircle, IoPauseOutline } from "react-icons/io5";
 import { usePauseMusic, usePlayMusic } from "@/hooks/useAudioControls";
 import { useCurrentMusic } from "@/contexts/audioContext";
 import { IoMdPlay } from "react-icons/io";
 import { SongQueryType } from "@/services/songsApi";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import { Song } from "@/features/tracks/songType";
 
 /**
  * PlayPauseMini Component
@@ -48,6 +49,35 @@ export const PlayPauseMini = ({ color = "white" }: { color?: string }) => {
             return;
           }
           play({ data: activeSong!, queue: activeQueue! });
+        }}
+      />
+    </IconWithTooltip>
+  );
+};
+
+export const InlinePlayPause = ({ song }: { song: Song }) => {
+  const {
+    state: { activeQueue, activeSong },
+  } = useCurrentMusic();
+  const { currentUser } = useCurrentUser();
+  const play = usePlayMusic();
+  const pause = usePauseMusic();
+  return (
+    <IconWithTooltip tooltipText="Play">
+      <Box
+        mt={1}
+        as={song.id !== activeSong?.id ? IoMdPlay : IoPauseOutline}
+        boxSize={5}
+        cursor={"pointer"}
+        color={"green.500"}
+        onClick={() => {
+          if (!currentUser?.data || currentUser?.profileInfo === "string")
+            return;
+          if (song.id === activeSong?.id) {
+            pause();
+            return;
+          }
+          play({ data: song, queue: activeQueue! });
         }}
       />
     </IconWithTooltip>

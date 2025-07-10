@@ -10,3 +10,6 @@ export const GENRES = [
   "UK Drill",
   "Grime",
 ];
+
+export const LIKEDSONGCOVER =
+  "https://zgfhsczbfiisjubssmfb.supabase.co/storage/v1/object/public/profile//artworks-4Lu85Xrs7UjJ4wVq-vuI2zg-t500x500.jpg";

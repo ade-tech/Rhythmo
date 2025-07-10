@@ -72,7 +72,7 @@ export const ArtistItemPreLoader = ({ isOpen }: { isOpen: boolean }) => {
     >
       <Box
         w={"full"}
-        h={"8rem"}
+        h={"9rem"}
         bg={"gray.800"}
         animation={"pulse"}
         rounded={"full"}

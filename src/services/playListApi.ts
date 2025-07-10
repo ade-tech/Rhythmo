@@ -10,6 +10,7 @@ import { Playlist, PlaylistSong } from "@/features/playlist/playlistType";
 import { supabase } from "./supabase";
 import { likeSong } from "./likeApi";
 import { SongQueryType } from "./songsApi";
+import { LIKEDSONGCOVER } from "@/helpers/constants";
 
 /**
  * Creates a new playlist in the backend.
@@ -99,8 +100,20 @@ export async function addSongToPlaylist({
 
   if (error) throw new Error("We could not add song to playlist");
 }
-const likedSongCover =
-  "https://zgfhsczbfiisjubssmfb.supabase.co/storage/v1/object/public/profile//artworks-4Lu85Xrs7UjJ4wVq-vuI2zg-t500x500.jpg";
+export async function removeSongFromPlaylist({
+  song_id,
+  playlist_id,
+}: {
+  song_id: string;
+  playlist_id: string;
+}) {
+  const { error } = await supabase.from("playlist_songs").delete().match({
+    song_id,
+    playlist_id,
+  });
+
+  if (error) throw new Error("We could not add song to playlist");
+}
 
 export type createPlaylistFromLikeProps = {
   song_id: string;
@@ -114,7 +127,7 @@ export async function createPlaylistFromLike({
   is_public = false,
   name = "Liked Song",
   created_by,
-  cover_url = likedSongCover,
+  cover_url = LIKEDSONGCOVER,
 }: createPlaylistFromLikeProps) {
   let playlistData: Playlist;
   const {

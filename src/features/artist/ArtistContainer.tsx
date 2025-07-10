@@ -21,22 +21,27 @@ import {
   Table,
   Text,
 } from "@chakra-ui/react";
-import { HiPlayCircle } from "react-icons/hi2";
 import { IoList, IoReload } from "react-icons/io5";
 import { MdVerified } from "react-icons/md";
 import { RxTimer } from "react-icons/rx";
 import { useParams } from "react-router-dom";
-import { useFetchArtist } from "./useArtist";
+import { useFetchArtist, useFetchSongsByArtist } from "./useArtist";
 import { HiOutlineStatusOffline } from "react-icons/hi";
 import TotalEmpty from "@/components/ui/TotalEmpty";
 import FollowButton from "@/components/ui/FollowButton";
 import { useCurrentUser } from "@/contexts/currentUserContext";
+import MusicRow from "@/components/ui/MusicRow";
+import { PlayPause } from "@/components/ui/PlayPause";
+import { useIsSongOpen } from "@/contexts/songContext";
 
 export function AlbumContainer() {
   const { id } = useParams();
-  const { data, isLoading } = useFetchArtist(id ?? "");
+  const { data, isLoading } = useFetchArtist(id!);
   const { currentUser } = useCurrentUser();
+  const { isOpen } = useIsSongOpen();
+  const { data: ArtistSongs } = useFetchSongsByArtist(id);
 
+  console.log(data);
   if (isLoading)
     return (
       <Box
@@ -90,7 +95,12 @@ export function AlbumContainer() {
   if (data === null || data === undefined) return <TotalEmpty />;
 
   return (
-    <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
+    <Box
+      h={isOpen ? "75dvh" : "86dvh"}
+      overflow={"auto"}
+      className="trend-group"
+      pos={"relative"}
+    >
       <Box
         w={"100%"}
         opacity={"0.9"}
@@ -151,14 +161,10 @@ export function AlbumContainer() {
         px={4}
       >
         <HStack gap={2} pr={4}>
-          <IconWithTooltip tooltipText="play">
-            <Box
-              as={HiPlayCircle}
-              boxSize={16}
-              cursor={"pointer"}
-              color={"green.500"}
-            />
-          </IconWithTooltip>
+          <PlayPause
+            data={{ data: ArtistSongs?.at(0) || null, queue: ArtistSongs }}
+            isRelative
+          />
           <FollowButton
             artist_id={data.user_id}
             currentUser={currentUser?.data?.id!}
@@ -182,35 +188,13 @@ export function AlbumContainer() {
               <Table.ColumnHeader color={"gray.400"}>
                 <RxTimer size={15} />
               </Table.ColumnHeader>
+              <Table.ColumnHeader color={"gray.400"}></Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            <Table.Row bg={"transparent"} _hover={{ bg: "gray.900" }}>
-              <Table.Cell borderBottom={"none"}>1</Table.Cell>
-              <Table.Cell borderBottom={"none"} display={"flex"} gap={2}>
-                <Avatar.Root shape={"rounded"} size={"sm"}>
-                  <Avatar.Image src={data.profiles.avatar_url} />
-                </Avatar.Root>
-                <Stack gap={0}>
-                  <Text textStyle={"md"} fontWeight={"bold"} lineHeight={1.1}>
-                    Motigbana
-                  </Text>
-                  <Text
-                    textStyle={"sm"}
-                    fontWeight={"medium"}
-                    color={"gray.400"}
-                  >
-                    Olamide
-                  </Text>
-                </Stack>
-              </Table.Cell>
-              <Table.Cell borderBottom={"none"} fontWeight={"bold"}>
-                1,200,220
-              </Table.Cell>
-              <Table.Cell borderBottom={"none"} color={"gray.400"}>
-                3:05
-              </Table.Cell>
-            </Table.Row>
+            {ArtistSongs?.map((curSong, i) => (
+              <MusicRow song={curSong} index={i} key={i} />
+            ))}
           </Table.Body>
         </Table.Root>
         <Stack mt={10} gap={4} pb={3} color={"white"}>
