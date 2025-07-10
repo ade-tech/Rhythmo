@@ -22,7 +22,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { GoPlusCircle } from "react-icons/go";
+import { AiOutlineLike, AiFillLike, AiOutlinePlusCircle } from "react-icons/ai";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import {
   PiRepeatFill,
@@ -38,7 +38,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { usecreatePlaylistFromLike, useHasLikedSong } from "../likes/useLikes";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import { toaster } from "@/components/ui/toaster";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
 /**
  * ActivelyPlayinTack Component
@@ -159,51 +158,61 @@ const ActivelyPlayinTack = () => {
               : ""}
           </Text>
         </Stack>
-        <IconWithTooltip tooltipText="Add to Fav.">
-          <Button
-            size={"xl"}
-            bg={"none"}
-            textStyle={"2xl"}
-            cursor={"pointer"}
-            disabled={isPending}
-            p={0}
-            rounded={"full"}
-            color={data === 1 ? "green.500" : "gray.400"}
-            onClick={
-              data === 1
-                ? undefined
-                : () => {
-                    likeSong(
-                      {
-                        song_id: activeSong?.id!,
-                        created_by: currentUser?.data?.id!,
-                      },
-                      {
-                        onError: () =>
-                          toaster.create({
-                            title: "❌ We could not make that happen",
-                          }),
-                        onSuccess: (data) =>
-                          toaster.create({
-                            title: "You like the song 💖",
-                            action: {
-                              label: "View",
-                              onClick: () =>
-                                naviagte(`/album/${data?.playlist_id}`),
-                            },
-                          }),
-                      }
-                    );
-                  }
-            }
-          >
-            {data === 1 ? (
-              <IoCheckmarkCircleSharp size="2rem" />
-            ) : (
-              <GoPlusCircle size="2rem" />
-            )}
-          </Button>
-        </IconWithTooltip>
+        <HStack gap={1}>
+          <IconWithTooltip tooltipText="Add to Fav." positioning="top">
+            <Button
+              size={"2xs"}
+              as={data === 1 ? AiFillLike : AiOutlineLike}
+              bg={"none"}
+              textStyle={"2xl"}
+              cursor={"pointer"}
+              disabled={isPending}
+              p={0}
+              rounded={"full"}
+              color={data === 1 ? "green.500" : "white"}
+              onClick={
+                data === 1
+                  ? undefined
+                  : () => {
+                      likeSong(
+                        {
+                          song_id: activeSong?.id!,
+                          created_by: currentUser?.data?.id!,
+                        },
+                        {
+                          onError: () =>
+                            toaster.create({
+                              title: "❌ We could not make that happen",
+                            }),
+                          onSuccess: (data) =>
+                            toaster.create({
+                              title: "You like the song 💖",
+                              action: {
+                                label: "View",
+                                onClick: () =>
+                                  naviagte(`/album/${data?.playlist_id}`),
+                              },
+                            }),
+                        }
+                      );
+                    }
+              }
+            />
+          </IconWithTooltip>
+          <IconWithTooltip tooltipText="Add to Playlist" positioning="top">
+            <Button
+              size={"2xs"}
+              as={AiOutlinePlusCircle}
+              bg={"none"}
+              textStyle={"2xl"}
+              cursor={"pointer"}
+              disabled={isPending}
+              p={0}
+              rounded={"full"}
+              color={"white"}
+            />
+          </IconWithTooltip>
+        </HStack>
       </HStack>
       <Spacer />
       <Stack

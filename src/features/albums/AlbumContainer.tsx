@@ -248,7 +248,12 @@ export function AlbumContainer() {
               </Table.Header>
               <Table.Body>
                 {songs?.map((currSong, i) => (
-                  <MusicRow key={i} index={i} song={currSong.song} />
+                  <MusicRow
+                    key={i}
+                    index={i}
+                    song={currSong.song}
+                    playlist={data}
+                  />
                 ))}
               </Table.Body>
             </Table.Root>

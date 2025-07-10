@@ -32,11 +32,13 @@ import FollowButton from "@/components/ui/FollowButton";
 import { useCurrentUser } from "@/contexts/currentUserContext";
 import MusicRow from "@/components/ui/MusicRow";
 import { PlayPause } from "@/components/ui/PlayPause";
+import { useIsSongOpen } from "@/contexts/songContext";
 
 export function AlbumContainer() {
   const { id } = useParams();
   const { data, isLoading } = useFetchArtist(id!);
   const { currentUser } = useCurrentUser();
+  const { isOpen } = useIsSongOpen();
   const { data: ArtistSongs } = useFetchSongsByArtist(id);
 
   console.log(data);
@@ -93,7 +95,12 @@ export function AlbumContainer() {
   if (data === null || data === undefined) return <TotalEmpty />;
 
   return (
-    <Box h={"75dvh"} overflow={"auto"} className="trend-group" pos={"relative"}>
+    <Box
+      h={isOpen ? "75dvh" : "86dvh"}
+      overflow={"auto"}
+      className="trend-group"
+      pos={"relative"}
+    >
       <Box
         w={"100%"}
         opacity={"0.9"}
@@ -155,7 +162,7 @@ export function AlbumContainer() {
       >
         <HStack gap={2} pr={4}>
           <PlayPause
-            data={{ data: ArtistSongs![0], queue: ArtistSongs }}
+            data={{ data: ArtistSongs?.at(0) || null, queue: ArtistSongs }}
             isRelative
           />
           <FollowButton
@@ -186,7 +193,7 @@ export function AlbumContainer() {
           </Table.Header>
           <Table.Body>
             {ArtistSongs?.map((curSong, i) => (
-              <MusicRow song={curSong} index={i} />
+              <MusicRow song={curSong} index={i} key={i} />
             ))}
           </Table.Body>
         </Table.Root>

@@ -6,15 +6,20 @@ import { GiMusicalNotes } from "react-icons/gi";
 import IconWithTooltip from "./IconWithTooltip";
 import { HiMinus } from "react-icons/hi";
 import { Song } from "@/features/tracks/songType";
+import { useRemoveSongFromPlaylist } from "@/features/playlist/usePlaylist";
+import { Playlist } from "@/features/playlist/playlistType";
+import { toaster } from "./toaster";
 
 interface MusicRowProps {
   index: number;
   song: Song;
+  playlist?: Playlist;
 }
-export default function MusicRow({ song, index }: MusicRowProps) {
+export default function MusicRow({ song, index, playlist }: MusicRowProps) {
   const {
     state: { activeSong },
   } = useCurrentMusic();
+  const { mutate, isPending } = useRemoveSongFromPlaylist();
   return (
     <Table.Row bg={"transparent"} _hover={{ bg: "gray.900" }} className="group">
       <Table.Cell borderBottom={"none"} w={20}>
@@ -56,19 +61,43 @@ export default function MusicRow({ song, index }: MusicRowProps) {
         <Text ml={2}>{getSingMusicDuration(song.duration)}</Text>
       </Table.Cell>
       <Table.Cell borderBottom={"none"}>
-        <IconWithTooltip tooltipText="Remove" positioning="top">
-          <IconButton
-            size={"2xs"}
-            variant={"ghost"}
-            rounded={"full"}
-            _groupHover={{ visibility: "visible" }}
-            visibility={"hidden"}
-            color={"gray.900"}
-            bg={"green.600"}
-          >
-            <HiMinus />
-          </IconButton>
-        </IconWithTooltip>
+        {playlist && (
+          <IconWithTooltip tooltipText="Remove" positioning="top">
+            <IconButton
+              size={"2xs"}
+              variant={"ghost"}
+              disabled={isPending}
+              rounded={"full"}
+              _groupHover={{ visibility: "visible" }}
+              visibility={"hidden"}
+              color={"gray.900"}
+              bg={"green.600"}
+              onClick={
+                playlist
+                  ? () =>
+                      mutate(
+                        {
+                          song_id: song.id,
+                          playlist_id: playlist.playlist_id!,
+                        },
+                        {
+                          onSuccess: () =>
+                            toaster.create({
+                              title: "The Song has been removed!",
+                            }),
+                          onError: () =>
+                            toaster.create({
+                              title: "An Error occured, please try again",
+                            }),
+                        }
+                      )
+                  : undefined
+              }
+            >
+              <HiMinus />
+            </IconButton>
+          </IconWithTooltip>
+        )}
       </Table.Cell>
     </Table.Row>
   );
