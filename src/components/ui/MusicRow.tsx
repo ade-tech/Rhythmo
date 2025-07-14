@@ -9,6 +9,7 @@ import { Song } from "@/features/tracks/songType";
 import { useRemoveSongFromPlaylist } from "@/features/playlist/usePlaylist";
 import { Playlist } from "@/features/playlist/playlistType";
 import { toaster } from "./toaster";
+import { useCurrentUser } from "@/contexts/currentUserContext";
 
 interface MusicRowProps {
   index: number;
@@ -16,6 +17,7 @@ interface MusicRowProps {
   playlist?: Playlist;
 }
 export default function MusicRow({ song, index, playlist }: MusicRowProps) {
+  const { currentUser } = useCurrentUser();
   const {
     state: { activeSong },
   } = useCurrentMusic();
@@ -79,6 +81,8 @@ export default function MusicRow({ song, index, playlist }: MusicRowProps) {
                         {
                           song_id: song.id,
                           playlist_id: playlist.playlist_id!,
+                          currentUser: currentUser?.data?.id || "",
+                          isLikePlaylist: playlist.name === "Liked Song",
                         },
                         {
                           onSuccess: () =>

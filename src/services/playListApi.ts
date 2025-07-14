@@ -8,7 +8,7 @@
 
 import { Playlist, PlaylistSong } from "@/features/playlist/playlistType";
 import { supabase } from "./supabase";
-import { likeSong } from "./likeApi";
+import { likeSong, unlikeSong } from "./likeApi";
 import { SongQueryType } from "./songsApi";
 import { LIKEDSONGCOVER } from "@/helpers/constants";
 
@@ -103,9 +103,13 @@ export async function addSongToPlaylist({
 export async function removeSongFromPlaylist({
   song_id,
   playlist_id,
+  currentUser,
+  isLikePlaylist = false,
 }: {
   song_id: string;
+  currentUser: string;
   playlist_id: string;
+  isLikePlaylist?: boolean;
 }) {
   const { error } = await supabase.from("playlist_songs").delete().match({
     song_id,
@@ -113,6 +117,12 @@ export async function removeSongFromPlaylist({
   });
 
   if (error) throw new Error("We could not add song to playlist");
+
+  if (!isLikePlaylist) return;
+  await unlikeSong({
+    song_id,
+    liker_id: currentUser,
+  });
 }
 
 export type createPlaylistFromLikeProps = {

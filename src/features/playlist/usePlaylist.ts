@@ -27,10 +27,14 @@ export function useCreatePlaylist() {
     error,
   } = useMutation({
     mutationFn: (playlist: Playlist) => createPlaylistApi(playlist),
-    onSuccess: (_, variables) =>
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["playlist", variables.playlist_id],
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["playlist", variables.created_by],
+      });
+    },
   });
 
   return { createPlaylist, isPending, error };
@@ -65,6 +69,7 @@ export function useFetchSongsInPlaylist(playlistID: string) {
     enabled: !!playlistID,
   });
 
+  console.log(playlistID);
   return { data, error, isLoading };
 }
 
@@ -90,8 +95,9 @@ export function useAddSongToPlaylist() {
       playlist_id: string;
     }) => addSongToPlaylist({ song_id, playlist_id }),
     onSuccess: (_, { playlist_id }) => {
+      console.log(playlist_id);
       queryClient.invalidateQueries({
-        queryKey: ["Songs-In", playlist_id],
+        queryKey: ["songs-In", playlist_id],
       });
     },
   });
@@ -105,14 +111,30 @@ export function useRemoveSongFromPlaylist() {
     mutationFn: ({
       song_id,
       playlist_id,
+      currentUser,
+      isLikePlaylist,
     }: {
       song_id: string;
       playlist_id: string;
-    }) => removeSongFromPlaylist({ song_id, playlist_id }),
-    onSuccess: (_, { playlist_id }) => {
+      currentUser: string;
+      isLikePlaylist?: boolean;
+    }) =>
+      removeSongFromPlaylist({
+        song_id,
+        playlist_id,
+        currentUser,
+        isLikePlaylist,
+      }),
+    onSuccess: (_, { playlist_id, song_id, currentUser, isLikePlaylist }) => {
+      console.log(playlist_id);
       queryClient.invalidateQueries({
-        queryKey: ["Songs-In", playlist_id],
+        queryKey: ["songs-In", playlist_id],
       });
+      if (isLikePlaylist) {
+        queryClient.invalidateQueries({
+          queryKey: ["likeEvent", song_id, currentUser],
+        });
+      }
     },
   });
 

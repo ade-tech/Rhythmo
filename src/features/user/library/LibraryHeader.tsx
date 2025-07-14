@@ -5,7 +5,10 @@
  */
 
 import { useCurrentUser } from "@/contexts/currentUserContext";
-import { useCreatePlaylist } from "@/features/playlist/usePlaylist";
+import {
+  useCreatePlaylist,
+  useFetchPlaylists,
+} from "@/features/playlist/usePlaylist";
 import { Button, HStack, Spacer, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { LuLibrary } from "react-icons/lu";
@@ -24,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 export function LibraryHeader() {
   const { currentUser } = useCurrentUser();
   const { createPlaylist, isPending } = useCreatePlaylist();
+  const { data, isLoading } = useFetchPlaylists(currentUser?.data?.id!);
   const navigate = useNavigate();
   return (
     <HStack mb={6}>
@@ -44,13 +48,13 @@ export function LibraryHeader() {
         rounded={"full"}
         variant={"subtle"}
         bg={"gray.900"}
-        disabled={isPending}
+        disabled={isPending || isLoading}
         color={"white"}
         onClick={() =>
           createPlaylist(
             {
               is_public: false,
-              name: "Playlist #1",
+              name: `Playlist #${(data?.length || 1) + 1}`,
               created_by: currentUser?.data?.id!,
             },
             {

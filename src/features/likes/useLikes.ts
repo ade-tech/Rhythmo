@@ -1,3 +1,4 @@
+import { Howl } from "howler";
 import {
   hasLikedSong,
   likeSong as LikeSongApi,
@@ -10,14 +11,22 @@ import {
   createPlaylistFromLikeProps,
 } from "@/services/playListApi";
 
+const sound = new Howl({
+  src: ["/like.mp3"],
+  html5: true,
+  volume: 1,
+});
+
 export function useLikeSong() {
   const queryClient = useQueryClient();
   const { mutate: likeSong, isPending } = useMutation({
     mutationFn: (data: LikeQuery) => LikeSongApi(data),
-    onSuccess: (_data, variables) =>
+    onSuccess: (_data, variables) => {
+      sound.play();
       queryClient.invalidateQueries({
         queryKey: ["likeEvent", variables.song_id, variables.liker_id],
-      }),
+      });
+    },
   });
   return { likeSong, isPending };
 }
@@ -50,9 +59,11 @@ export function usecreatePlaylistFromLike() {
     mutationFn: (data: createPlaylistFromLikeProps) =>
       createPlaylistFromLike(data),
     onSuccess: (_data, variables) => {
+      sound.play();
       queryClient.invalidateQueries({
         queryKey: ["likeEvent", variables.song_id, variables.created_by],
       });
+
       queryClient.invalidateQueries({
         queryKey: ["playlist", variables.created_by],
       });
