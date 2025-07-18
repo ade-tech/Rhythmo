@@ -7,10 +7,11 @@
  */
 
 import { Playlist, PlaylistSong } from "@/features/playlist/playlistType";
-import { supabase } from "./supabase";
+import { supabase, supabaseUrl } from "./supabase";
 import { likeSong, unlikeSong } from "./likeApi";
 import { SongQueryType } from "./songsApi";
 import { LIKEDSONGCOVER } from "@/helpers/constants";
+import { EditPlaylistInput } from "@/features/playlist/EditPlaylist";
 
 /**
  * Creates a new playlist in the backend.
@@ -195,4 +196,33 @@ export async function fetchSongsToPlayInPlaylist(
   if (error) throw new Error("could not get the songs");
   const songResult = data.map((cur) => cur.songs).flat();
   return { data: songResult.at(0), queue: songResult };
+}
+
+export async function editPlaylist({
+  name,
+  description,
+  coverFile,
+  playlist_id,
+}: EditPlaylistInput) {
+  const isFile = coverFile instanceof FileList;
+  let imagePath;
+  let imageURL;
+  if (isFile) {
+    imagePath = `${crypto.randomUUID()}-${coverFile[0].name}`;
+    imageURL = `${supabaseUrl}/storage/v1/object/public/songcover/${imagePath}`;
+
+    const { error } = await supabase.storage
+      .from("songcover")
+      .upload(imagePath, coverFile[0]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+  const { error } = await supabase
+    .from("playlist")
+    .update({ name, description, cover_url: isFile ? imageURL : coverFile })
+    .eq("playlist_id", playlist_id);
+
+  if (error) throw new Error(error.message);
 }

@@ -22,6 +22,7 @@ export type Playlist = {
   is_public: boolean;
   playlist_id?: string;
   cover_url?: string;
+  description?: string;
 };
 
 export type PlaylistQuery = {

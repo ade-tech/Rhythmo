@@ -12,12 +12,14 @@ import { Playlist, PlaylistQuery, PlaylistsQuery } from "./playlistType";
 import {
   addSongToPlaylist,
   createPlaylist as createPlaylistApi,
+  editPlaylist,
   fetchPlaylist,
   fetchPlaylists,
   fetchSongsInPlaylist,
   fetchSongsToPlayInPlaylist,
   removeSongFromPlaylist,
 } from "@/services/playListApi";
+import { EditPlaylistInput } from "./EditPlaylist";
 
 export function useCreatePlaylist() {
   const queryClient = useQueryClient();
@@ -139,4 +141,18 @@ export function useRemoveSongFromPlaylist() {
   });
 
   return { mutate, isPending, error };
+}
+
+export function useEditPlaylist() {
+  const queryClient = useQueryClient();
+  const { mutate: editPlaylistFn, isPending } = useMutation({
+    mutationFn: (data: EditPlaylistInput) => editPlaylist(data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["playlist", variables.playlist_id],
+      });
+    },
+  });
+
+  return { editPlaylistFn, isPending };
 }
