@@ -21,7 +21,7 @@ import React from "react";
 import { HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 interface SongDialogProps {
-  triggerSongImage: string;
+  triggerSongImage: string | undefined;
   triggerSongColor: string;
   triggerButton: React.ReactNode;
 }
