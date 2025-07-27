@@ -11,6 +11,7 @@ import { supabase, supabaseUrl } from "./supabase";
 import { CreateMusicProps } from "@/features/artist/CreateMusicDialog";
 import { CreateAlbumProps } from "@/features/artist/CreateAlbumDialog";
 import { Playlist } from "@/features/playlist/playlistType";
+import { EditSongInput } from "@/features/tracks/EditSong";
 
 /**
  * Type for the result of a song query, including the main song and an optional queue.
@@ -181,4 +182,34 @@ export async function createAlbum({
     .in("id", albumSongs);
 
   if (error) throw new Error("We could not finish that");
+}
+
+export async function EditSong({
+  title,
+  album,
+  coverFile,
+  artist_id,
+  songID,
+}: EditSongInput) {
+  const isFile = coverFile instanceof FileList && coverFile.length > 0;
+  let imagePath;
+  let imageURL;
+  if (isFile) {
+    imagePath = `${crypto.randomUUID()}-${coverFile[0].name}`;
+    imageURL = `${supabaseUrl}/storage/v1/object/public/songcover/${imagePath}`;
+
+    const { error } = await supabase.storage
+      .from("songcover")
+      .upload(imagePath, coverFile[0]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+  const { error } = await supabase
+    .from("songs")
+    .update({ title, album, cover_url: isFile ? imageURL : coverFile })
+    .match({ id: songID, artist_id });
+
+  if (error) throw new Error(error.message);
 }

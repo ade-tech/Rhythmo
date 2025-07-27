@@ -60,7 +60,8 @@ export default function EditPlaylist({
 
   const submitFunction: SubmitHandler<EditPlaylistInput> = (data) => {
     if (!playlistInformation.playlist_id) return;
-    const hasUploadedImage = data.coverFile instanceof FileList;
+    const hasUploadedImage =
+      data.coverFile instanceof FileList && data.coverFile.length > 0;
     data.coverFile = !hasUploadedImage
       ? playlistInformation.cover_url
       : data.coverFile;

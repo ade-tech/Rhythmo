@@ -204,7 +204,7 @@ export async function editPlaylist({
   coverFile,
   playlist_id,
 }: EditPlaylistInput) {
-  const isFile = coverFile instanceof FileList;
+  const isFile = coverFile instanceof FileList && coverFile.length > 0;
   let imagePath;
   let imageURL;
   if (isFile) {
