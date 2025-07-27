@@ -143,51 +143,68 @@ export function AlbumContainer() {
         zIndex={10}
         className="group"
       >
-        <EditPlaylist
-          playlistInformation={data!}
-          ButtonContent={
-            <Box
-              h={"10rem"}
-              w={"10rem"}
-              position={"relative"}
-              cursor={"pointer"}
-            >
-              <Avatar.Root h={"full"} w={"full"} shape={"rounded"}>
-                <Avatar.Fallback>
-                  <Image src="/musicfallback.png" rounded={"md"} />
-                </Avatar.Fallback>
-                <Avatar.Image
-                  src={
-                    data?.cover_url
-                      ? data.cover_url
-                      : songs?.at(0)?.song.cover_url || undefined
-                  }
-                />
-              </Avatar.Root>
+        {data?.name === "Liked Song" ? (
+          <Box h={"10rem"} w={"10rem"} position={"relative"} cursor={"pointer"}>
+            <Avatar.Root h={"full"} w={"full"} shape={"rounded"}>
+              <Avatar.Fallback>
+                <Image src="/musicfallback.png" rounded={"md"} />
+              </Avatar.Fallback>
+              <Avatar.Image
+                src={
+                  data?.cover_url
+                    ? data.cover_url
+                    : songs?.at(0)?.song.cover_url || undefined
+                }
+              />
+            </Avatar.Root>
+          </Box>
+        ) : (
+          <EditPlaylist
+            playlistInformation={data!}
+            ButtonContent={
               <Box
+                h={"10rem"}
+                w={"10rem"}
+                position={"relative"}
                 cursor={"pointer"}
-                position={"absolute"}
-                rounded={"md"}
-                h={"full"}
-                w={"full"}
-                transition={"opacity 0.2s ease-in"}
-                p={2}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                visibility={"hidden"}
-                flexDir={"column"}
-                opacity={0}
-                top={0}
-                bg={"blackAlpha.500"}
-                _groupHover={{ visibility: "visible", opacity: 1 }}
               >
-                <MdOutlineEdit size={48} />
-                <Text>Edit Playlist</Text>
+                <Avatar.Root h={"full"} w={"full"} shape={"rounded"}>
+                  <Avatar.Fallback>
+                    <Image src="/musicfallback.png" rounded={"md"} />
+                  </Avatar.Fallback>
+                  <Avatar.Image
+                    src={
+                      data?.cover_url
+                        ? data.cover_url
+                        : songs?.at(0)?.song.cover_url || undefined
+                    }
+                  />
+                </Avatar.Root>
+                <Box
+                  cursor={"pointer"}
+                  position={"absolute"}
+                  rounded={"md"}
+                  h={"full"}
+                  w={"full"}
+                  transition={"opacity 0.2s ease-in"}
+                  p={2}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  visibility={"hidden"}
+                  flexDir={"column"}
+                  opacity={0}
+                  top={0}
+                  bg={"blackAlpha.500"}
+                  _groupHover={{ visibility: "visible", opacity: 1 }}
+                >
+                  <MdOutlineEdit size={48} />
+                  <Text>Edit Playlist</Text>
+                </Box>
               </Box>
-            </Box>
-          }
-        />
+            }
+          />
+        )}
 
         <Stack color={"white"} w={"2/3"} gap={0} zIndex={1}>
           <Text>Playlist</Text>

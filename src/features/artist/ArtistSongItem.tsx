@@ -1,5 +1,7 @@
-import { Box, Image, Spacer, Stack, Text } from "@chakra-ui/react";
+import { Box, IconButton, Image, Spacer, Stack, Text } from "@chakra-ui/react";
 import { Song } from "../tracks/songType";
+import { HiPencil } from "react-icons/hi";
+import EditSong from "../tracks/EditSong";
 
 /**
  * ArtistSongItem Component
@@ -11,13 +13,29 @@ import { Song } from "../tracks/songType";
  * - Used within ArtistSongs to show each song in the Singles or Featured tabs.
  */
 
-const ArtistSongItem = ({
-  data,
-}: {
-  data: Pick<Song, "cover_url" | "album" | "title" | "play_count">;
-}) => {
+const ArtistSongItem = ({ data }: { data: Song }) => {
   return (
-    <Box pos={"relative"} w={"full"} h={"12rem"}>
+    <Box pos={"relative"} w={"full"} h={"12rem"} className="group">
+      <EditSong
+        SongInformation={data}
+        ButtonContent={
+          <IconButton
+            pos={"absolute"}
+            size={"xs"}
+            rounded={"full"}
+            color={"gray.900"}
+            bg={"white"}
+            right={4}
+            top={4}
+            visibility={"hidden"}
+            transition={"0.2s ease-in"}
+            opacity={"0"}
+            _groupHover={{ visibility: "visible", opacity: 1 }}
+          >
+            <HiPencil />
+          </IconButton>
+        }
+      />
       <Image
         src={data?.cover_url}
         w={"full"}
@@ -58,7 +76,7 @@ const ArtistSongItem = ({
         <Spacer />
         <Stack gap={0} alignItems={"center"}>
           <Text textStyle={"md"} fontWeight={"bold"} color={"white"}>
-            {data.play_count}
+            {Intl.NumberFormat().format(data.play_count)}
           </Text>
           <Text textStyle={"2xs"} color={"gray.300"} lineHeight={1}>
             Streams

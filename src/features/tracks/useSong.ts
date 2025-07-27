@@ -11,12 +11,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { SongQuery, SongsQuery } from "./songType";
 import {
   createAlbum,
+  EditSong,
   fetchSong,
   fetchSongs,
   uploadSong,
 } from "@/services/songsApi";
 import { CreateAlbumProps } from "../artist/CreateAlbumDialog";
 import { CreateMusicProps } from "../artist/CreateMusicDialog";
+import { EditSongInput } from "./EditSong";
 
 export function useFetchSongs(): SongsQuery {
   const { data, isLoading, error } = useQuery({
@@ -50,4 +52,12 @@ export function useCreateAlbum() {
     mutationFn: (data: CreateAlbumProps) => createAlbum(data),
   });
   return { mutate, isPending, error };
+}
+
+export function useEditSong() {
+  const { mutate: editSongFn, isPending } = useMutation({
+    mutationFn: (data: EditSongInput) => EditSong(data),
+  });
+
+  return { editSongFn, isPending };
 }

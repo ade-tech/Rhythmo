@@ -14,6 +14,7 @@ import { Box, Skeleton, Stack, Tabs, Text } from "@chakra-ui/react";
 import ArtistSongItem from "./ArtistSongItem";
 import ArtistAlbumItem from "./ArtistAlbumItem";
 import { useFetchAlbumsByArtist, useFetchSongsByArtist } from "./useArtist";
+import { IoAlbums } from "react-icons/io5";
 
 const ArtistSongs = () => {
   const { data, isLoading } = useFetchSongsByArtist();
@@ -95,26 +96,52 @@ const ArtistSongs = () => {
             <ArtistSongItem key={curSong.id} data={curSong} />
           ))}
         </Tabs.Content>
-        <Tabs.Content
-          w={"full"}
-          value="tab-2"
-          display={"grid"}
-          maxH={"62.5vh"}
-          overflowY={"auto"}
-          gap={"3"}
-          gridTemplateColumns={"repeat(3, 1fr)"}
-          _open={{
-            animation: "fade-in, scale-in",
-            animationDuration: "0.5s",
-            scrollbar: "hidden",
-          }}
-          flex={1}
-        >
-          <Preloader isLoading={isLoadingAlbums} />
-          {albums?.map((curALbum) => (
-            <ArtistAlbumItem key={curALbum.playlist_id} data={curALbum} />
-          ))}
-        </Tabs.Content>
+        {albums === undefined || albums.length < 1 ? (
+          <Tabs.Content
+            value="tab-2"
+            minH={"65vh"}
+            w={"full"}
+            display={"flex"}
+            flexDir={"column"}
+            alignItems={"center"}
+            flex={1}
+            justifyContent={"center"}
+            _open={{
+              animation: "fade-in, scale-in",
+              animationDuration: "0.5s",
+              scrollbar: "hidden",
+            }}
+          >
+            <Box as={IoAlbums} boxSize={24} />
+            <Text fontWeight={"bold"} textStyle={"3xl"}>
+              No Albums yet
+            </Text>
+            <Text textStyle={"sm"} color={"gray"}>
+              When you add an Album it would show here
+            </Text>
+          </Tabs.Content>
+        ) : (
+          <Tabs.Content
+            w={"full"}
+            value="tab-2"
+            display={"grid"}
+            maxH={"65vh"}
+            overflowY={"auto"}
+            gap={"3"}
+            gridTemplateColumns={"repeat(3, 1fr)"}
+            _open={{
+              animation: "fade-in, scale-in",
+              animationDuration: "0.5s",
+              scrollbar: "hidden",
+            }}
+            flex={1}
+          >
+            <Preloader isLoading={isLoadingAlbums} />
+            {albums?.map((curALbum) => (
+              <ArtistAlbumItem key={curALbum.playlist_id} data={curALbum} />
+            ))}
+          </Tabs.Content>
+        )}
         <Tabs.Content
           value="tab-3"
           display={"grid"}
