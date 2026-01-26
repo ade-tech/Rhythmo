@@ -15,8 +15,8 @@
 ## 🛠️ Tech Stack
 
 - **Frontend:** React, TypeScript, Tailwind CSS
-- **Backend:** Firebase (Firestore, Authentication, Storage)
-- **API Calls & Data Fetching:** React Query, Axios (if needed)
+- **Backend:** Supabase
+- **API Calls & Data Fetching:** React Quer
 - **State Management:** Context API
 - **Audio Streaming:** React Howler.js
 
