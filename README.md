@@ -16,7 +16,7 @@
 
 - **Frontend:** React, TypeScript, Tailwind CSS
 - **Backend:** Supabase
-- **API Calls & Data Fetching:** React Quer
+- **API Calls & Data Fetching:** React Query
 - **State Management:** Context API
 - **Audio Streaming:** React Howler.js
 
